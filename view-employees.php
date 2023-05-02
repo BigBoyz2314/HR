@@ -16,7 +16,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
     <link rel="stylesheet" href="css/styles.css">
-    <title>Add Employees</title>
+    <title>View Employees</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -53,41 +53,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         </div>
     </nav>
     <div class="container-fluid p-5">
-        <h1>Add Employees</h1>
-        <form action="add-employess.php" method="post">
-            <div class="row justify-content-center">
-                <div class="col-md-3 pt-4">
-                    <h4>First Name</h4>
-                    <input type="text" name="fname" id="fname" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Middle Name</h4>
-                    <input type="text" name="mname" id="mname" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Last Name</h4>
-                    <input type="text" name="lname" id="lname" class="form-control">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 pt-4">
-                    <h4>Date of Birth</h4>
-                    <input type="date" name="dob" id="dob" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Designation</h4>
-                    <input type="text" name="designation" id="designation" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Department</h4>
-                    <input type="text" name="department" id="department" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Martital Status</h4>
-                    <input type="text" name="mstatus" id="mstatus" class="form-control">
-                </div>
-            </div>
-        </form>
+        <h1>View Employees</h1>
     </div>
     <script>
         

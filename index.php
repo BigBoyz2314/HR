@@ -15,7 +15,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
-    <title>Index</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Home</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -28,8 +29,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 <li class="nav-item active">
                     <a class="nav-link" href="index.php">Home<span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="employees.php">Employees</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    Employees
+                    </a>
+                    <div class="dropdown-menu bg-dark">
+                        <a class="dropdown-item text-white-50" href="employees.php">Add Employees</a>
+                        <a class="dropdown-item text-white-50" href="view-employees.php">View Employees</a>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="department.php">Departments</a>
@@ -45,8 +52,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </ul>
         </div>
     </nav>
-    <div class="container-fluid">
-        
+    <div class="container-fluid p-5">
+        <h1>Home</h1>
     </div>
     <script>
         

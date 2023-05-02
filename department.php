@@ -16,7 +16,8 @@ require_once('config.php');
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
-    <title>Departments</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Department</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -29,8 +30,14 @@ require_once('config.php');
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home<span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="employees.php">Employees</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    Employees
+                    </a>
+                    <div class="dropdown-menu bg-dark">
+                        <a class="dropdown-item text-white-50" href="employees.php">Add Employees</a>
+                        <a class="dropdown-item text-white-50" href="view-employees.php">View Employees</a>
+                    </div>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="department.php">Departments</a>
@@ -58,13 +65,13 @@ require_once('config.php');
             <div class="row">
                 <div class="col-6 pt-4">
                     <h4>Allowed Strength</h4>
-                    <input type="number" name="allowed" id="allowed" class="form-control w-50">
+                    <input type="number" min="0" name="allowed" id="allowed" class="form-control w-50">
                 </div>
             </div>
             <div class="row">
                 <div class="col-6 pt-4">
                     <h4>Current Strength</h4>
-                    <input type="number" name="current" id="current" class="form-control w-50">
+                    <input type="number" min="0" name="current" id="current" class="form-control w-50">
                 </div>
             </div>
             <div class="row">
@@ -75,7 +82,7 @@ require_once('config.php');
         </form> 
         <div class="row mt-5">
             <div class="col-md-12">
-                <table class="table table-bordered w-100 text-center font-weight-bold" id="table">
+                <table class="table table-bordered w-100 text-center" id="table">
                     <thead class="font-weight-bolder">
                         <th>Sr.</th>
                         <th>Department Name</th>

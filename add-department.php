@@ -10,7 +10,7 @@
         $current = $_REQUEST["current"];
     }
 
-        $sql ="INSERT INTO department VALUES ('', '$name', '$allowed', '$current', current_timestamp())";
+        $sql ="INSERT INTO department VALUES ('', '$name', '$current', '$allowed', current_timestamp())";
         
         if(mysqli_query($conn, $sql)){
             echo $category;
