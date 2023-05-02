@@ -116,7 +116,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Join Date</h4>
-                    <input type="date" name="joinDate" id="JoinDate" class="form-control">
+                    <input type="date" name="joinDate" id="joinDate" class="form-control">
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Leave Date</h4>
