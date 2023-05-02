@@ -7,6 +7,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+require_once('config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,19 +50,57 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <h1>Add Designation</h1>
         <form action="add-designation.php" method="post">
             <div class="row">
-                <div class="col-12 pt-4">
+                <div class="col-6 pt-4">
                     <h4>Name</h4>
-                    <input type="text" name="name" id="name" class="form-control w-25">
+                    <input type="text" name="name" id="name" class="form-control w-50">
                 </div>
-                <div class="col-12 pt-4">
+            </div>
+            <div class="row">
+                <div class="col-6 pt-4">
                     <h4>Grade</h4>
-                    <input type="number" name="grade" id="grade" class="form-control w-25">
+                    <input type="number" name="grade" id="grade" class="form-control w-50">
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-3 pt-4">
                     <button type="submit" class="btn btn-success">Submit</button>
                 </div>
             </div>
         </form>  
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <table class="table table-bordered w-100 text-center font-weight-bold" id="table">
+                    <thead class="font-weight-bolder">
+                        <th>Sr.</th>
+                        <th>Designation Name</th>
+                        <th>Grade</th>
+                    </thead>
+                    <tbody class="">
+                        <?php
+                            $stmt = "SELECT * FROM designation";
+                            $result = $conn->query($stmt);
+                            $i = 1;
+    
+                            if ($result->num_rows > 0) {
+                                // output data of each row
+                                
+                                while($row = $result->fetch_assoc()) {
+                                    $name = $row['name'];
+                                    $grade = $row['grade'];
+
+                                    echo "<tr>";
+                                    echo "<td>". $i++ ."</td>";
+                                    echo "<td>$name</td>";
+                                    echo "<td>$grade</td>";
+                                    echo "</tr>";
+    
+                                }
+                              }
+                        ?>
+                    </tbody>
+            </table>
+            </div>
+        </div>
     </div>
     <script>
         

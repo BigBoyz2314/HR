@@ -7,6 +7,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+require_once('config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +46,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </ul>
         </div>
     </nav>
-    <div class="container-fluid">
     <div class="container-fluid p-5">
         <h1>Add Department</h1>
         <form action="add-department.php" method="post">
@@ -54,10 +54,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <h4>Name</h4>
                     <input type="text" name="name" id="name" class="form-control w-50">
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-6 pt-4">
                     <h4>Allowed Strength</h4>
                     <input type="number" name="allowed" id="allowed" class="form-control w-50">
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-6 pt-4">
                     <h4>Current Strength</h4>
                     <input type="number" name="current" id="current" class="form-control w-50">
@@ -68,8 +72,47 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <button type="submit" class="btn btn-success">Submit</button>
                 </div>
             </div>
-        </form>  
-    </div>
+        </form> 
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <table class="table table-bordered w-100 text-center font-weight-bold" id="table">
+                    <thead class="font-weight-bolder">
+                        <th>Sr.</th>
+                        <th>Department Name</th>
+                        <th>Current Strength</th>
+                        <th>Allowed Strength</th>
+                        <th>Created</th>
+                    </thead>
+                    <tbody class="">
+                        <?php
+                            $stmt = "SELECT * FROM department";
+                            $result = $conn->query($stmt);
+                            $i = 1;
+    
+                            if ($result->num_rows > 0) {
+                                // output data of each row
+                                
+                                while($row = $result->fetch_assoc()) {
+                                    $name = $row['name'];
+                                    $current = $row['current_Strength'];
+                                    $allowed = $row['allowed_Strength']; 
+                                    $created = $row['created_at']; 
+
+                                    echo "<tr>";
+                                    echo "<td>". $i++ ."</td>";
+                                    echo "<td>$name</td>";
+                                    echo "<td>$current</td>";
+                                    echo "<td>$allowed</td>";
+                                    echo "<td>$created</td>";
+                                    echo "</tr>";
+    
+                                }
+                              }
+                        ?>
+                    </tbody>
+            </table>
+            </div>
+        </div> 
     </div>
     <script>
         
