@@ -13,7 +13,7 @@
   	-moz-osx-font-smoothing: grayscale;
 }
 body {
-  	background-color: #435165;
+  	background-color: #0b1d38;
 }
 .login {
   	width: 400px;
@@ -23,7 +23,7 @@ body {
 }
 .login h1 {
   	text-align: center;
-  	color: #5b6574;
+  	color: #404853;
   	font-size: 24px;
   	padding: 20px 0 20px 0;
   	border-bottom: 1px solid #dee0e4;
@@ -40,7 +40,7 @@ body {
   	align-items: center;
   	width: 50px;
   	height: 50px;
-  	background-color: #3274d6;
+  	background-color: #204c8f;
   	color: #ffffff;
 }
 .login form input[type="password"], .login form input[type="text"] {
@@ -54,7 +54,7 @@ body {
   	width: 100%;
   	padding: 15px;
  	margin-top: 20px;
-  	background-color: #3274d6;
+  	background-color: #204b8b;
   	border: 0;
   	cursor: pointer;
   	font-weight: bold;
@@ -62,7 +62,7 @@ body {
   	transition: background-color 0.2s;
 }
 .login form input[type="submit"]:hover {
-	background-color: #2868c7;
+	background-color: #1a4f9e;
   	transition: background-color 0.2s;
 }
         </style>
