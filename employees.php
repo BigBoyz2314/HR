@@ -58,15 +58,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <div class="row justify-content-center">
                 <div class="col-md-3 pt-4">
                     <h4>First Name</h4>
-                    <input type="text" name="fname" id="fname" class="form-control">
+                    <input type="text" name="fName" id="fName" class="form-control">
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Middle Name</h4>
-                    <input type="text" name="mname" id="mname" class="form-control">
+                    <input type="text" name="mName" id="mName" class="form-control">
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Last Name</h4>
-                    <input type="text" name="lname" id="lname" class="form-control">
+                    <input type="text" name="lName" id="lName" class="form-control">
                 </div>
             </div>
             <div class="row">
@@ -84,7 +84,43 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Martital Status</h4>
-                    <input type="text" name="mstatus" id="mstatus" class="form-control">
+                    <input type="text" name="mStatus" id="mStatus" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 pt-4">
+                    <h4>Children</h4>
+                    <input type="text" name="children" id="children" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Supouse Name</h4>
+                    <input type="text" name="spouseName" id="spouseName" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Basic Salary</h4>
+                    <input type="text" name="basicSalary" id="basicSalary" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Allowence</h4>
+                    <input type="text" name="allowence" id="allowence" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 pt-4">
+                    <h4>Deduction</h4>
+                    <input type="text" name="deduction" id="deduction" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Gross Salary</h4>
+                    <input type="text" name="grossSalary" id="grossSalary" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Join Date</h4>
+                    <input type="date" name="joinDate" id="JoinDate" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Leave Date</h4>
+                    <input type="date" name="leaveDate" id="leaveDate" class="form-control">
                 </div>
             </div>
         </form>
