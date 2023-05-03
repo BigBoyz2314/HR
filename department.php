@@ -113,8 +113,8 @@ require_once('config.php');
                                     echo "<td>$name</td>";
                                     echo "<td>$current</td>";
                                     echo "<td>$allowed</td>";
-                                    echo "<td>$created</td>";
-                                    echo "<td>$updated</td>";
+                                    echo "<td>". date("d M y g:i:s A", strtotime($created)) ."</td>";
+                                    echo "<td>". date("d M y g:i:s A", strtotime($updated)) ."</td>";
                                     echo "<td></td>";
                                     echo "</tr>";
     
