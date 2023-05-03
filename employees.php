@@ -54,7 +54,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </nav>
     <div class="container-fluid p-5">
         <h1>Add Employees</h1>
-        <form action="add-employess.php" method="post">
+        <form action="add-employee.php" method="post">
             <div class="row justify-content-center">
                 <div class="col-md-3 pt-4">
                     <h4>First Name</h4>
@@ -76,9 +76,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Martital Status</h4>
-                    <select name="mstatus" id="mstatus" class="form-control">
-                        <option value="0">Single</option>
-                        <option value="1">Married</option>
+                    <select name="mStatus" id="mStatus" class="form-control">
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
                     </select>
                 </div>
                 <div class="col-md-3 pt-4">
@@ -141,7 +141,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Gross Salary</h4>
-                    <input type="number" disabled name="grossSalary" id="grossSalary" class="form-control" value="0">
+                    <input type="number" name="grossSalary" id="grossSalary" class="form-control" value="0">
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -222,7 +222,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-md-3 pt-4">
+                <div class="col-md-2 pt-4">
                     <h4>Working Hours</h4>
                     <input type="number" min="0" name="workingHours" id="workingHours" class="form-control">
                 </div>
@@ -234,12 +234,20 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <h4>End Time</h4>
                     <input type="time" name="endTime" id="endTime" class="form-control">
                 </div>
-                <div class="col-md-3 pt-4">
+                <div class="col-md-2 pt-4">
                     <h4>Shift</h4>
                     <select name="shift" id="shift" class="form-control">
-                        <option value="0">Morning</option>
-                        <option value="1">Evening</option>
-                        <option value="2">Night</option>
+                        <option value="Morning">Morning</option>
+                        <option value="Evening">Evening</option>
+                        <option value="Night">Night</option>
+                    </select>
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h4>Status</h4>
+                    <select name="status" id="status" class="form-control">
+                        <option value="Working">Working</option>
+                        <option value="Retired">Retired</option>
+                        <option value="Terminated">Terminated</option>
                     </select>
                 </div>
             </div>
