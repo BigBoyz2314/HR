@@ -27,7 +27,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="index.php">Home</a>
                 </li>
                 <li class="nav-item dropdown active">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
@@ -93,7 +93,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <div class="row justify-content-center">
                 <div class="col-md-4 pt-4">
                     <h4>CNIC</h4>
-                    <input type="number" name="cnic" id="cnic" class="form-control">
+                    <input type="number" name="cnic" id="cnic" class="form-control" required>
                 </div>
                 <div class="col-md-4 pt-4">
                     <h4>Passport no.</h4>
@@ -103,27 +103,27 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <div class="row">
                 <div class="col-md-4 pt-4">
                     <h4>Primary Address</h4>
-                    <input type="text" name="pAddress" id="pAddress" class="form-control">
+                    <input type="text" name="pAddress" id="pAddress" class="form-control" required>
                 </div>
                 <div class="col-md-4 pt-4">
                     <h4>Secondary Address</h4>
-                    <input type="text" name="sAddress" id="sAddress" class="form-control">
+                    <input type="text" name="sAddress" id="sAddress" class="form-control" required>
                 </div>
                 <div class="col-md-4 pt-3">
                     <h4 class="d-inline-block">Current Address</h4>
                     <p class="d-inline-block font-italic">Same as Primary Address</p>
                     <input type="checkbox" name="same" id="same" onclick="check()">
-                    <input type="text" name="cAddress" id="cAddress" class="form-control" value="">
+                    <input type="text" name="cAddress" id="cAddress" class="form-control" value="" required>
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-4 pt-4">
                     <h4>Primary Number</h4>
-                    <input type="number" name="pNumber" id="pNumber" class="form-control">
+                    <input type="number" name="pNumber" id="pNumber" class="form-control" required>
                 </div>
                 <div class="col-md-4 pt-4">
                     <h4>Secondary Number</h4>
-                    <input type="number" name="sNumber" id="sNumber" class="form-control">
+                    <input type="number" name="sNumber" id="sNumber" class="form-control" required>
                 </div>
             </div>
             <div class="row">
@@ -141,7 +141,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Gross Salary</h4>
-                    <input type="number" disabled name="grossSalary" id="grossSalary" class="form-control" value="">
+                    <input type="number" disabled name="grossSalary" id="grossSalary" class="form-control" value="0">
                 </div>
             </div>
             <div class="row justify-content-center">
