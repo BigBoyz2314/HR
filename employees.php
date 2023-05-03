@@ -75,45 +75,47 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <input type="date" name="dob" id="dob" class="form-control">
                 </div>
                 <div class="col-md-3 pt-4">
-                    <h4>Designation</h4>
-                    <input type="text" name="designation" id="designation" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Department</h4>
-                    <input type="text" name="department" id="department" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
                     <h4>Martital Status</h4>
                     <input type="text" name="mStatus" id="mStatus" class="form-control">
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-3 pt-4">
                     <h4>Children</h4>
-                    <input type="text" name="children" id="children" class="form-control">
+                    <input type="number" min="0" name="children" id="children" class="form-control">
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Supouse Name</h4>
                     <input type="text" name="spouseName" id="spouseName" class="form-control">
                 </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Basic Salary</h4>
-                    <input type="text" name="basicSalary" id="basicSalary" class="form-control">
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-4 pt-4">
+                    <h4>Designation</h4>
+                    <input type="text" name="designation" id="designation" class="form-control">
                 </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Allowence</h4>
-                    <input type="text" name="allowence" id="allowence" class="form-control">
+                <div class="col-md-4 pt-4">
+                    <h4>Department</h4>
+                    <input type="text" name="department" id="department" class="form-control">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-3 pt-4">
+                    <h4>Basic Salary</h4>
+                    <input type="number" min="0" onchange="salary()" name="basicSalary" id="basicSalary" class="form-control" value="0">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Allowence</h4>
+                    <input type="number" min="0" onchange="salary()" name="allowence" id="allowence" class="form-control" value="0">
+                </div>
+                <div class="col-md-3 pt-4">
                     <h4>Deduction</h4>
-                    <input type="text" name="deduction" id="deduction" class="form-control">
+                    <input type="number" min="0" onchange="salary()" name="deduction" id="deduction" class="form-control" value="0">
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Gross Salary</h4>
-                    <input type="text" name="grossSalary" id="grossSalary" class="form-control">
+                    <input type="number" disabled name="grossSalary" id="grossSalary" class="form-control" value="">
                 </div>
+            </div>
+            <div class="row justify-content-center">
                 <div class="col-md-3 pt-4">
                     <h4>Join Date</h4>
                     <input type="date" name="joinDate" id="joinDate" class="form-control">
@@ -123,12 +125,98 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <input type="date" name="leaveDate" id="leaveDate" class="form-control">
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-4 pt-4">
+                    <h4>Primary Address</h4>
+                    <input type="text" name="pAddress" id="pAddress" class="form-control">
+                </div>
+                <div class="col-md-4 pt-4">
+                    <h4>Secondary Address</h4>
+                    <input type="text" name="sAddress" id="sAddress" class="form-control">
+                </div>
+                <div class="col-md-4 pt-3">
+                    <h4 class="d-inline-block">Current Address</h4>
+                    <p class="d-inline-block font-italic">Same as Primary Address</p>
+                    <input type="checkbox" name="same" id="same" onclick="check()">
+                    <input type="text" name="cAddress" id="cAddress" class="form-control" value="">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-4 pt-4">
+                    <h4>Primary Number</h4>
+                    <input type="number" name="pNumber" id="pNumber" class="form-control">
+                </div>
+                <div class="col-md-4 pt-4">
+                    <h4>Secondary Number</h4>
+                    <input type="number" name="sNumber" id="sNumber" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 pt-4">
+                    <h4>Bank Name</h4>
+                    <input type="text" name="bank" id="bank" class="form-control">
+                </div>
+                <div class="col-md-4 pt-4">
+                    <h4>Bank Account no.</h4>
+                    <input type="number" name="bankAcc" id="bankAcc" class="form-control">
+                </div>
+                <div class="col-md-5 pt-4">
+                    <h4>IBAN</h4>
+                    <input type="text" name="iban" id="iban" class="form-control">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-3 pt-4">
+                    <h4>Manager Name</h4>
+                    <input type="text" name="manager" id="manager" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Warnings</h4>
+                    <input type="number" name="warnings" id="warnings" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Leaves</h4>
+                    <input type="number" name="leaves" id="leaves" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Allowed Leaves</h4>
+                    <input type="number" name="allowLeaves" id="allowLeaves" class="form-control">
+                </div>
+            </div>
         </form>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <script>
         
+        function salary() {
+            $basic = document.getElementById('basicSalary').value;
+            $allow = document.getElementById('allowence').value;
+            $deduc = document.getElementById('deduction').value;
+            
+            $sum = parseInt($basic) + parseInt($allow) + parseInt($deduc);
+
+            console.log($sum);
+
+            document.getElementById('grossSalary').value = $sum;
+        }
+
+
+        function check() {
+            
+            if (document.getElementById('same').checked) {
+
+                console.log('checked');
+
+                $pAddress = document.getElementById('pAddress').value;
+
+                document.getElementById('cAddress').value = $pAddress;
+            }
+            else {
+                document.getElementById('cAddress').value = '';
+            }
+        }
+
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
 </body>
 </html>
