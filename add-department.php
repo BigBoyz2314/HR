@@ -13,8 +13,9 @@
         $sql ="INSERT INTO department VALUES ('', '$name', '$current', '$allowed', current_timestamp(), current_timestamp())";
         
         if(mysqli_query($conn, $sql)){
-            echo $category;
+
             header('Location: department.php');
+        
         } else{
             echo "ERROR: Hush! Sorry $sql. "
             . mysqli_error($conn);

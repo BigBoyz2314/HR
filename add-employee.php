@@ -50,8 +50,9 @@
         $sql ="INSERT INTO employees VALUES ('', '$fname', '$mname', '$lname',  '$dob', $designation, '', '', $department, '', '$mStatus', '$status', '$children', '$spousename', '$basicsalary', '$allowence', '$deduction', '$grosssalary', '$joindate', '$leavedate', '$paddress', '$saddress', '$caddress', '$pnumber', '$snumber', '$bank', '$bankacc', '$iban', '$manager', '', '$warnings', '$leaves', '$allowleaves', '$absents', '$presents', '$daysworking', '$loan', '$loanamount', '$cnic', '$passport', '$workinghours', '$starttime', '$endtime', '$shift', current_timestamp())";
         
         if(mysqli_query($conn, $sql)){
-            echo $category;
+
             header('Location: employees.php');
+            
         } else{
             echo "ERROR: Hush! Sorry $sql. "
             . mysqli_error($conn);

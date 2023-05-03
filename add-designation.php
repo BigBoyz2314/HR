@@ -12,8 +12,9 @@
         $sql ="INSERT INTO designation VALUES ('', '$name', '$grade', current_timestamp())";
         
         if(mysqli_query($conn, $sql)){
-            echo $category;
+            
             header('Location: designation.php');
+            
         } else{
             echo "ERROR: Hush! Sorry $sql. "
             . mysqli_error($conn);
