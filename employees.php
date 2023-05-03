@@ -58,7 +58,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <div class="row justify-content-center">
                 <div class="col-md-3 pt-4">
                     <h4>First Name</h4>
-                    <input type="text" name="fName" id="fName" class="form-control">
+                    <input type="text" name="fName" id="fName" class="form-control" required>
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Middle Name</h4>
@@ -66,24 +66,27 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Last Name</h4>
-                    <input type="text" name="lName" id="lName" class="form-control">
+                    <input type="text" name="lName" id="lName" class="form-control" required>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-3 pt-4">
                     <h4>Date of Birth</h4>
-                    <input type="date" name="dob" id="dob" class="form-control">
+                    <input type="date" name="dob" id="dob" class="form-control" required>
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Martital Status</h4>
-                    <input type="text" name="mStatus" id="mStatus" class="form-control">
+                    <select name="mstatus" id="mstatus" class="form-control">
+                        <option value="0">Single</option>
+                        <option value="1">Married</option>
+                    </select>
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Children</h4>
                     <input type="number" min="0" name="children" id="children" class="form-control">
                 </div>
                 <div class="col-md-3 pt-4">
-                    <h4>Supouse Name</h4>
+                    <h4>Spouse Name</h4>
                     <input type="text" name="spouseName" id="spouseName" class="form-control">
                 </div>
             </div>
@@ -233,11 +236,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Shift</h4>
-                    <select name="shift" id="shift">
+                    <select name="shift" id="shift" class="form-control">
                         <option value="0">Morning</option>
                         <option value="1">Evening</option>
                         <option value="2">Night</option>
                     </select>
+                </div>
+            </div>
+            <div class="row justify-content-center pt-5">
+                <div class="col-md-1">
+                    <input type="submit" value="Submit" class="btn btn-success">
                 </div>
             </div>
         </form>
@@ -250,7 +258,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             $allow = document.getElementById('allowence').value;
             $deduc = document.getElementById('deduction').value;
             
-            $sum = parseInt($basic) + parseInt($allow) + parseInt($deduc);
+            $sum = parseInt($basic) + parseInt($allow) - parseInt($deduc);
 
             console.log($sum);
 
@@ -272,6 +280,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 document.getElementById('cAddress').value = '';
             }
         }
+
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
