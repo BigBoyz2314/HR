@@ -89,6 +89,8 @@ require_once('config.php');
                         <th>Current Strength</th>
                         <th>Allowed Strength</th>
                         <th>Created</th>
+                        <th>Updated</th>
+                        <th></th>
                     </thead>
                     <tbody class="">
                         <?php
@@ -104,6 +106,7 @@ require_once('config.php');
                                     $current = $row['current_Strength'];
                                     $allowed = $row['allowed_Strength']; 
                                     $created = $row['created_at']; 
+                                    $updated = $row['updated_at']; 
 
                                     echo "<tr>";
                                     echo "<td>". $i++ ."</td>";
@@ -111,6 +114,8 @@ require_once('config.php');
                                     echo "<td>$current</td>";
                                     echo "<td>$allowed</td>";
                                     echo "<td>$created</td>";
+                                    echo "<td>$updated</td>";
+                                    echo "<td></td>";
                                     echo "</tr>";
     
                                 }
