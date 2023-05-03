@@ -89,40 +89,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-4 pt-4">
-                    <h4>Designation</h4>
-                    <input type="text" name="designation" id="designation" class="form-control">
+                    <h4>CNIC</h4>
+                    <input type="number" name="cnic" id="cnic" class="form-control">
                 </div>
                 <div class="col-md-4 pt-4">
-                    <h4>Department</h4>
-                    <input type="text" name="department" id="department" class="form-control">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 pt-4">
-                    <h4>Basic Salary</h4>
-                    <input type="number" min="0" onchange="salary()" name="basicSalary" id="basicSalary" class="form-control" value="0">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Allowence</h4>
-                    <input type="number" min="0" onchange="salary()" name="allowence" id="allowence" class="form-control" value="0">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Deduction</h4>
-                    <input type="number" min="0" onchange="salary()" name="deduction" id="deduction" class="form-control" value="0">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Gross Salary</h4>
-                    <input type="number" disabled name="grossSalary" id="grossSalary" class="form-control" value="">
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-3 pt-4">
-                    <h4>Join Date</h4>
-                    <input type="date" name="joinDate" id="joinDate" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Leave Date</h4>
-                    <input type="date" name="leaveDate" id="leaveDate" class="form-control">
+                    <h4>Passport no.</h4>
+                    <input type="text" name="passport" id="passport" class="form-control">
                 </div>
             </div>
             <div class="row">
@@ -153,6 +125,44 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </div>
             <div class="row">
                 <div class="col-md-3 pt-4">
+                    <h4>Basic Salary</h4>
+                    <input type="number" min="0" onchange="salary()" name="basicSalary" id="basicSalary" class="form-control" value="0">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Allowence</h4>
+                    <input type="number" min="0" onchange="salary()" name="allowence" id="allowence" class="form-control" value="0">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Deduction</h4>
+                    <input type="number" min="0" onchange="salary()" name="deduction" id="deduction" class="form-control" value="0">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Gross Salary</h4>
+                    <input type="number" disabled name="grossSalary" id="grossSalary" class="form-control" value="">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-4 pt-4">
+                    <h4>Designation</h4>
+                    <input type="text" name="designation" id="designation" class="form-control">
+                </div>
+                <div class="col-md-4 pt-4">
+                    <h4>Department</h4>
+                    <input type="text" name="department" id="department" class="form-control">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-3 pt-4">
+                    <h4>Join Date</h4>
+                    <input type="date" name="joinDate" id="joinDate" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Leave Date</h4>
+                    <input type="date" name="leaveDate" id="leaveDate" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 pt-4">
                     <h4>Bank Name</h4>
                     <input type="text" name="bank" id="bank" class="form-control">
                 </div>
@@ -172,15 +182,62 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Warnings</h4>
-                    <input type="number" name="warnings" id="warnings" class="form-control">
+                    <input type="number" min="0" name="warnings" id="warnings" class="form-control">
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Leaves</h4>
-                    <input type="number" name="leaves" id="leaves" class="form-control">
+                    <input type="number" min="0" name="leaves" id="leaves" class="form-control">
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Allowed Leaves</h4>
-                    <input type="number" name="allowLeaves" id="allowLeaves" class="form-control">
+                    <input type="number" min="0" name="allowLeaves" id="allowLeaves" class="form-control">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-2 pt-4">
+                    <h4>Absents</h4>
+                    <input type="number" min="0" name="absents" id="absents" class="form-control">
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h4>Presents</h4>
+                    <input type="number" min="0" name="presents" id="presents" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Days Workings</h4>
+                    <input type="number" min="0" name="daysWorking" id="daysWorking" class="form-control">
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h4>Loan</h4>
+                    <select name="loan" id="loan" class="form-control">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Loan Amount</h4>
+                    <input type="number" min="0" name="loanAmount" id="loanAmount" class="form-control">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-3 pt-4">
+                    <h4>Working Hours</h4>
+                    <input type="number" min="0" name="workingHours" id="workingHours" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Start Time</h4>
+                    <input type="time" name="startTime" id="startTime" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>End Time</h4>
+                    <input type="time" name="endTime" id="endTime" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Shift</h4>
+                    <select name="shift" id="shift">
+                        <option value="0">Morning</option>
+                        <option value="1">Evening</option>
+                        <option value="2">Night</option>
+                    </select>
                 </div>
             </div>
         </form>
