@@ -3,11 +3,19 @@
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: login.php");
-    exit;
-}
-require_once('config.php');
+    if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+        header("location: login.php");
+        exit;
+    }
+    require_once('config.php');
+
+    $deptName = $_GET['deptName'];
+    $stmt = "SELECT * FROM department WHERE name='$deptName'";
+    $result = $conn->query($stmt);
+    $row = $result->fetch_assoc();
+    $allow = $row["allowed_Strength"];
+    $current = $row["current_Strength"];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,24 +62,25 @@ require_once('config.php');
         </div>
     </nav>
     <div class="container-fluid p-5">
-        <h1>Add Department</h1>
-        <form action="add-department.php" method="post">
+        <h1>Edit Department</h1>
+        <form action="edit-dept.php" method="post">
             <div class="row">
                 <div class="col-6 pt-4">
                     <h4>Name</h4>
-                    <input type="text" name="name" id="name" class="form-control w-50">
+                    <input type="text" disabled name="name" id="name" value="<?php echo $deptName ?>" class="form-control w-50">
+                    <input type="hidden" name="name1" id="name1" value="<?php echo $deptName ?>" class="form-control w-50">
                 </div>
             </div>
             <div class="row">
                 <div class="col-6 pt-4">
                     <h4>Allowed Strength</h4>
-                    <input type="number" min="0" name="allowed" id="allowed" class="form-control w-50">
+                    <input type="number" min="0" name="allowed" id="allowed" value="<?php echo $allow ?>" class="form-control w-50">
                 </div>
             </div>
             <div class="row">
                 <div class="col-6 pt-4">
                     <h4>Current Strength</h4>
-                    <input type="number" min="0" name="current" id="current" class="form-control w-50">
+                    <input type="number" min="0" name="current" id="current" value="<?php echo $current ?>" class="form-control w-50">
                 </div>
             </div>
             <div class="row">
@@ -80,50 +89,6 @@ require_once('config.php');
                 </div>
             </div>
         </form> 
-        <div class="row mt-5">
-            <div class="col-md-12">
-                <table class="table table-bordered w-100 text-center" id="table">
-                    <thead class="font-weight-bolder">
-                        <th>Sr.</th>
-                        <th>Department Name</th>
-                        <th>Current Strength</th>
-                        <th>Allowed Strength</th>
-                        <th>Created</th>
-                        <th>Updated</th>
-                        <th></th>
-                    </thead>
-                    <tbody class="">
-                        <?php
-                            $stmt = "SELECT * FROM department";
-                            $result = $conn->query($stmt);
-                            $i = 1;
-    
-                            if ($result->num_rows > 0) {
-                                // output data of each row
-                                
-                                while($row = $result->fetch_assoc()) {
-                                    $name = $row['name'];
-                                    $current = $row['current_Strength'];
-                                    $allowed = $row['allowed_Strength']; 
-                                    $created = $row['created_at']; 
-                                    $updated = $row['updated_at']; 
-
-                                    echo "<tr>";
-                                    echo "<td>". $i++ ."</td>";
-                                    echo "<td>$name</td>";
-                                    echo "<td>$current</td>";
-                                    echo "<td>$allowed</td>";
-                                    echo "<td>". date("d M y g:i:s A", strtotime($created)) ."</td>";
-                                    echo "<td>". date("d M y g:i:s A", strtotime($updated)) ."</td>";
-                                    echo "<td><form action='edit-department.php' method='get'><input type='hidden' name='deptName' value='". $name ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
-                                    echo "</tr>";
-    
-                                }
-                              }
-                        ?>
-                    </tbody>
-            </table>
-            </div>
         </div> 
     </div>
     <script>
