@@ -10,7 +10,8 @@ session_start();
     require_once('config.php');
 
     $desigName = $_GET['desigName'];
-    $stmt = "SELECT * FROM designation WHERE name='$desigName'";
+    $id = $_GET['id'];
+    $stmt = "SELECT * FROM designation WHERE name='$desigName' AND designationID = '$id'";
     $result = $conn->query($stmt);
     $row = $result->fetch_assoc();
     $grade = $row["grade"];
@@ -24,7 +25,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
     <link rel="stylesheet" href="css/styles.css">
-    <title>Department</title>
+    <title>Edit Designation</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -68,6 +69,7 @@ session_start();
                     <h4>Name</h4>
                     <input type="text" disabled name="name" id="name" value="<?php echo $desigName ?>" class="form-control w-50">
                     <input type="hidden" name="name1" id="name1" value="<?php echo $desigName ?>" class="form-control w-50">
+                    <input type="hidden" name="id" id="id" value="<?php echo $id ?>" class="form-control w-50">
                 </div>
             </div>
             <div class="row">

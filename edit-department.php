@@ -10,12 +10,13 @@ session_start();
     require_once('config.php');
 
     $deptName = $_GET['deptName'];
-    $stmt = "SELECT * FROM department WHERE name='$deptName'";
+    $id = $_GET['id'];
+    $stmt = "SELECT * FROM department WHERE name='$deptName' AND departmentID = '$id'";
     $result = $conn->query($stmt);
     $row = $result->fetch_assoc();
     $allow = $row["allowed_Strength"];
     $current = $row["current_Strength"];
-
+    echo $id;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +26,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
     <link rel="stylesheet" href="css/styles.css">
-    <title>Department</title>
+    <title>Edit Department</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -69,6 +70,7 @@ session_start();
                     <h4>Name</h4>
                     <input type="text" disabled name="name" id="name" value="<?php echo $deptName ?>" class="form-control w-50">
                     <input type="hidden" name="name1" id="name1" value="<?php echo $deptName ?>" class="form-control w-50">
+                    <input type="hidden" name="id" id="id" value="<?php echo $id ?>" class="form-control w-50">
                 </div>
             </div>
             <div class="row">
