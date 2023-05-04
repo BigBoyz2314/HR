@@ -66,11 +66,11 @@ require_once('config.php');
                         <th>Last Name</th>
                         <th>D.O.B</th> 
                         <th>Designation</th>
-                        <th>Grade</th>
+                        <!-- <th>Grade</th> -->
                         <th>Department</th>
                         <th>Martial Status</th>
                         <th>Status</th>
-                        <th>Children</th>
+                        <!-- <th>Children</th> -->
                         <th>Spouse Name</th>
                         <th>Basic Salary</th>
                         <th>Allowance</th>
@@ -113,17 +113,17 @@ require_once('config.php');
                                     echo "<td>$lname</td>";
                                     echo "<td>". date("d M y", strtotime($dob)) ."</td>";
                                     echo "<td>$desig</td>";
-                                    echo "<td>$grade</td>";
+                                    // echo "<td>$grade</td>";
                                     echo "<td>$dept</td>";
                                     echo "<td>$mstatus</td>";
                                     echo "<td>$status</td>";
-                                    echo "<td>$children</td>";
+                                    // echo "<td>$children</td>";
                                     echo "<td>$spouse</td>";
                                     echo "<td>$basic</td>";
                                     echo "<td>$allowance</td>";
                                     echo "<td>$deduction</td>";
                                     echo "<td>$gross</td>";
-                                    // echo "<td><form action='edit-designation.php' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
+                                    echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                     // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                     echo "</tr>";
     
