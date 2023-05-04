@@ -9,7 +9,7 @@
         $grade = $_REQUEST["grade"];
     }
 
-        $sql ="INSERT INTO designation VALUES ('', '$name', '$grade', current_timestamp())";
+        $sql ="INSERT INTO `designation`(`name`, `grade`, `created_at`, `updated_at`) VALUES ('$name','$grade',current_timestamp(),current_timestamp())";
         
         if(mysqli_query($conn, $sql)){
             

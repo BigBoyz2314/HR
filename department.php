@@ -117,9 +117,21 @@ require_once('config.php');
                                     echo "<td>". date("d M y g:i:s A", strtotime($created)) ."</td>";
                                     echo "<td>". date("d M y g:i:s A", strtotime($updated)) ."</td>";
                                     echo "<td><form action='edit-department.php' method='get'><input type='hidden' name='deptName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
+                                    echo "<td><form action='' method='get'><input type='hidden' name='deptName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                     echo "</tr>";
     
                                 }
+                              }
+
+                              if ($_REQUEST) {
+                                $delID = $_GET['id'];
+                                $delName = $_GET['deptName'];
+                                  
+                                    echo '<script type="text/javascript"> ';  
+                                    echo '  if (confirm("Are you sure you want to DELETE '. "'$delName'" .'?")) {';  
+                                    echo '    window.location.href = "del-department.php?delName='. $delName .'&delID='. $delID .'";';  
+                                    echo '  }';
+                                    echo '</script>';  
                               }
                         ?>
                     </tbody>
