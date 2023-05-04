@@ -16,7 +16,6 @@ session_start();
     $row = $result->fetch_assoc();
     $allow = $row["allowed_Strength"];
     $current = $row["current_Strength"];
-    echo $id;
 ?>
 <!DOCTYPE html>
 <html lang="en">
