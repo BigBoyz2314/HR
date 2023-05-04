@@ -7,6 +7,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+require_once('config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,6 +55,96 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </nav>
     <div class="container-fluid p-5">
         <h1>View Employees</h1>
+
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <table class="table table-bordered w-100 text-center" id="table">
+                    <thead class="font-weight-bolder">
+                        <th>Sr.</th>
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Last Name</th>
+                        <th>D.O.B</th> 
+                        <th>Designation</th>
+                        <th>Grade</th>
+                        <th>Department</th>
+                        <th>Martial Status</th>
+                        <th>Status</th>
+                        <th>Children</th>
+                        <th>Spouse Name</th>
+                        <th>Basic Salary</th>
+                        <th>Allowance</th>
+                        <th>Deduction</th>
+                        <th>Gross Salary</th>
+                        <th></th>
+                        <th></th>
+                    </thead>
+                    <tbody class="">
+                        <?php
+                            $stmt = "SELECT * FROM employees";
+                            $result = $conn->query($stmt);
+                            $i = 1;
+    
+                            if ($result->num_rows > 0) {
+                                // output data of each row
+                                
+                                while($row = $result->fetch_assoc()) {
+                                    $id = $row['employeeID'];
+                                    $fname = $row['fname'];
+                                    $mname = $row['mname'];
+                                    $lname = $row['lname'];
+                                    $dob = $row['dob'];
+                                    $desig = $row['designation'];
+                                    $dept = $row['department'];
+                                    $grade = $row['grade'];
+                                    $mstatus = $row['martital_status'];
+                                    $status = $row['status'];
+                                    $children = $row['children'];
+                                    $spouse = $row['spouse_name'];
+                                    $basic = $row['basic_salary'];
+                                    $allowance = $row['allowance'];
+                                    $deduction = $row['deduction'];
+                                    $gross = $row['gross_salary'];
+
+                                    echo "<tr>";
+                                    echo "<td>". $i++ ."</td>";
+                                    echo "<td>$fname</td>";
+                                    echo "<td>$mname</td>";
+                                    echo "<td>$lname</td>";
+                                    echo "<td>". date("d M y", strtotime($dob)) ."</td>";
+                                    echo "<td>$desig</td>";
+                                    echo "<td>$grade</td>";
+                                    echo "<td>$dept</td>";
+                                    echo "<td>$mstatus</td>";
+                                    echo "<td>$status</td>";
+                                    echo "<td>$children</td>";
+                                    echo "<td>$spouse</td>";
+                                    echo "<td>$basic</td>";
+                                    echo "<td>$allowance</td>";
+                                    echo "<td>$deduction</td>";
+                                    echo "<td>$gross</td>";
+                                    // echo "<td><form action='edit-designation.php' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
+                                    // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
+                                    echo "</tr>";
+    
+                                }
+                              }
+
+                            //   if ($_REQUEST) {
+                            //     $delID = $_GET['id'];
+                            //     $delName = $_GET['desigName'];
+                                  
+                            //         echo '<script type="text/javascript"> ';  
+                            //         echo '  if (confirm("Are you sure you want to DELETE '. "'$delName'" .'?")) {';  
+                            //         echo '    window.location.href = "del-designation.php?delName='. $delName .'&delID='. $delID .'";';  
+                            //         echo '  }';
+                            //         echo '</script>';  
+                            //   }
+                        ?>
+                    </tbody>
+            </table>
+            </div>
+        </div>
     </div>
     <script>
         
