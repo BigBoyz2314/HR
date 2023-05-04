@@ -82,6 +82,7 @@ require_once('config.php');
                         <th>Designation Name</th>
                         <th>Grade</th>
                         <th></th>
+                        <th></th>
                     </thead>
                     <tbody class="">
                         <?php
@@ -101,6 +102,7 @@ require_once('config.php');
                                     echo "<td>$name</td>";
                                     echo "<td>$grade</td>";
                                     echo "<td><form action='edit-designation.php' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
+                                    echo "<td><form action='del-designation.php' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                     echo "</tr>";
     
                                 }
