@@ -94,6 +94,7 @@ require_once('config.php');
                                 // output data of each row
                                 
                                 while($row = $result->fetch_assoc()) {
+                                    $id = $row['designationID'];
                                     $name = $row['name'];
                                     $grade = $row['grade'];
 
@@ -101,8 +102,8 @@ require_once('config.php');
                                     echo "<td>". $i++ ."</td>";
                                     echo "<td>$name</td>";
                                     echo "<td>$grade</td>";
-                                    echo "<td><form action='edit-designation.php' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
-                                    echo "<td><form action='del-designation.php' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
+                                    echo "<td><form action='edit-designation.php' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
+                                    echo "<td><form action='del-designation.php' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                     echo "</tr>";
     
                                 }
