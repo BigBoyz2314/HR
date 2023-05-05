@@ -36,7 +36,8 @@ require_once('config.php');
                     </a>
                     <div class="dropdown-menu bg-dark">
                         <a class="dropdown-item text-white-50" href="employees.php">Add Employees</a>
-                        <a class="dropdown-item text-white-50" href="view-employees.php">View Employees</a>
+                        <a class="dropdown-item text-white-50" href="view-employees.php">View All Employees</a>
+                        <a class="dropdown-item text-white-50" href="view-employees.php">View Employees by Name</a>
                     </div>
                 </li>
                 <li class="nav-item active">
