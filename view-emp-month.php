@@ -36,7 +36,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <div class="row">
             <div class="col-md-6 pt-4">
                     <h4>Joining Month</h4>
-                    <select class="js-example-basic-single w-50" name="to">
+                    <select class="js-example-basic-single w-50" name="moj">
                         <option></option>
                         <?php
                         $i = 1;

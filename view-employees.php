@@ -38,7 +38,7 @@ require_once('config.php');
                         <th>Department</th>
                         <th>Martial Status</th>
                         <th>Status</th>
-                        <!-- <th>Children</th> -->
+                        <th>Joining Date</th>
                         <th>Spouse Name</th>
                         <th>Basic Salary</th>
                         <th>Allowance</th>
@@ -70,6 +70,7 @@ require_once('config.php');
                                         $dept = $row['department'];
                                         $gender = $row['gender'];
                                         $mstatus = $row['martital_status'];
+                                        $joindate = $row['join_date'];
                                         $status = $row['status'];
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
@@ -89,7 +90,7 @@ require_once('config.php');
                                         echo "<td>$dept</td>";
                                         echo "<td>$mstatus</td>";
                                         echo "<td>$status</td>";
-                                        // echo "<td>$children</td>";
+                                        echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>$basic</td>";
                                         echo "<td>$allowance</td>";
@@ -124,6 +125,7 @@ require_once('config.php');
                                         $gender = $row['gender'];
                                         $mstatus = $row['martital_status'];
                                         $status = $row['status'];
+                                        $joindate = $row['join_date'];
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
                                         $basic = $row['basic_salary'];
@@ -142,7 +144,7 @@ require_once('config.php');
                                         echo "<td>$dept</td>";
                                         echo "<td>$mstatus</td>";
                                         echo "<td>$status</td>";
-                                        // echo "<td>$children</td>";
+                                        echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>$basic</td>";
                                         echo "<td>$allowance</td>";
@@ -176,6 +178,7 @@ require_once('config.php');
                                         $dept = $row['department'];
                                         $gender = $row['gender'];
                                         $mstatus = $row['martital_status'];
+                                        $joindate = $row['join_date'];
                                         $status = $row['status'];
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
@@ -195,7 +198,7 @@ require_once('config.php');
                                         echo "<td>$dept</td>";
                                         echo "<td>$mstatus</td>";
                                         echo "<td>$status</td>";
-                                        // echo "<td>$children</td>";
+                                        echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>$basic</td>";
                                         echo "<td>$allowance</td>";
@@ -230,6 +233,7 @@ require_once('config.php');
                                         $dept = $row['department'];
                                         $gender = $row['gender'];
                                         $mstatus = $row['martital_status'];
+                                        $joindate = $row['join_date'];
                                         $status = $row['status'];
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
@@ -249,7 +253,7 @@ require_once('config.php');
                                         echo "<td>$dept</td>";
                                         echo "<td>$mstatus</td>";
                                         echo "<td>$status</td>";
-                                        // echo "<td>$children</td>";
+                                        echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>$basic</td>";
                                         echo "<td>$allowance</td>";
@@ -283,6 +287,7 @@ require_once('config.php');
                                         $dept = $row['department'];
                                         $gender = $row['gender'];
                                         $mstatus = $row['martital_status'];
+                                        $joindate = $row['join_date'];
                                         $status = $row['status'];
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
@@ -302,7 +307,61 @@ require_once('config.php');
                                         echo "<td>$dept</td>";
                                         echo "<td>$mstatus</td>";
                                         echo "<td>$status</td>";
-                                        // echo "<td>$children</td>";
+                                        echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
+                                        echo "<td>$spouse</td>";
+                                        echo "<td>$basic</td>";
+                                        echo "<td>$allowance</td>";
+                                        echo "<td>$deduction</td>";
+                                        echo "<td>$gross</td>";
+                                        echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
+                                        // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
+                                        echo "</tr>";
+        
+                                    }
+                                }
+                            }
+                            elseif (isset($_GET['moj'])) {
+                                
+                                $moj = $_GET['moj'];
+                            
+                                $stmt = "SELECT * FROM employees WHERE join_month = '$moj'";
+                                $result = $conn->query($stmt);
+                                $i = 1;
+        
+                                if ($result->num_rows > 0) {
+                                    // output data of each row
+                                    
+                                    while($row = $result->fetch_assoc()) { 
+                                        $id = $row['employeeID'];
+                                        $fname = $row['fname'];
+                                        $mname = $row['mname'];
+                                        $lname = $row['lname'];
+                                        $dob = $row['dob'];
+                                        $desig = $row['designation'];
+                                        $dept = $row['department'];
+                                        $gender = $row['gender'];
+                                        $mstatus = $row['martital_status'];
+                                        $joindate = $row['join_date'];
+                                        $status = $row['status'];
+                                        $children = $row['children'];
+                                        $spouse = $row['spouse_name'];
+                                        $basic = $row['basic_salary'];
+                                        $allowance = $row['allowance'];
+                                        $deduction = $row['deduction'];
+                                        $gross = $row['gross_salary'];
+
+                                        echo "<tr>";
+                                        echo "<td>". $i++ ."</td>";
+                                        echo "<td>$fname</td>";
+                                        echo "<td>$mname</td>";
+                                        echo "<td>$lname</td>";
+                                        echo "<td>". date("d M y", strtotime($dob)) ."</td>";
+                                        echo "<td>$desig</td>";
+                                        echo "<td>$gender</td>";
+                                        echo "<td>$dept</td>";
+                                        echo "<td>$mstatus</td>";
+                                        echo "<td>$status</td>";
+                                        echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>$basic</td>";
                                         echo "<td>$allowance</td>";
@@ -334,6 +393,7 @@ require_once('config.php');
                                     $dept = $row['department'];
                                     $gender = $row['gender'];
                                     $mstatus = $row['martital_status'];
+                                    $joindate = $row['join_date'];
                                     $status = $row['status'];
                                     $children = $row['children'];
                                     $spouse = $row['spouse_name'];
@@ -353,7 +413,7 @@ require_once('config.php');
                                     echo "<td>$dept</td>";
                                     echo "<td>$mstatus</td>";
                                     echo "<td>$status</td>";
-                                    // echo "<td>$children</td>";
+                                    echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                     echo "<td>$spouse</td>";
                                     echo "<td>$basic</td>";
                                     echo "<td>$allowance</td>";
@@ -362,11 +422,11 @@ require_once('config.php');
                                     echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                     // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                     echo "</tr>";
+
     
                                 }
                               }
                             }
-
                             //   if ($_REQUEST) {
                             //     $delID = $_GET['id'];
                             //     $delName = $_GET['desigName'];
