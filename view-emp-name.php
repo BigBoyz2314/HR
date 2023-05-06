@@ -17,7 +17,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
     <title>View Employee by name</title>
 </head>
 <body>
@@ -56,13 +64,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         </div>
     </nav>
     <div class="container-fluid p-5">
-        <h1>View Employee by Name</h1>
-        <form action="view-emp.php" method="get">
-            <div class="row">
-                <div class="col-md-6 pt-4">
-                    <h4>Name</h4>
-                    <input type="text" name="name" id="name" class="form-control w-50" list="name-list" required>
-                    <datalist id="name-list">
+        <h1>View Employee</h1>
+        <div class="row">
+            <div class="col-md-6 pt-4">
+                <form action="view-employees.php" method="get">
+                    <h4>By Name</h4>
+                    <select class="js-example-basic-single w-50" name="id">
                         <?php
                         require_once('config.php');
                         $stmt = "SELECT employeeID, fname, mname, lname FROM employees";
@@ -71,25 +78,41 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                         if ($result->num_rows > 0) {
                             // output data of each row
                             while($row = $result->fetch_assoc()) {
-                                echo '<option value="' . $row['fname'] . ' ' . $row['lname'] . '">' . $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'] . '</option>';
-                                echo '<input type="hidden" name="id" value="'. $row['employeeID'] .'"></input>';
+                                echo '<option value="' . $row['employeeID'] .'">' . $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'] . '</option>';
                             }
                         }
                         ?>
-                    </datalist>
-                </div>
+                    </select>
+                    <button type="submit" class="btn btn-success mt-3 d-block">Submit</button>
+                </form>  
             </div>
-            <div class="row">
-                <div class="col-md-3 pt-4">
-                    <button type="submit" class="btn btn-success">Submit</button>
-                </div>
+            <div class="col-md-6 pt-4">
+                <form action="view-employees.php" method="get">
+                    <h4>By Status</h4>
+                    <select class="js-example-basic-single w-50" name="status">
+                        <option value="Working">Working</option>
+                        <option value="Retired">Retired</option>
+                        <option value="Terminated">Terminated</option>
+                    </select>
+                    <button type="submit" class="btn btn-success d-block mt-3">Submit</button>
+                </form>  
             </div>
-        </form>  
+            <div class="col-md-6 pt-4">
+                <form action="view-employees.php" method="get">
+                    <h4>By Gender</h4>
+                    <select class="js-example-basic-single w-50" name="gender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <button type="submit" class="btn btn-success d-block mt-3">Submit</button>
+                </form>  
+            </div>
+        </div> 
     </div>
     <script>
         
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
 </body>
 </html>

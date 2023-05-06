@@ -54,7 +54,7 @@ require_once('config.php');
             </ul>
         </div>
     </nav>
-    <div class="container-fluid p-5">
+    <div class="container-fluid py-5">
         <h1>View Employees</h1>
 
         <div class="row mt-5">
@@ -67,7 +67,7 @@ require_once('config.php');
                         <th>Last Name</th>
                         <th>D.O.B</th> 
                         <th>Designation</th>
-                        <!-- <th>Grade</th> -->
+                        <th>Gender</th>
                         <th>Department</th>
                         <th>Martial Status</th>
                         <th>Status</th>
@@ -78,11 +78,118 @@ require_once('config.php');
                         <th>Deduction</th>
                         <th>Gross Salary</th>
                         <th></th>
-                        <th></th>
                     </thead>
                     <tbody class="">
                         <?php
-                            // TODO add view by name
+
+                            if (isset($_GET['id'])) {
+
+                                $eid = $_GET['id'];
+                            
+                                $stmt = "SELECT * FROM employees WHERE employeeID = $eid";
+                                $result = $conn->query($stmt);
+                                $i = 1;
+        
+                                if ($result->num_rows > 0) {
+                                    // output data of each row
+                                    
+                                    while($row = $result->fetch_assoc()) { 
+                                        $id = $row['employeeID'];
+                                        $fname = $row['fname'];
+                                        $mname = $row['mname'];
+                                        $lname = $row['lname'];
+                                        $dob = $row['dob'];
+                                        $desig = $row['designationID'];
+                                        $dept = $row['department'];
+                                        $gender = $row['gender'];
+                                        $mstatus = $row['martital_status'];
+                                        $status = $row['status'];
+                                        $children = $row['children'];
+                                        $spouse = $row['spouse_name'];
+                                        $basic = $row['basic_salary'];
+                                        $allowance = $row['allowance'];
+                                        $deduction = $row['deduction'];
+                                        $gross = $row['gross_salary'];
+
+                                        echo "<tr>";
+                                        echo "<td>". $i++ ."</td>";
+                                        echo "<td>$fname</td>";
+                                        echo "<td>$mname</td>";
+                                        echo "<td>$lname</td>";
+                                        echo "<td>". date("d M y", strtotime($dob)) ."</td>";
+                                        echo "<td>$desig</td>";
+                                        echo "<td>$gender</td>";
+                                        echo "<td>$dept</td>";
+                                        echo "<td>$mstatus</td>";
+                                        echo "<td>$status</td>";
+                                        // echo "<td>$children</td>";
+                                        echo "<td>$spouse</td>";
+                                        echo "<td>$basic</td>";
+                                        echo "<td>$allowance</td>";
+                                        echo "<td>$deduction</td>";
+                                        echo "<td>$gross</td>";
+                                        echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
+                                        // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
+                                        echo "</tr>";
+        
+                                    }
+                                }
+                            }
+                            elseif (isset($_GET['status'])) {
+                                
+                                $sta = $_GET['status'];
+                            
+                                $stmt = "SELECT * FROM employees WHERE status = '$sta'";
+                                $result = $conn->query($stmt);
+                                $i = 1;
+        
+                                if ($result->num_rows > 0) {
+                                    // output data of each row
+                                    
+                                    while($row = $result->fetch_assoc()) { 
+                                        $id = $row['employeeID'];
+                                        $fname = $row['fname'];
+                                        $mname = $row['mname'];
+                                        $lname = $row['lname'];
+                                        $dob = $row['dob'];
+                                        $desig = $row['designation'];
+                                        $dept = $row['department'];
+                                        $gender = $row['gender'];
+                                        $mstatus = $row['martital_status'];
+                                        $status = $row['status'];
+                                        $children = $row['children'];
+                                        $spouse = $row['spouse_name'];
+                                        $basic = $row['basic_salary'];
+                                        $allowance = $row['allowance'];
+                                        $deduction = $row['deduction'];
+                                        $gross = $row['gross_salary'];
+
+                                        echo "<tr>";
+                                        echo "<td>". $i++ ."</td>";
+                                        echo "<td>$fname</td>";
+                                        echo "<td>$mname</td>";
+                                        echo "<td>$lname</td>";
+                                        echo "<td>". date("d M y", strtotime($dob)) ."</td>";
+                                        echo "<td>$desig</td>";
+                                        echo "<td>$gender</td>";
+                                        echo "<td>$dept</td>";
+                                        echo "<td>$mstatus</td>";
+                                        echo "<td>$status</td>";
+                                        // echo "<td>$children</td>";
+                                        echo "<td>$spouse</td>";
+                                        echo "<td>$basic</td>";
+                                        echo "<td>$allowance</td>";
+                                        echo "<td>$deduction</td>";
+                                        echo "<td>$gross</td>";
+                                        echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
+                                        // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
+                                        echo "</tr>";
+        
+                                    }
+                                }
+                            }
+                            else{
+                            
                             $stmt = "SELECT * FROM employees";
                             $result = $conn->query($stmt);
                             $i = 1;
@@ -98,7 +205,7 @@ require_once('config.php');
                                     $dob = $row['dob'];
                                     $desig = $row['designation'];
                                     $dept = $row['department'];
-                                    $grade = $row['grade'];
+                                    $gender = $row['gender'];
                                     $mstatus = $row['martital_status'];
                                     $status = $row['status'];
                                     $children = $row['children'];
@@ -115,7 +222,7 @@ require_once('config.php');
                                     echo "<td>$lname</td>";
                                     echo "<td>". date("d M y", strtotime($dob)) ."</td>";
                                     echo "<td>$desig</td>";
-                                    // echo "<td>$grade</td>";
+                                    echo "<td>$gender</td>";
                                     echo "<td>$dept</td>";
                                     echo "<td>$mstatus</td>";
                                     echo "<td>$status</td>";
@@ -131,6 +238,7 @@ require_once('config.php');
     
                                 }
                               }
+                            }
 
                             //   if ($_REQUEST) {
                             //     $delID = $_GET['id'];

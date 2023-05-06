@@ -156,11 +156,37 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <div class="row justify-content-center">
                 <div class="col-md-4 pt-4">
                     <h4>Designation</h4>
-                    <input type="text" name="designation" id="designation" class="form-control">
+                    <select name="designation" id="designation" class="form-control">
+                    <?php
+                        require_once('config.php');
+                        $stmt = "SELECT * FROM designation";
+                        $result = $conn->query($stmt);
+                        
+                        if ($result->num_rows > 0) {
+                            // output data of each row
+                            while($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['designationID'] .'">' . $row['name'] .'</option>';
+                            }
+                        }
+                        ?>
+                    </select>
                 </div>
                 <div class="col-md-4 pt-4">
                     <h4>Department</h4>
-                    <input type="text" name="department" id="department" class="form-control">
+                    <select name="department" id="department" class="form-control">
+                    <?php
+                        require_once('config.php');
+                        $stmt = "SELECT * FROM department";
+                        $result = $conn->query($stmt);
+                        
+                        if ($result->num_rows > 0) {
+                            // output data of each row
+                            while($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['departmentID'] .'">' . $row['name'] .'</option>';
+                            }
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
             <div class="row justify-content-center">
