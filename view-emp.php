@@ -67,40 +67,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <title>View Employee</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
-                </li>
-                <li class="nav-item dropdown active">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                    Employees
-                    </a>
-                    <div class="dropdown-menu bg-dark">
-                        <a class="dropdown-item bg-dark text-white-50" href="employees.php">Add Employees</a>
-                        <a class="dropdown-item bg-dark text-white-50" href="view-employees.php">View All Employees</a>
-                        <a class="dropdown-item bg-dark text-white-50" href="view-emp-name.php">View Employees by Name</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="department.php">Departments</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="designation.php">Designations</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="logout.php">Log out</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+<?php include 'nav.php' ?>
     <div class="container-fluid p-5">
         <h1>View Employee</h1>
         <form action="add-employee.php" method="post">
