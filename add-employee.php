@@ -47,11 +47,31 @@
         $gender = $_REQUEST["gender"];
         
     }
+        $stmt1 = "SELECT * FROM department WHERE departmentID = $department";
+        $result1 = $conn->query($stmt1);
+        
+        if ($result1->num_rows > 0) {
+                                    
+            while($row = $result1->fetch_assoc()) { 
+                $dept = $row['name'];
+            }
+        }
+
+        $stmt2 = "SELECT * FROM designation WHERE designationID = $designation";
+        $result2 = $conn->query($stmt2);
+        
+        if ($result2->num_rows > 0) {
+                                    
+            while($row = $result2->fetch_assoc()) { 
+                $desig = $row['name'];
+                $grade = $row['grade'];
+            }
+        }
 
     
 
         $sql = "INSERT INTO `employees`(`employeeID`, `fname`, `mname`, `lname`, `dob`,`gender`, `designation`, `designationID`, `grade`, `department`, `departmentID`, `martital_status`, `status`, `children`, `spouse_name`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `join_date`, `leave_date`, `primary_address`, `secondary_address`, `current_address`, `primary_number`, `secondary_number`, `bank_name`, `bank_account_no`, `iban`, `employee_code`, `manager_name`, `managerID`, `warnings`, `leaves`, `allowed_leaves`, `absents`, `presents`, `days_working`, `loan`, `loan_amount`, `cnic`, `passport_no`, `working_hours`, `start_time`, `end_time`, `shift`, `created_at`) VALUES
-         ('','$fname','$mname','$lname','$dob','$gender','$designation','$designation','','$department','$department','$mStatus','$status','$children','$spousename','$basicsalary','$allowence','$deduction','$grosssalary','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift', current_timestamp())";
+         ('','$fname','$mname','$lname','$dob','$gender','$desig','$designation','$grade','$dept','$department','$mStatus','$status','$children','$spousename','$basicsalary','$allowence','$deduction','$grosssalary','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift', current_timestamp())";
         
         
         
