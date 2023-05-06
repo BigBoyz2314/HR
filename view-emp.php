@@ -82,9 +82,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     Employees
                     </a>
                     <div class="dropdown-menu bg-dark">
-                        <a class="dropdown-item text-white-50" href="employees.php">Add Employees</a>
-                        <a class="dropdown-item text-white-50" href="view-employees.php">View All Employees</a>
-                        <a class="dropdown-item text-white-50" href="view-emp-name.php">View Employees by Name</a>
+                        <a class="dropdown-item bg-dark text-white-50" href="employees.php">Add Employees</a>
+                        <a class="dropdown-item bg-dark text-white-50" href="view-employees.php">View All Employees</a>
+                        <a class="dropdown-item bg-dark text-white-50" href="view-emp-name.php">View Employees by Name</a>
                     </div>
                 </li>
                 <li class="nav-item">
