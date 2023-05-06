@@ -69,6 +69,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <h4>Last Name</h4>
                     <input type="text" name="lName" id="lName" class="form-control" required>
                 </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Gender</h4>
+                    <select name="gender" id="gender" class="form-control" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-3 pt-4">
