@@ -16,7 +16,7 @@
                         <a class="dropdown-item bg-dark text-white-50" href="employees.php">Add Employees</a>
                         <a class="dropdown-item bg-dark text-white-50" href="view-employees.php">View All Employees</a>
                         <a class="dropdown-item bg-dark text-white-50" href="view-emp-name.php">View Employees by Filter</a>
-                        <a class="dropdown-item bg-dark text-white-50" href="view-emp-name.php">View Employees by Month</a>
+                        <a class="dropdown-item bg-dark text-white-50" href="view-emp-month.php">View Employees by Month</a>
                     </div>
                 </li>
                 <li class="nav-item">

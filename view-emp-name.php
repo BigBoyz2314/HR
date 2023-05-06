@@ -120,8 +120,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                         </div>
                         <div class="col-md-3">
                             <h6>To</h6>
-                            <option></option>
                             <select class="js-example-basic-single w-100" name="from">
+                                <option></option>
                                 <?php
                                 $i = 1970;
                                 $j = 53;
