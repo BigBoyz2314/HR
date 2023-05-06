@@ -36,7 +36,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <div class="dropdown-menu bg-dark">
                         <a class="dropdown-item text-white-50" href="employees.php">Add Employees</a>
                         <a class="dropdown-item text-white-50" href="view-employees.php">View All Employees</a>
-                        <a class="dropdown-item text-white-50" href="view-employees.php">View Employees by Name</a>
+                        <a class="dropdown-item text-white-50" href="view-emp-name.php">View Employees by Name</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -55,6 +55,19 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </nav>
     <div class="container-fluid p-5">
         <h1>View Employee by Name</h1>
+        <form action="view-emp.php" method="post">
+            <div class="row">
+                <div class="col-md-6 pt-4">
+                    <h4>Name</h4>
+                    <input type="text" name="name" id="name" class="form-control w-50">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 pt-4">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </div>
+        </form>  
     </div>
     <script>
         
