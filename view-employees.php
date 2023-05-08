@@ -20,12 +20,19 @@ require_once('config.php');
     <script src="js/tableHTMLExport.js"></script>
     <script>
         $(document).ready(function(){
-        $(".export-btn").click(function(){  
-            $("#table").tableHTMLExport({
-            type:'csv',
-            filename:'employees.csv',
+            $(".export-btn").click(function(){  
+                $("#table").tableHTMLExport({
+                type:'csv',
+                filename:'employees.csv',
+                });
             });
-        });
+
+            $("#search").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#table tbody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
         });
     </script>
    
@@ -38,7 +45,8 @@ require_once('config.php');
         <h1>View Employees</h1>
 
         <div class="row mt-5">
-            <button class="btn btn-info m-3 export-btn">Export to Excel</button>	
+            <button class="btn btn-info m-3 export-btn">Export to Excel</button>
+            <input type="text" name="search" id="search" class="form-control w-25 ml-auto" placeholder="Search...">	
                 <table class="table table-bordered w-100 text-center" id="table">
                     <thead class="font-weight-bolder">
                         <th>Sr.</th>
