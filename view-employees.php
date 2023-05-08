@@ -589,7 +589,7 @@ require_once('config.php');
                             //         echo '  if (confirm("Are you sure you want to DELETE '. "'$delName'" .'?")) {';  
                             //         echo '    window.location.href = "del-designation.php?delName='. $delName .'&delID='. $delID .'";';  
                             //         echo '  }';
-                            //         echo '</script>';  
+                            //         echo '</script>'; 
                             //   }
                         ?>
                     </tbody>
