@@ -590,7 +590,7 @@ require_once('config.php');
                             //         echo '    window.location.href = "del-designation.php?delName='. $delName .'&delID='. $delID .'";';  
                             //         echo '  }';
                             //         echo '</script>'; 
-                            //   }
+                            //   } 
                         ?>
                     </tbody>
             </table>
