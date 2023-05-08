@@ -32,9 +32,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <?php include 'nav.php' ?>
     <div class="container-fluid p-5">
         <h1>View Employee</h1>
-        <form action="view-employees.php" method="get">
         <div class="row">
             <div class="col-md-6 pt-4">
+                <form action="view-employees.php" method="get">
                     <h4>Joining Month</h4>
                     <select class="js-example-basic-single w-50" name="moj">
                         <option></option>
@@ -46,12 +46,27 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                         }
                         ?>
                     </select>
+                        <button type="submit" class="btn btn-success mt-3 d-block">Submit</button>
+                    </form>  
                     </div>
-                </div>
-                <button type="submit" class="btn btn-success mt-3">Submit</button>
-            </div> 
-        </form>  
-    </div>
+            <div class="col-md-6 pt-4">
+                <form action="join-leave.php" method="get">
+                    <h4>Join / Leave</h4>
+                    <select class="js-example-basic-single w-50" name="joinleave">
+                        <option></option>
+                        <?php
+                        $i = 1;
+                        while ($i <= 12) {
+                            echo '<option value="'. $i .'">';echo date("F", mktime(0, 0, 0, $i, $i));'</option>';
+                            $i++;
+                        }
+                        ?>
+                    </select>
+                        <button type="submit" class="btn btn-success mt-3 d-block">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div> 
     <script>
         
     </script>

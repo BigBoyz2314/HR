@@ -160,22 +160,37 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </div>
             <div class="col-md-6 pt-4">
                 <form action="view-employees.php" method="get">
-                    <h4>By Designation</h4>
-                    <select class="js-example-basic-single w-50" name="desig">
-                        <option></option>
-                    <?php
-                        require_once('config.php');
-                        $stmt1 = "SELECT * FROM designation";
-                        $result1 = $conn->query($stmt1);
-                        
-                        if ($result1->num_rows > 0) {
-                            // output data of each row
-                            while($row = $result1->fetch_assoc()) {
-                                echo '<option value="' . $row['designationID'] .'">' . $row['name'] . '</option>';
-                            }
-                        }
-                        ?>
-                    </select>
+                    <h4>By Salary</h4>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>From</h6>
+                            <select class="js-example-basic-single w-100" name="salfrom">
+                                <option></option>
+                                <option value="0">0</option>
+                                <option value="10000">10000</option>
+                                <option value="20000">20000</option>
+                                <option value="30000">30000</option>
+                                <option value="50000">50000</option>
+                                <option value="80000">80000</option>
+                                <option value="100000">100000</option>
+                                <option value="1500000">150000</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <h6>To</h6>
+                            <select class="js-example-basic-single w-100" name="salto">
+                                <option></option>
+                                <option value="0">0</option>
+                                <option value="10000">10000</option>
+                                <option value="20000">20000</option>
+                                <option value="30000">30000</option>
+                                <option value="50000">50000</option>
+                                <option value="80000">80000</option>
+                                <option value="100000">100000</option>
+                                <option value="1500000">150000</option>
+                            </select>
+                        </div>
+                    </div>
                     <button type="submit" class="btn btn-success d-block mt-3">Submit</button>
                 </form>  
             </div>

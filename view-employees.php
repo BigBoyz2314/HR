@@ -374,6 +374,61 @@ require_once('config.php');
                                     }
                                 }
                             }
+                            elseif (isset($_GET['salfrom']) || isset($_GET['salto'])) {
+                                
+                                $salfrom = $_GET['salfrom'];
+                                $salto = $_GET['salto'];
+                            
+                                $stmt = "SELECT * FROM employees WHERE gross_salary BETWEEN $salfrom AND $salto";
+                                $result = $conn->query($stmt);
+                                $i = 1;
+        
+                                if ($result->num_rows > 0) {
+                                    // output data of each row
+                                    
+                                    while($row = $result->fetch_assoc()) { 
+                                        $id = $row['employeeID'];
+                                        $fname = $row['fname'];
+                                        $mname = $row['mname'];
+                                        $lname = $row['lname'];
+                                        $dob = $row['dob'];
+                                        $desig = $row['designation'];
+                                        $dept = $row['department'];
+                                        $gender = $row['gender'];
+                                        $mstatus = $row['martital_status'];
+                                        $joindate = $row['join_date'];
+                                        $status = $row['status'];
+                                        $children = $row['children'];
+                                        $spouse = $row['spouse_name'];
+                                        $basic = $row['basic_salary'];
+                                        $allowance = $row['allowance'];
+                                        $deduction = $row['deduction'];
+                                        $gross = $row['gross_salary'];
+
+                                        echo "<tr>";
+                                        echo "<td>". $i++ ."</td>";
+                                        echo "<td>$fname</td>";
+                                        echo "<td>$mname</td>";
+                                        echo "<td>$lname</td>";
+                                        echo "<td>". date("d M y", strtotime($dob)) ."</td>";
+                                        echo "<td>$desig</td>";
+                                        echo "<td>$gender</td>";
+                                        echo "<td>$dept</td>";
+                                        echo "<td>$mstatus</td>";
+                                        echo "<td>$status</td>";
+                                        echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
+                                        echo "<td>$spouse</td>";
+                                        echo "<td>$basic</td>";
+                                        echo "<td>$allowance</td>";
+                                        echo "<td>$deduction</td>";
+                                        echo "<td>$gross</td>";
+                                        echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
+                                        // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
+                                        echo "</tr>";
+        
+                                    }
+                                }
+                            }
                             else{
                             
                             $stmt = "SELECT * FROM employees";
