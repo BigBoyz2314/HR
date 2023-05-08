@@ -20,6 +20,12 @@ require_once('config.php');
     <script src="js/tableHTMLExport.js"></script>
     <script>
         $(document).ready(function(){
+            
+            function downloadPDFWithBrowserPrint() {
+            window.print();
+            }
+            document.querySelector('#browserPrint').addEventListener('click', downloadPDFWithBrowserPrint);
+
             $(".export-btn").click(function(){  
                 $("#table").tableHTMLExport({
                 type:'csv',
@@ -46,6 +52,7 @@ require_once('config.php');
 
         <div class="row mt-5">
             <button class="btn btn-info m-3 export-btn">Export to Excel</button>
+            <button class="btn btn-danger m-3" id="browserPrint">Print PDF</button>
             <input type="text" name="search" id="search" class="form-control w-25 ml-auto" placeholder="Search...">	
                 <table class="table table-bordered w-100 text-center" id="table">
                     <thead class="font-weight-bolder">

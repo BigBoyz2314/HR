@@ -21,19 +21,25 @@ require_once('config.php');
     <link rel="stylesheet" href="css/styles.css">
     <script>
         $(document).ready(function(){
-        $(".export-btn1").click(function(){  
-            $("#table1").tableHTMLExport({
-            type:'csv',
-            filename:'employees-joined.csv',
-            });
-        });
 
-        $(".export-btn2").click(function(){  
-            $("#table2").tableHTMLExport({
-            type:'csv',
-            filename:'employees-left.csv',
+            function downloadPDFWithBrowserPrint() {
+            window.print();
+            }
+            document.querySelector('#browserPrint').addEventListener('click', downloadPDFWithBrowserPrint);
+
+            $(".export-btn1").click(function(){  
+                $("#table1").tableHTMLExport({
+                type:'csv',
+                filename:'employees-joined.csv',
+                });
             });
-        });
+
+            $(".export-btn2").click(function(){  
+                $("#table2").tableHTMLExport({
+                type:'csv',
+                filename:'employees-left.csv',
+                });
+            });
         });
     </script>
     <title>Join / Leave</title>
@@ -44,6 +50,7 @@ require_once('config.php');
         <h1>Join / Leave</h1>
         <div class="row mt-5">
             <button class="btn btn-info m-3 export-btn1">Export to Excel</button>	
+            <button class="btn btn-danger m-3" id="browserPrint">Print PDF</button>	
                 <table class="table table-bordered w-100 text-center" id="table1">
                     <thead class="font-weight-bolder">
                         <th>Sr.</th>
