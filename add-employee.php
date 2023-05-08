@@ -71,23 +71,22 @@
         $yob = date('Y', strtotime($dob));
         $moj = date('m', strtotime($joindate));
         $mor = date('m', strtotime($leavedate));
-        
 
         $sql = "INSERT INTO `employees`(`employeeID`, `fname`, `mname`, `lname`, `dob`,`yob`,`gender`, `designation`, `designationID`, `grade`, `department`, `departmentID`, `martital_status`, `status`, `children`, `spouse_name`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `join_date`, `leave_date`, `primary_address`, `secondary_address`, `current_address`, `primary_number`, `secondary_number`, `bank_name`, `bank_account_no`, `iban`, `employee_code`, `manager_name`, `managerID`, `warnings`, `leaves`, `allowed_leaves`, `absents`, `presents`, `days_working`, `loan`, `loan_amount`, `cnic`, `passport_no`, `working_hours`, `start_time`, `end_time`, `shift`, `join_month`, `leave_month`, `created_at`) VALUES
-         ('','$fname','$mname','$lname','$dob','$yob','$gender','$desig','$designation','$grade','$dept','$department','$mStatus','$status','$children','$spousename','$basicsalary','$allowence','$deduction','$grosssalary','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift','$moj','$mor' current_timestamp())";
-        
-        
-        
-        
-        
-        
-        // "INSERT INTO employees VALUES ('', '$fname', '$mname', '$lname',  '$dob', $designation, '', '', $department, '', '$mStatus', '$status', '$children', '$spousename', '$basicsalary', '$allowence', '$deduction', '$grosssalary', '$joindate', '$leavedate', '$paddress', '$saddress', '$caddress', '$pnumber', '$snumber', '$bank', '$bankacc', '$iban', '$manager', '', '$warnings', '$leaves', '$allowleaves', '$absents', '$presents', '$daysworking', '$loan', '$loanamount', '$cnic', '$passport', '$workinghours', '$starttime', '$endtime', '$shift', current_timestamp())";
-        
+         ('','$fname','$mname','$lname','$dob','$yob','$gender','$desig','$designation','$grade','$dept','$department','$mStatus','$status','$children','$spousename','$basicsalary','$allowence','$deduction','$grosssalary','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift','$moj','$mor', current_timestamp())";
+
+
+// "INSERT INTO employees VALUES ('', '$fname', '$mname', '$lname',  '$dob', $designation, '', '', $department, '', '$mStatus', '$status', '$children', '$spousename', '$basicsalary', '$allowence', '$deduction', '$grosssalary', '$joindate', '$leavedate', '$paddress', '$saddress', '$caddress', '$pnumber', '$snumber', '$bank', '$bankacc', '$iban', '$manager', '', '$warnings', '$leaves', '$allowleaves', '$absents', '$presents', '$daysworking', '$loan', '$loanamount', '$cnic', '$passport', '$workinghours', '$starttime', '$endtime', '$shift', current_timestamp())";
+
         if(mysqli_query($conn, $sql)){
-
+            $last_id = $conn->insert_id;
+            
+            $sql1 = "INSERT INTO `employees_log`(`employeeID`, `fname`, `mname`, `lname`, `dob`,`yob`,`gender`, `designation`, `designationID`, `grade`, `department`, `departmentID`, `martital_status`, `status`, `children`, `spouse_name`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `join_date`, `leave_date`, `primary_address`, `secondary_address`, `current_address`, `primary_number`, `secondary_number`, `bank_name`, `bank_account_no`, `iban`, `employee_code`, `manager_name`, `managerID`, `warnings`, `leaves`, `allowed_leaves`, `absents`, `presents`, `days_working`, `loan`, `loan_amount`, `cnic`, `passport_no`, `working_hours`, `start_time`, `end_time`, `shift`, `join_month`, `leave_month`, `created_at`) VALUES
+            ('$last_id','$fname','$mname','$lname','$dob','$yob','$gender','$desig','$designation','$grade','$dept','$department','$mStatus','$status','$children','$spousename','$basicsalary','$allowence','$deduction','$grosssalary','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift','$moj','$mor', current_timestamp())";
+                
+                mysqli_query($conn, $sql1);
             header('Location: employees.php');
-
-        } else{
+        }else{
             echo "ERROR: Hush! Sorry $sql. "
             . mysqli_error($conn);
         }
