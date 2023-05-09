@@ -70,7 +70,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <?php include 'nav.php' ?>
     <div class="container-fluid p-5">
         <h1>View Employee</h1>
-        <form action="add-employee.php" method="post">
+        <form action="" method="post">
             <div class="row justify-content-center">
                 <div class="col-md-3 pt-4">
                     <h4>First Name</h4>
@@ -254,6 +254,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <h4>Status</h4>
                     <input value="<?php echo $status?>" disabled name="status" id="status" class="form-control">
             </div>
+        </form>
+        <form action="edit-employee.php" method="get" class="mt-4">
+            <input type="hidden" name="empID" id="empID" value="<?php echo $id ?>">
+            <input type="submit" value="Edit" class="btn btn-warning">
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
