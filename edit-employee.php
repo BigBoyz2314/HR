@@ -18,16 +18,26 @@ session_start();
     $mname = $row["mname"];
     $lname = $row["lname"];
     $dept = $row["department"];
+    $desigID = $row["designationID"];
+    $deptID = $row["departmentID"];
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+    <head>
+        <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
     <title>Edit Employee</title>
 </head>
 <body>
@@ -47,16 +57,48 @@ session_start();
                 <div class="col-6 pt-4">
                     <h4>Designation</h4>
                     <input type="text" disabled value="<?php echo $desig ?>" class="form-control w-50">
+                    <input type="hidden" name="oldDesig" value="<?php echo $desig ?>" class="form-control w-50">
+                    <input type="hidden" name="oldDesigID" value="<?php echo $desigID ?>" class="form-control w-50">
                     <h4 class="pt-4">Transfer to</h4>
-                    <input type="text"value="" class="form-control w-50">
+                    <select class="js-example-basic-single w-50" name="desig">
+                        <option></option>
+                    <?php
+                        require_once('config.php');
+                        $stmt1 = "SELECT * FROM designation";
+                        $result1 = $conn->query($stmt1);
+                        
+                        if ($result1->num_rows > 0) {
+                            // output data of each row
+                            while($row = $result1->fetch_assoc()) {
+                                echo '<option value="' . $row['designationID'] .'">' . $row['name'] . '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6 pt-4">
                     <h4>Department</h4>
                     <input type="text" disabled value="<?php echo $dept ?>" class="form-control w-50">
+                    <input type="hidden" name="oldDept" value="<?php echo $dept ?>" class="form-control w-50">
+                    <input type="hidden" name="oldDeptID" value="<?php echo $deptID ?>" class="form-control w-50">
                     <h4 class="pt-4">Transfer to</h4>
-                    <input type="text" value="" class="form-control w-50">
+                    <select class="js-example-basic-single w-50" name="dept">
+                        <option></option>
+                    <?php
+                        require_once('config.php');
+                        $stmt1 = "SELECT * FROM department";
+                        $result1 = $conn->query($stmt1);
+                        
+                        if ($result1->num_rows > 0) {
+                            // output data of each row
+                            while($row = $result1->fetch_assoc()) {
+                                echo '<option value="' . $row['departmentID'] .'">' . $row['name'] . '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
             <div class="row">
@@ -70,7 +112,6 @@ session_start();
     <script>
         
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
 </body>
 </html>
