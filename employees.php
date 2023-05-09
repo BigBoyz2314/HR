@@ -7,6 +7,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+if ($_SESSION['role'] != '1') {
+    header("location: index.php");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +56,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Martital Status</h4>
-                    <select name="mStatus" id="mStatus" class="form-control">
+                    <select name="mStatus" id="mStatus" class="form-control" required>
                         <option value="Single">Single</option>
                         <option value="Married">Married</option>
                     </select>
@@ -83,7 +87,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-4 pt-4">
                     <h4>Secondary Address</h4>
-                    <input type="text" name="sAddress" id="sAddress" class="form-control" required>
+                    <input type="text" name="sAddress" id="sAddress" class="form-control">
                 </div>
                 <div class="col-md-4 pt-3">
                     <h4 class="d-inline-block">Current Address</h4>
@@ -105,11 +109,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <div class="row">
                 <div class="col-md-3 pt-4">
                     <h4>Basic Salary</h4>
-                    <input type="number" min="0" onchange="salary()" name="basicSalary" id="basicSalary" class="form-control" value="0">
+                    <input type="number" min="0" onchange="salary()" name="basicSalary" id="basicSalary" class="form-control" value="0" required>
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Allowence</h4>
-                    <input type="number" min="0" onchange="salary()" name="allowence" id="allowence" class="form-control" value="0">
+                    <input type="number" min="0" onchange="salary()" name="allowence" id="allowence" class="form-control" value="0>
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Deduction</h4>
@@ -117,13 +121,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Gross Salary</h4>
-                    <input type="number" name="grossSalary" id="grossSalary" class="form-control" value="0">
+                    <input type="number" name="grossSalary" id="grossSalary" class="form-control" value="0" required>
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-4 pt-4">
                     <h4>Designation</h4>
-                    <select name="designation" id="designation" class="form-control">
+                    <select name="designation" id="designation" class="form-control" required>
                     <?php
                         require_once('config.php');
                         $stmt = "SELECT * FROM designation";
@@ -140,7 +144,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-4 pt-4">
                     <h4>Department</h4>
-                    <select name="department" id="department" class="form-control">
+                    <select name="department" id="department" class="form-control" required>
                     <?php
                         require_once('config.php');
                         $stmt = "SELECT * FROM department";
@@ -159,7 +163,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <div class="row justify-content-center">
                 <div class="col-md-3 pt-4">
                     <h4>Join Date</h4>
-                    <input type="date" name="joinDate" id="joinDate" class="form-control">
+                    <input type="date" name="joinDate" id="joinDate" class="form-control" required>
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Leave Date</h4>
@@ -213,7 +217,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-2 pt-4">
                     <h4>Loan</h4>
-                    <select name="loan" id="loan" class="form-control">
+                    <select name="loan" id="loan" class="form-control" required>
                         <option value="0">No</option>
                         <option value="1">Yes</option>
                     </select>
@@ -246,7 +250,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-2 pt-4">
                     <h4>Status</h4>
-                    <select name="status" id="status" class="form-control">
+                    <select name="status" id="status" class="form-control" required>
                         <option value="Working">Working</option>
                         <option value="Retired">Retired</option>
                         <option value="Terminated">Terminated</option>

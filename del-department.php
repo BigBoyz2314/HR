@@ -4,7 +4,7 @@
 
 <?php
 
-    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    if ($_SERVER["REQUEST_METHOD"] == "GET" && $_SESSION['role'] == '1') {
         $id = $_REQUEST["delID"];
         $name = $_REQUEST["delName"];
 

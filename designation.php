@@ -49,8 +49,6 @@ require_once('config.php');
                         <th>Sr.</th>
                         <th>Designation Name</th>
                         <th>Grade</th>
-                        <th></th>
-                        <th></th>
                     </thead>
                     <tbody class="">
                         <?php
@@ -70,14 +68,16 @@ require_once('config.php');
                                     echo "<td>". $i++ ."</td>";
                                     echo "<td>$name</td>";
                                     echo "<td>$grade</td>";
-                                    echo "<td><form action='edit-designation.php' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
-                                    echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
+                                    if ($_SESSION['role'] == '1') {
+                                        echo "<td><form action='edit-designation.php' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
+                                        echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
+                                    }
                                     echo "</tr>";
     
                                 }
                               }
 
-                              if ($_REQUEST) {
+                              if ($_REQUEST && $_SESSION['role'] == '1') {
                                 $delID = $_GET['id'];
                                 $delName = $_GET['desigName'];
                                   

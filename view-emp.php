@@ -255,10 +255,17 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <input value="<?php echo $status?>" disabled name="status" id="status" class="form-control">
             </div>
         </form>
-        <form action="edit-employee.php" method="get" class="mt-4">
-            <input type="hidden" name="empID" id="empID" value="<?php echo $id ?>">
-            <input type="submit" value="Edit" class="btn btn-warning">
-        </form>
+        <?php
+        
+        if ($_SESSION['role'] == '1') {
+            echo '<form action="edit-employee.php" method="get" class="mt-4">
+                    <input type="hidden" name="empID" id="empID" value="<?php echo $id ?>">
+                    <input type="submit" value="Edit" class="btn btn-warning">
+                </form>';
+        }
+
+        ?>
+        
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <script>

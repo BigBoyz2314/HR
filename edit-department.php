@@ -7,6 +7,10 @@ session_start();
         header("location: login.php");
         exit;
     }
+    if ($_SESSION['role'] != '1') {
+        header("location: index.php");
+        exit;
+    }
     require_once('config.php');
 
     $deptName = $_GET['deptName'];
