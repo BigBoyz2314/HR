@@ -33,7 +33,7 @@ require_once('config.php');
             $(".export-btn").click(function(){  
                 $("#table").tableHTMLExport({
                 type:'csv',
-                filename:'employees.csv',
+                filename:'employee-log.csv',
                 });
             });
 
