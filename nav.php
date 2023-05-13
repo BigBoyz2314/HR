@@ -15,13 +15,17 @@
                     <div class="dropdown-menu bg-dark">
                         <?php
                         if ($_SESSION['role'] == '1') {
-                            echo ' <a class="dropdown-item bg-dark text-white-50" href="employees.php">Add Employees</a>';
+                            echo '<a class="dropdown-item bg-dark text-white-50" href="employees.php">Add Employees</a>';
                         }
                         ?>
                         <a class="dropdown-item bg-dark text-white-50" href="view-employees.php">View All Employees</a>
                         <a class="dropdown-item bg-dark text-white-50" href="view-emp-name.php">View Employees by Filter</a>
                         <a class="dropdown-item bg-dark text-white-50" href="view-emp-month.php">View Employees by Month</a>
-                        <a class="dropdown-item bg-dark text-white-50" href="view-employee-log.php">View Employees Log</a>
+                        <?php
+                        if ($_SESSION['role'] == '1') {
+                            echo '<a class="dropdown-item bg-dark text-white-50" href="view-employee-log.php">View Employees Log</a>';
+                        }
+                        ?>
                     </div>
                 </li>
                 <li class="nav-item">
