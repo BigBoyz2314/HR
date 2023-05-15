@@ -113,7 +113,7 @@ if ($_SESSION['role'] != '1') {
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Allowence</h4>
-                    <input type="number" min="0" onchange="salary()" name="allowence" id="allowence" class="form-control" value="0>
+                    <input type="number" min="0" onchange="salary()" name="allowence" id="allowence" class="form-control" value="0">
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Deduction</h4>

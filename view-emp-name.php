@@ -170,9 +170,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                 <option value="20000">20000</option>
                                 <option value="30000">30000</option>
                                 <option value="50000">50000</option>
+                                <option value="70000">70000</option>
                                 <option value="80000">80000</option>
                                 <option value="100000">100000</option>
+                                <option value="125000">125000</option>
                                 <option value="1500000">150000</option>
+                                <option value="175000">175000</option>
+                                <option value="200000">200000</option>
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -184,9 +188,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                 <option value="20000">20000</option>
                                 <option value="30000">30000</option>
                                 <option value="50000">50000</option>
+                                <option value="70000">70000</option>
                                 <option value="80000">80000</option>
                                 <option value="100000">100000</option>
+                                <option value="125000">125000</option>
                                 <option value="1500000">150000</option>
+                                <option value="175000">175000</option>
+                                <option value="200000">200000</option>
                             </select>
                         </div>
                     </div>

@@ -37,12 +37,6 @@ require_once('config.php');
                 </div>
             </div>
             <div class="row">
-                <div class="col-6 pt-4">
-                    <h4>Current Strength</h4>
-                    <input type="number" min="0" name="current" id="current" class="form-control w-50">
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-3 pt-4">
                     <button type="submit" class="btn btn-success">Submit</button>
                 </div>

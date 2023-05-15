@@ -13,6 +13,10 @@
         $oldDeptID = $_REQUEST["oldDeptID"];
         $newDept = $_REQUEST["dept"];
         $newDesig = $_REQUEST["desig"];
+        $newbasic = $_REQUEST["basicSalary"];
+        $newallow = $_REQUEST["allowance"];
+        $newdeduc = $_REQUEST["deduction"];
+        $newgross = $_REQUEST["grossSalary"];
     }
 
     if ($newDesig == "") {
@@ -112,13 +116,13 @@
 
 
     
-    $sql ="UPDATE `employees` SET `department`='$newDept',`designation`='$newDesig',`grade`='$newGrade',`updated_at` = current_timestamp() WHERE `fname` = '$fname' AND `employeeID` = '$id'";
+    $sql ="UPDATE `employees` SET `basic_salary`='$newbasic',`gross_salary`='$newgross',`allowance`='$newallow',`deduction`='$newdeduc', `department`='$newDept',`designation`='$newDesig',`grade`='$newGrade',`updated_at` = current_timestamp() WHERE `fname` = '$fname' AND `employeeID` = '$id'";
 
         
         if(mysqli_query($conn, $sql)){
 
             $sql1 = "INSERT INTO `employees_log`(`employeeID`, `fname`, `mname`, `lname`, `dob`,`yob`,`gender`, `designation`, `designationID`, `grade`, `department`, `departmentID`, `martital_status`, `status`, `children`, `spouse_name`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `join_date`, `leave_date`, `primary_address`, `secondary_address`, `current_address`, `primary_number`, `secondary_number`, `bank_name`, `bank_account_no`, `iban`, `employee_code`, `manager_name`, `managerID`, `warnings`, `leaves`, `allowed_leaves`, `absents`, `presents`, `days_working`, `loan`, `loan_amount`, `cnic`, `passport_no`, `working_hours`, `start_time`, `end_time`, `shift`, `join_month`, `leave_month`, `created_at`, `updated_at`) VALUES
-            ('$id','$fname','$mname','$lname','$dob','$yob','$gender','$newDesig','$DesigID','$newGrade','$newDept','$deptID','$mstatus','$status','$children','$spouse','$basic','$allowance','$deduction','$gross','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift','$moj','$mor', '$created', current_timestamp())";
+            ('$id','$fname','$mname','$lname','$dob','$yob','$gender','$newDesig','$DesigID','$newGrade','$newDept','$deptID','$mstatus','$status','$children','$spouse','$newbasic','$newallow','$newdeduc','$newgross','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift','$moj','$mor', '$created', current_timestamp())";
                 
             $sql2 = "UPDATE department SET current_Strength = current_Strength + 1 WHERE name = '$newDept'";
             $sql3 = "UPDATE department SET current_Strength = current_Strength - 1 WHERE name = '$oldDept'";

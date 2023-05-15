@@ -7,10 +7,9 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = $_REQUEST["name"];
         $allowed = $_REQUEST["allowed"];
-        $current = $_REQUEST["current"];
     }
 
-        $sql ="INSERT INTO department VALUES ('', '$name', '$current', '$allowed', current_timestamp(), current_timestamp())";
+        $sql ="INSERT INTO department VALUES ('', '$name', '0', '$allowed', current_timestamp(), current_timestamp())";
         
         if(mysqli_query($conn, $sql)){
 

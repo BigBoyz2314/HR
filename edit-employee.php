@@ -24,6 +24,10 @@ session_start();
     $dept = $row["department"];
     $desigID = $row["designationID"];
     $deptID = $row["departmentID"];
+    $basic = $row["basic_salary"];
+    $allow = $row["allowance"];
+    $deduc = $row["deduction"];
+    $gross = $row["gross_salary"];
 
 ?>
 <!DOCTYPE html>
@@ -50,21 +54,29 @@ session_start();
         <h1>Edit Designation</h1>
         <form action="edit-emp.php" method="post">
             <div class="row">
-                <div class="col-6 pt-4">
+                <div class="col-3 pt-4">
                     <h4>Name</h4>
-                    <input type="text" disabled name="name" id="name" value="<?php echo $fname . "" . $mname . " " . $lname ?>" class="form-control w-50">
+                    <input type="text" disabled name="name" id="name" value="<?php echo $fname . "" . $mname . " " . $lname ?>" class="form-control w-100">
                     <input type="hidden" name="name1" id="name1" value="<?php echo $fname ?>" class="form-control w-50">
                     <input type="hidden" name="empID" id="empID" value="<?php echo $empID ?>" class="form-control w-50">
                 </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Basic Salary</h4>
+                    <input type="number" min="0" onchange="salary()" name="basicSalary" id="basicSalary" class="form-control" value="<?php echo $basic ?>" required>
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Deduction</h4>
+                    <input type="number" min="0" onchange="salary()" name="deduction" id="deduction" class="form-control" value="<?php echo $deduc ?>">
+                </div>
             </div>
             <div class="row">
-                <div class="col-6 pt-4">
+                <div class="col-3 pt-4">
                     <h4>Designation</h4>
-                    <input type="text" disabled value="<?php echo $desig ?>" class="form-control w-50">
+                    <input type="text" disabled value="<?php echo $desig ?>" class="form-control w-100">
                     <input type="hidden" name="oldDesig" value="<?php echo $desig ?>" class="form-control w-50">
                     <input type="hidden" name="oldDesigID" value="<?php echo $desigID ?>" class="form-control w-50">
                     <h4 class="pt-4">Transfer to</h4>
-                    <select class="js-example-basic-single w-50" name="desig">
+                    <select class="js-example-basic-single w-100" name="desig">
                         <option></option>
                     <?php
                         require_once('config.php');
@@ -80,15 +92,23 @@ session_start();
                         ?>
                     </select>
                 </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Allowence</h4>
+                    <input type="number" min="0" onchange="salary()" name="allowance" id="allowance" class="form-control" value="<?php echo $allow ?>">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Gross Salary</h4>
+                    <input type="number" name="grossSalary" id="grossSalary" class="form-control" value="<?php echo $gross ?>" required>
+                </div>
             </div>
             <div class="row">
-                <div class="col-6 pt-4">
+                <div class="col-3 pt-4">
                     <h4>Department</h4>
-                    <input type="text" disabled value="<?php echo $dept ?>" class="form-control w-50">
+                    <input type="text" disabled value="<?php echo $dept ?>" class="form-control w-100">
                     <input type="hidden" name="oldDept" value="<?php echo $dept ?>" class="form-control w-50">
                     <input type="hidden" name="oldDeptID" value="<?php echo $deptID ?>" class="form-control w-50">
                     <h4 class="pt-4">Transfer to</h4>
-                    <select class="js-example-basic-single w-50" name="dept">
+                    <select class="js-example-basic-single w-100" name="dept">
                         <option></option>
                     <?php
                         require_once('config.php');
@@ -103,7 +123,7 @@ session_start();
                         }
                         ?>
                     </select>
-                </div>
+                </div>                
             </div>
             <div class="row">
                 <div class="col-3 pt-4">
@@ -114,7 +134,17 @@ session_start();
         </div> 
     </div>
     <script>
-        
+        function salary() {
+            $basic = document.getElementById('basicSalary').value;
+            $allow = document.getElementById('allowence').value;
+            $deduc = document.getElementById('deduction').value;
+            
+            $sum = parseInt($basic) + parseInt($allow) - parseInt($deduc);
+
+            console.log($sum);
+
+            document.getElementById('grossSalary').value = $sum;
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
 </body>

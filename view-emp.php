@@ -54,6 +54,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     $endtime = $row['end_time'];
     $shift = $row['shift'];
     $created = $row['created_at'];
+    $updated = $row['updated_at'];
 
 ?>
 <!DOCTYPE html>
@@ -177,6 +178,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 <div class="col-md-3 pt-4">
                     <h4>Created</h4>
                     <input value="<?php echo $created?>" disabled type="text" name="created" id="created" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Updated</h4>
+                    <input value="<?php echo $updated?>" disabled type="text" name="created" id="created" class="form-control">
                 </div>
             </div>
             <div class="row">
