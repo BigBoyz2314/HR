@@ -25,7 +25,15 @@ if ($_SESSION['role'] != '1') {
 <body>
 <?php include 'nav.php' ?>
     <div class="container-fluid p-5">
-        <h1>Add Employees</h1>
+        <div class="row justify-content-between">
+            <div class="col-md-3">
+                <h1>Add Employees</h1>
+            </div>
+            <div class="col-md-2">
+                <h5>Employee ID</h5>
+                <input type="text" name="empID" id="empID" class="form-control" disabled required>
+            </div>
+        </div>
         <form action="add-employee.php" method="post">
             <div class="row">
                 <div class="col-md-2 pt-4">
@@ -79,7 +87,12 @@ if ($_SESSION['role'] != '1') {
                 </div>
                 <div class="col-md-2 pt-4">
                     <h5>Disability</h5>
-                    <input type="text" name="disability" id="disability" class="form-control">
+                    <select type="text" name="disability" id="disability" class="form-control">
+                        <option value="none">None</option>
+                        <option value="deaf">Deaf</option>
+                        <option value="dumb">Dumb</option>
+                        <option value="others">Others</option>
+                    </select>
                 </div>
                 <div class="col-md-2 pt-4">
                     <h5 class="d-inline-block p-0">Photo</h5>

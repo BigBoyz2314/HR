@@ -24,20 +24,16 @@ require_once('config.php');
     <div class="container-fluid p-5">
         <h1>Add Department</h1>
         <form action="add-department.php" method="post">
-            <div class="row">
-                <div class="col-6 pt-4">
-                    <h4>Department Name</h4>
-                    <input type="text" name="name" id="name" class="form-control w-50">
+            <div class="row pt-4 align-items-end">
+                <div class="col-3">
+                    <h5>Department Name</h5>
+                    <input type="text" name="name" id="name" class="form-control w-100">
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-6 pt-4">
-                    <h4>Allowed Strength</h4>
-                    <input type="number" min="0" name="allowed" id="allowed" class="form-control w-50">
+                <div class="col-3">
+                    <h5>Allowed Strength</h5>
+                    <input type="number" min="0" name="allowed" id="allowed" class="form-control w-100">
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-3 pt-4">
+                <div class="col-1">
                     <button type="submit" class="btn btn-success">Submit</button>
                 </div>
             </div>
