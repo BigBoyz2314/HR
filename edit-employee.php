@@ -136,7 +136,7 @@ session_start();
     <script>
         function salary() {
             $basic = document.getElementById('basicSalary').value;
-            $allow = document.getElementById('allowence').value;
+            $allow = document.getElementById('allowance').value;
             $deduc = document.getElementById('deduction').value;
             
             $sum = parseInt($basic) + parseInt($allow) - parseInt($deduc);

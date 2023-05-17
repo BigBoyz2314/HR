@@ -54,7 +54,7 @@ require_once('config.php');
             <button class="btn btn-info m-3 export-btn">Export to Excel</button>
             <button class="btn btn-danger m-3" id="browserPrint">Print PDF</button>
             <input type="text" name="search" id="search" class="form-control w-25 ml-auto" placeholder="Search...">	
-                <table class="table table-bordered w-100 text-center" id="table">
+                <table class="table text-nowrap table-bordered w-100 text-center" id="table">
                     <thead class="font-weight-bolder">
                         <th>Sr.</th>
                         <th>First Name</th>
@@ -588,16 +588,6 @@ require_once('config.php');
                                 }
                               }
                             }
-                            //   if ($_REQUEST) {
-                            //     $delID = $_GET['id'];
-                            //     $delName = $_GET['desigName'];
-                                  
-                            //         echo '<script type="text/javascript"> ';  
-                            //         echo '  if (confirm("Are you sure you want to DELETE '. "'$delName'" .'?")) {';  
-                            //         echo '    window.location.href = "del-designation.php?delName='. $delName .'&delID='. $delID .'";';  
-                            //         echo '  }';
-                            //         echo '</script>'; 
-                            //   } 
                         ?>
                     </tbody>
             </table>

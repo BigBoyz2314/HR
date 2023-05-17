@@ -26,7 +26,7 @@ require_once('config.php');
         <form action="add-designation.php" method="post">
             <div class="row">
                 <div class="col-md-6 pt-4">
-                    <h4>Name</h4>
+                    <h4>Designation</h4>
                     <input type="text" name="name" id="name" class="form-control w-50">
                 </div>
             </div>
@@ -44,7 +44,7 @@ require_once('config.php');
         </form>  
         <div class="row mt-5">
             <div class="col-md-12">
-                <table class="table table-bordered w-100 text-center" id="table">
+                <table class="table text-nowrap table-bordered w-100 text-center" id="table">
                     <thead class="font-weight-bolder">
                         <th>Sr.</th>
                         <th>Designation Name</th>
