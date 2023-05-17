@@ -69,7 +69,7 @@ if ($_SESSION['role'] != '1') {
                     <h5>Spouse Name</h5>
                     <input type="text" name="spouseName" id="spouseName" class="form-control">
                 </div>
-                <div class="col-md-3 pt-4">
+                <div class="col-md-2 pt-4">
                     <h5>CNIC</h5>
                     <input type="number" name="cnic" id="cnic" class="form-control" required>
                 </div>
@@ -77,9 +77,14 @@ if ($_SESSION['role'] != '1') {
                     <h5>Passport</h5>
                     <input type="text" name="passport" id="passport" class="form-control">
                 </div>
-                <div class="col-md-3 pt-4">
+                <div class="col-md-2 pt-4">
                     <h5>Disability</h5>
                     <input type="text" name="disability" id="disability" class="form-control">
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h5 class="d-inline-block p-0">Photo</h5>
+                    <p class="d-inline-block ml-4 p-0 mb-0">Max 2Mb</p>
+                    <input type="file" name="photo" id="photo" class="btn p-0">
                 </div>
             </div>
             <div class="row">

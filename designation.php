@@ -44,7 +44,7 @@ require_once('config.php');
         </form>  
         <div class="row mt-5">
             <div class="col-md-12">
-                <table class="table text-nowrap table-bordered w-100 text-center" id="table">
+                <table class="table text-nowrap table-bordered w-75 text-center" id="table">
                     <thead class="font-weight-bolder">
                         <th>Sr.</th>
                         <th>Designation Name</th>
