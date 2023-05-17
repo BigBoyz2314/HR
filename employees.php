@@ -27,106 +27,124 @@ if ($_SESSION['role'] != '1') {
     <div class="container-fluid p-5">
         <h1>Add Employees</h1>
         <form action="add-employee.php" method="post">
-            <div class="row justify-content-center">
-                <div class="col-md-3 pt-4">
-                    <h4>First Name</h4>
+            <div class="row">
+                <div class="col-md-2 pt-4">
+                    <h5>First Name</h5>
                     <input type="text" name="fName" id="fName" class="form-control" required>
                 </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Middle Name</h4>
+                <div class="col-md-2 pt-4">
+                    <h5>Middle Name</h5>
                     <input type="text" name="mName" id="mName" class="form-control">
                 </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Last Name</h4>
+                <div class="col-md-2 pt-4">
+                    <h5>Last Name</h5>
                     <input type="text" name="lName" id="lName" class="form-control" required>
                 </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Gender</h4>
-                    <select name="gender" id="gender" class="form-control" required>
+                <div class="col-md-2 pt-4">
+                    <h5>Gender</h5>
+                    <select name="gender" id="gender" class="form-control w-100" required>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 pt-4">
-                    <h4>Date of Birth</h4>
+                <div class="col-md-2 pt-4">
+                    <h5>Date of Birth</h5>
                     <input type="date" name="dob" id="dob" class="form-control" required>
                 </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Martital Status</h4>
+                <div class="col-md-2 pt-4">
+                    <h5>Martital Status</h5>
                     <select name="mStatus" id="mStatus" class="form-control" required>
                         <option value="Single">Single</option>
                         <option value="Married">Married</option>
                     </select>
                 </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Children</h4>
+            </div>
+            <div class="row">
+                <div class="col-md-2 pt-4">
+                    <h5>Children</h5>
                     <input type="number" min="0" name="children" id="children" class="form-control">
                 </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Spouse Name</h4>
+                <div class="col-md-2 pt-4">
+                    <h5>Spouse Name</h5>
                     <input type="text" name="spouseName" id="spouseName" class="form-control">
                 </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-4 pt-4">
-                    <h4>CNIC</h4>
+                <div class="col-md-3 pt-4">
+                    <h5>CNIC</h5>
                     <input type="number" name="cnic" id="cnic" class="form-control" required>
                 </div>
-                <div class="col-md-4 pt-4">
-                    <h4>Passport no.</h4>
+                <div class="col-md-2 pt-4">
+                    <h5>Passport</h5>
                     <input type="text" name="passport" id="passport" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h5>Disability</h5>
+                    <input type="text" name="disability" id="disability" class="form-control">
                 </div>
             </div>
             <div class="row">
+            </div>
+            <div class="row">
                 <div class="col-md-4 pt-4">
-                    <h4>Primary Address</h4>
+                    <h5>Primary Address</h5>
                     <input type="text" name="pAddress" id="pAddress" class="form-control" required>
                 </div>
                 <div class="col-md-4 pt-4">
-                    <h4>Secondary Address</h4>
+                    <h5>Secondary Address</h5>
                     <input type="text" name="sAddress" id="sAddress" class="form-control">
                 </div>
                 <div class="col-md-4 pt-3">
-                    <h4 class="d-inline-block">Current Address</h4>
+                    <h5 class="d-inline-block">Current Address</h5>
                     <p class="d-inline-block font-italic">Same as Primary Address</p>
                     <input type="checkbox" name="same" id="same" onclick="check()">
                     <input type="text" name="cAddress" id="cAddress" class="form-control" value="" required>
                 </div>
             </div>
-            <div class="row justify-content-center">
+            <div class="row">
                 <div class="col-md-4 pt-4">
-                    <h4>Primary Number</h4>
+                    <h5>Contact # 1</h5>
                     <input type="number" name="pNumber" id="pNumber" class="form-control" required>
                 </div>
                 <div class="col-md-4 pt-4">
-                    <h4>Secondary Number</h4>
+                    <h5>Contact # 2</h5>
                     <input type="number" name="sNumber" id="sNumber" class="form-control" required>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-3 pt-4">
-                    <h4>Basic Salary</h4>
+                    <h5>Basic Salary</h5>
                     <input type="number" min="0" onchange="salary()" name="basicSalary" id="basicSalary" class="form-control" value="0" required>
                 </div>
                 <div class="col-md-3 pt-4">
-                    <h4>Allowence</h4>
+                    <h5>Allowence</h5>
                     <input type="number" min="0" onchange="salary()" name="allowence" id="allowence" class="form-control" value="0">
                 </div>
                 <div class="col-md-3 pt-4">
-                    <h4>Deduction</h4>
+                    <h5>Deduction</h5>
                     <input type="number" min="0" onchange="salary()" name="deduction" id="deduction" class="form-control" value="0">
                 </div>
                 <div class="col-md-3 pt-4">
-                    <h4>Gross Salary</h4>
+                    <h5>Gross Salary</h5>
                     <input type="number" name="grossSalary" id="grossSalary" class="form-control" value="0" required>
                 </div>
             </div>
-            <div class="row justify-content-center">
+            <div class="row">
+                <div class="col-md-3 pt-4">
+                    <h5>Bank Name</h5>
+                    <input type="text" name="bank" id="bank" class="form-control">
+                </div>
                 <div class="col-md-4 pt-4">
-                    <h4>Designation</h4>
+                    <h5>Bank Account no.</h5>
+                    <input type="number" name="bankAcc" id="bankAcc" class="form-control">
+                </div>
+                <div class="col-md-5 pt-4">
+                    <h5>IBAN</h5>
+                    <input type="text" name="iban" id="iban" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 pt-4">
+                    <h5>Designation</h5>
                     <select name="designation" id="designation" class="form-control" required>
                     <?php
                         require_once('config.php');
@@ -142,8 +160,8 @@ if ($_SESSION['role'] != '1') {
                         ?>
                     </select>
                 </div>
-                <div class="col-md-4 pt-4">
-                    <h4>Department</h4>
+                <div class="col-md-2 pt-4">
+                    <h5>Department</h5>
                     <select name="department" id="department" class="form-control" required>
                     <?php
                         require_once('config.php');
@@ -159,89 +177,16 @@ if ($_SESSION['role'] != '1') {
                         ?>
                     </select>
                 </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-3 pt-4">
-                    <h4>Join Date</h4>
+                <div class="col-md-2 pt-4">
+                    <h5>Join Date</h5>
                     <input type="date" name="joinDate" id="joinDate" class="form-control" required>
                 </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Leave Date</h4>
+                <div class="col-md-2 pt-4">
+                    <h5>Leave Date</h5>
                     <input type="date" name="leaveDate" id="leaveDate" class="form-control">
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 pt-4">
-                    <h4>Bank Name</h4>
-                    <input type="text" name="bank" id="bank" class="form-control">
-                </div>
-                <div class="col-md-4 pt-4">
-                    <h4>Bank Account no.</h4>
-                    <input type="number" name="bankAcc" id="bankAcc" class="form-control">
-                </div>
-                <div class="col-md-5 pt-4">
-                    <h4>IBAN</h4>
-                    <input type="text" name="iban" id="iban" class="form-control">
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-3 pt-4">
-                    <h4>Manager Name</h4>
-                    <input type="text" name="manager" id="manager" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Warnings</h4>
-                    <input type="number" min="0" name="warnings" id="warnings" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Leaves</h4>
-                    <input type="number" min="0" name="leaves" id="leaves" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Allowed Leaves</h4>
-                    <input type="number" min="0" name="allowLeaves" id="allowLeaves" class="form-control">
-                </div>
-            </div>
-            <div class="row justify-content-center">
                 <div class="col-md-2 pt-4">
-                    <h4>Absents</h4>
-                    <input type="number" min="0" name="absents" id="absents" class="form-control">
-                </div>
-                <div class="col-md-2 pt-4">
-                    <h4>Presents</h4>
-                    <input type="number" min="0" name="presents" id="presents" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Days Workings</h4>
-                    <input type="number" min="0" name="daysWorking" id="daysWorking" class="form-control">
-                </div>
-                <div class="col-md-2 pt-4">
-                    <h4>Loan</h4>
-                    <select name="loan" id="loan" class="form-control" required>
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Loan Amount</h4>
-                    <input type="number" min="0" name="loanAmount" id="loanAmount" class="form-control">
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-2 pt-4">
-                    <h4>Working Hours</h4>
-                    <input type="number" min="0" name="workingHours" id="workingHours" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Start Time</h4>
-                    <input type="time" name="startTime" id="startTime" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>End Time</h4>
-                    <input type="time" name="endTime" id="endTime" class="form-control">
-                </div>
-                <div class="col-md-2 pt-4">
-                    <h4>Shift</h4>
+                    <h5>Shift</h5>
                     <select name="shift" id="shift" class="form-control">
                         <option value="Morning">Morning</option>
                         <option value="Evening">Evening</option>
@@ -249,7 +194,7 @@ if ($_SESSION['role'] != '1') {
                     </select>
                 </div>
                 <div class="col-md-2 pt-4">
-                    <h4>Status</h4>
+                    <h5>Status</h5>
                     <select name="status" id="status" class="form-control" required>
                         <option value="Working">Working</option>
                         <option value="Retired">Retired</option>
@@ -257,7 +202,66 @@ if ($_SESSION['role'] != '1') {
                     </select>
                 </div>
             </div>
-            <div class="row justify-content-center pt-5">
+            <div class="row">
+            </div>
+            <div class="row">
+                <div class="col-md-2 pt-4">
+                    <h5>Line Manager</h5>
+                    <input type="text" name="manager" id="manager" class="form-control">
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h5>Warnings</h5>
+                    <input type="number" min="0" name="warnings" id="warnings" class="form-control">
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h5>Leaves</h5>
+                    <input type="number" min="0" name="leaves" id="leaves" class="form-control">
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h5>Allowed Leaves</h5>
+                    <input type="number" min="0" name="allowLeaves" id="allowLeaves" class="form-control">
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h5>Absents</h5>
+                    <input type="number" min="0" name="absents" id="absents" class="form-control">
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h5>Presents</h5>
+                    <input type="number" min="0" name="presents" id="presents" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 pt-4">
+                    <h5>Days Workings</h5>
+                    <input type="number" min="0" name="daysWorking" id="daysWorking" class="form-control">
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h5>Loan</h5>
+                    <select name="loan" id="loan" class="form-control" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h5>Loan Amount</h5>
+                    <input type="number" min="0" name="loanAmount" id="loanAmount" class="form-control">
+                </div>
+                <div class="col-md-1 pt-4">
+                    <h5>Hours</h5>
+                    <input type="number" min="0" name="workingHours" id="workingHours" class="form-control">
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h5>Start Time</h5>
+                    <input type="time" name="startTime" id="startTime" class="form-control">
+                </div>
+                <div class="col-md-2 pt-4">
+                    <h5>End Time</h5>
+                    <input type="time" name="endTime" id="endTime" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+            </div>
+            <div class="row pt-5">
                 <div class="col-md-1">
                     <input type="submit" value="Submit" class="btn btn-success">
                 </div>
