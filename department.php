@@ -25,15 +25,15 @@ require_once('config.php');
         <h1>Add Department</h1>
         <form action="add-department.php" method="post">
             <div class="row pt-4 align-items-end">
-                <div class="col-3">
+                <div class="col-md-3">
                     <h5>Department Name</h5>
                     <input type="text" name="name" id="name" class="form-control w-100">
                 </div>
-                <div class="col-3">
+                <div class="col-md-2">
                     <h5>Allowed Strength</h5>
                     <input type="number" min="0" name="allowed" id="allowed" class="form-control w-100">
                 </div>
-                <div class="col-1">
+                <div class="col-md-1">
                     <button type="submit" class="btn btn-success">Submit</button>
                 </div>
             </div>
