@@ -24,19 +24,15 @@ require_once('config.php');
     <div class="container-fluid p-5">
         <h1>Add Designation</h1>
         <form action="add-designation.php" method="post">
-            <div class="row">
-                <div class="col-md-6 pt-4">
-                    <h4>Designation</h4>
-                    <input type="text" name="name" id="name" class="form-control w-50">
+            <div class="row align-items-end">
+                <div class="col-md-3 pt-4">
+                    <h5>Designation</h5>
+                    <input type="text" name="name" id="name" class="form-control w-100">
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 pt-4">
-                    <h4>Grade</h4>
-                    <input type="number" min="0" name="grade" id="grade" class="form-control w-50">
+                <div class="col-md-2 pt-4">
+                    <h5>Grade</h5>
+                    <input type="number" min="0" name="grade" id="grade" class="form-control w-100">
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-3 pt-4">
                     <button type="submit" class="btn btn-success">Submit</button>
                 </div>
