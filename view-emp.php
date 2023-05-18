@@ -85,7 +85,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>    
                 <div class="col-md-2">
                     <h5>Employee ID</h5>
-                    <input value="<?php echo $eid?>" disabled type="text" name="eid" id="eid" class="form-control">
+                    <input value="<?php echo $eid?>" disabled type="text" name="eid" id="eid" class="form-control text-center">
                 </div>    
         </div>
         <form action="" method="post">
