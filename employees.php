@@ -103,7 +103,7 @@ $result = $conn->query($sql);
                 <div class="col-md-2 pt-4">
                     <h5 class="d-inline-block p-0">Photo</h5>
                     <p class="d-inline-block ml-4 p-0 mb-0">Max 2Mb</p>
-                    <input type="file" name="photo" id="photo" class="btn p-0">
+                    <input type="file" name="photo" id="photo" class="p-0 w-100 form-control-file">
                 </div>
             </div>
             <div class="row">
@@ -285,7 +285,7 @@ $result = $conn->query($sql);
             </div>
             <div class="row">
             </div>
-            <div class="row pt-5">
+            <div class="row pt-5 justify-content-center">
                 <div class="col-md-1">
                     <input type="submit" value="Submit" class="btn btn-success">
                 </div>
