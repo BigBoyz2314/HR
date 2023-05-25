@@ -27,11 +27,11 @@ require_once('config.php');
             <div class="row align-items-end">
                 <div class="col-md-3 pt-4">
                     <h5>Designation</h5>
-                    <input type="text" name="name" id="name" class="form-control w-100">
+                    <input type="text" name="name" id="name" class="form-control w-100" required>
                 </div>
                 <div class="col-md-2 pt-4">
                     <h5>Grade</h5>
-                    <input type="number" min="0" name="grade" id="grade" class="form-control w-100">
+                    <input type="number" min="1" name="grade" id="grade" class="form-control w-100" required>
                 </div>
                 <div class="col-md-3 pt-4">
                     <button type="submit" class="btn btn-success">Submit</button>
@@ -48,7 +48,7 @@ require_once('config.php');
                     </thead>
                     <tbody class="">
                         <?php
-                            $stmt = "SELECT * FROM designation";
+                            $stmt = "SELECT * FROM designation ORDER BY grade DESC";
                             $result = $conn->query($stmt);
                             $i = 1;
     

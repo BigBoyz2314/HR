@@ -5,7 +5,7 @@
 <?php
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $name = $_REQUEST["name"];
+        $name = ucwords($_REQUEST["name"]);
         $grade = $_REQUEST["grade"];
     }
 

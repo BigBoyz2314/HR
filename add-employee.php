@@ -5,18 +5,18 @@
 <?php
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $fname = $_REQUEST["fName"];
-        $mname = $_REQUEST["mName"];
-        $lname = $_REQUEST["lName"];
+        $fname = ucwords($_REQUEST["fName"]);
+        $mname = ucwords($_REQUEST["mName"]);
+        $lname = ucwords($_REQUEST["lName"]);
         $dob = $_REQUEST["dob"];
         $mStatus = $_REQUEST["mStatus"];
         $children = $_REQUEST["children"];
-        $spousename = $_REQUEST["spouseName"];
+        $spousename = ucwords($_REQUEST["spouseName"]);
         $cnic = $_REQUEST["cnic"];
         $passport = $_REQUEST["passport"];
-        $paddress = $_REQUEST["pAddress"];
-        $saddress = $_REQUEST["sAddress"];
-        $caddress = $_REQUEST["cAddress"];
+        $paddress = ucwords($_REQUEST["pAddress"]);
+        $saddress = ucwords($_REQUEST["sAddress"]);
+        $caddress = ucwords($_REQUEST["cAddress"]);
         $pnumber = $_REQUEST["pNumber"];
         $snumber = $_REQUEST["sNumber"];
         $basicsalary = $_REQUEST["basicSalary"];
@@ -27,10 +27,10 @@
         $department = $_REQUEST["department"];
         $joindate = $_REQUEST["joinDate"];
         $leavedate = $_REQUEST["leaveDate"];
-        $bank = $_REQUEST["bank"];
+        $bank = ucwords($_REQUEST["bank"]);
         $bankacc = $_REQUEST["bankAcc"];
         $iban = $_REQUEST["iban"];
-        $manager = $_REQUEST["manager"];
+        $manager = ucwords($_REQUEST["manager"]);
         $warnings = $_REQUEST["warnings"];
         $leaves = $_REQUEST["leaves"];
         $allowleaves = $_REQUEST["allowLeaves"];

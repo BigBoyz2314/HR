@@ -187,7 +187,7 @@ require_once('config.php');
                                         echo "<td>$status</td>";
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
-                                        echo "<td>$basic</td>";
+                                        echo "<td>".number_format($basic, 0)."</td>";
                                         echo "<td>$allowance</td>";
                                         echo "<td>$deduction</td>";
                                         echo "<td>$gross</td>";
@@ -487,7 +487,7 @@ require_once('config.php');
                                     echo "No Employee";
                                 }
                             }
-                            elseif (isset($_GET['salfrom']) || isset($_GET['salto'])) {
+                            elseif (isset($_GET['salfrom']) && isset($_GET['salto'])) {
                                 
                                 $salfrom = $_GET['salfrom'];
                                 $salto = $_GET['salto'];
@@ -531,7 +531,7 @@ require_once('config.php');
                                         echo "<td>$status</td>";
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
-                                        echo "<td>$basic</td>";
+                                        echo "<td>".number_format($basic) . " </td>";
                                         echo "<td>$allowance</td>";
                                         echo "<td>$deduction</td>";
                                         echo "<td>$gross</td>";
@@ -586,7 +586,7 @@ require_once('config.php');
                                     echo "<td>$status</td>";
                                     echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                     echo "<td>$spouse</td>";
-                                    echo "<td>$basic</td>";
+                                    echo "<td>".number_format($basic) . " </td>";
                                     echo "<td>$allowance</td>";
                                     echo "<td>$deduction</td>";
                                     echo "<td>$gross</td>";
