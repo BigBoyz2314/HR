@@ -22,10 +22,25 @@ require_once('config.php');
     <script>
         $(document).ready(function(){
 
-            function downloadPDFWithBrowserPrint() {
-            window.print();
+            function printData() {
+                $("#table1").removeClass()
+                $("#table2").removeClass()
+                var divToPrint1 = document.getElementById("table1");
+                var divToPrint2 = document.getElementById("table2");
+                newWin= window.open("");
+                newWin.document.write('<!DOCTYPE html><html><head>  <title>Print Preview</title>  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >  <style>    table {        font-size: small;    }   form { display: none;   }  </style></head><body><div class="table table-bordered w-100 text-center">');
+                newWin.document.write('<h3>Joined</h3>');
+                newWin.document.write(divToPrint1.outerHTML);
+                newWin.document.write('<br>');
+                newWin.document.write('<h3>Left</h3>');
+                newWin.document.write(divToPrint2.outerHTML);
+                newWin.document.write('</body></html>');
+                newWin.document.close();
+                newWin.print();
+                newWin.close();
+                window.location.reload()
             }
-            document.querySelector('#browserPrint').addEventListener('click', downloadPDFWithBrowserPrint);
+            document.querySelector('#browserPrint').addEventListener('click', printData);
 
             $(".export-btn1").click(function(){  
                 $("#table1").tableHTMLExport({

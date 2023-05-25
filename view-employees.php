@@ -21,10 +21,19 @@ require_once('config.php');
     <script>
         $(document).ready(function(){
             
-            function downloadPDFWithBrowserPrint() {
-            window.print();
+            function printData() {
+                $("#table").removeClass()
+                var divToPrint = document.getElementById("table");
+                newWin= window.open("");
+                newWin.document.write('<!DOCTYPE html><html><head>  <title>Print Preview</title>  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >  <style>    table {        font-size: small;    }   form { display: none;   }  </style></head><body><div class="table table-bordered w-100 text-center">');
+                newWin.document.write(divToPrint.outerHTML);
+                newWin.document.write('</body></html>');
+                newWin.document.close();
+                newWin.print();
+                newWin.close();
+                window.location.reload()
             }
-            document.querySelector('#browserPrint').addEventListener('click', downloadPDFWithBrowserPrint);
+            document.querySelector('#browserPrint').addEventListener('click', printData);
 
             $(".export-btn").click(function(){  
                 $("#table").tableHTMLExport({
@@ -596,7 +605,6 @@ require_once('config.php');
             </div>
         </div>
     </div>
-  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
 </body>
 </html>

@@ -6,10 +6,16 @@
 }
 
 @media print {
-    nav {
-        display: none;
+    body {
+      visibility: hidden;
     }
-}
+    #table {
+      visibility: visible;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
 
 table {
     display: block;
