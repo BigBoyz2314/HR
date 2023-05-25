@@ -23,8 +23,8 @@ require_once('config.php');
         $(document).ready(function(){
 
             function printData() {
-                $("#table1").removeClass()
-                $("#table2").removeClass()
+                $("#table1").removeClass();
+                $("#table2").removeClass();
                 var divToPrint1 = document.getElementById("table1");
                 var divToPrint2 = document.getElementById("table2");
                 newWin= window.open("");

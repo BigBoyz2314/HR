@@ -22,7 +22,7 @@ require_once('config.php');
         $(document).ready(function(){
             
             function printData() {
-                $("#table").removeClass()
+                $("#table").removeClass();
                 var divToPrint = document.getElementById("table");
                 newWin= window.open("");
                 newWin.document.write('<!DOCTYPE html><html><head>  <title>Print Preview</title>  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >  <style>    table {        font-size: small;    }   form { display: none;   }  </style></head><body><div class="table table-bordered w-100 text-center">');
