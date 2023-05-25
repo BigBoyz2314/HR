@@ -47,7 +47,7 @@ session_start();
             <div class="row">
                 <div class="col-6 pt-4">
                     <h4>Grade</h4>
-                    <input type="number" min="0" name="grade" id="grade" value="<?php echo $grade ?>" class="form-control w-50">
+                    <input type="number" min="1" name="grade" id="grade" value="<?php echo $grade ?>" class="form-control w-50" required>
                 </div>
             </div>
             <div class="row">

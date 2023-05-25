@@ -47,7 +47,7 @@ session_start();
             <div class="row">
                 <div class="col-6 pt-4">
                     <h4>Allowed Strength</h4>
-                    <input type="number" min="0" name="allowed" id="allowed" value="<?php echo $allow ?>" class="form-control w-50">
+                    <input type="number" min="1" name="allowed" id="allowed" value="<?php echo $allow ?>" class="form-control w-50" required>
                 </div>
             </div>
             <div class="row">
