@@ -56,6 +56,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     $created = $row['created_at'];
     $updated = $row['updated_at'];
     $gender = $row['gender'];
+    $disability = $row['disability'];
+    $photo = $row['photo'];
 
 ?>
 <!DOCTYPE html>
@@ -134,11 +136,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <div class="col-md-2 pt-4">
                     <h5>Disabled</h5>
-                    <input value="" disabled type="text" name="passport" id="passport" class="form-control">
+                    <input value="<?php echo $disability?>" disabled type="text" name="passport" id="passport" class="form-control">
                 </div>
-                <div class="col-md-2 pt-4">
+                <div class="col-md-2 pt-4 ">
                     <h5>Photo</h5>
-                    <input value="" disabled type="text" name="passport" id="passport" class="form-control">
+                    <div class="text-center">
+                        <img src="<?php echo "uploads/".$photo ?>" alt="" width="50px" height="50px">
+                    </div>
                 </div>
             </div>
             <div class="row">

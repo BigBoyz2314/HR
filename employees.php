@@ -40,7 +40,7 @@ $result = $conn->query($sql);
                 <input type="text" value="<?php echo $eid ?>" class="form-control text-center" disabled>
             </div>
         </div>
-        <form action="add-employee.php" method="post">
+        <form action="add-employee.php" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-2 pt-4">
                     <h5>First Name</h5>
