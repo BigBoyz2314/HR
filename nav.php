@@ -37,6 +37,9 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
+                <a class="nav-link"><?php echo $_SESSION['name']; ?></a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="logout.php">Log out</a>
                 </li>
             </ul>

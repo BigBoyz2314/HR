@@ -11,6 +11,12 @@ if ($_SESSION['role'] != '1') {
     header("location: index.php");
     exit;
 }
+require_once('config.php');
+
+$sql = "SELECT employeeID FROM employees ORDER BY employeeID DESC LIMIT 1";
+$result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    $eid = $row['employeeID'] + 1;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +37,7 @@ if ($_SESSION['role'] != '1') {
             </div>
             <div class="col-md-2">
                 <h5>Employee ID</h5>
-                <input type="text" name="empID" id="empID" class="form-control" disabled required>
+                <input type="text" value="<?php echo $eid ?>" class="form-control text-center" disabled>
             </div>
         </div>
         <form action="add-employee.php" method="post">
