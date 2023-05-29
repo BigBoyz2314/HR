@@ -58,6 +58,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     $gender = $row['gender'];
     $disability = $row['disability'];
     $photo = $row['photo'];
+    $efname = $row['e_fname'];
+    $emname = $row['e_mname'];
+    $elname = $row['e_lname'];
+    $egender = $row['e_gender'];
+    $econtact = $row['e_contact'];
+    $ecnic = $row['e_cnic'];
+    $eaddress = $row['e_address'];
+    $edob = $row['e_dob'];
+    $emp = $row['e_emp'];
 
 ?>
 <!DOCTYPE html>
@@ -169,6 +178,49 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <div class="col-md-4 pt-4">
                         <h5>Contact 2 #</h5>
                         <input value="<?php echo $snumber?>" disabled type="number" name="sNumber" id="sNumber" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="emergency-info border rounded p-2 mt-2">
+                <h3>Emergency Information</h3>
+                <div class="row">
+                    <div class="col-md-2 pt-4">
+                        <h5>First Name</h5>
+                        <input type="text" value="<?php echo $efname?>" name="efName" id="efName" class="form-control" disabled>
+                    </div>
+                    <div class="col-md-2 pt-4">
+                        <h5>Middle Name</h5>
+                        <input type="text" value="<?php echo $emname?>" name="emName" id="emName" class="form-control" disabled>
+                    </div>
+                    <div class="col-md-2 pt-4">
+                        <h5>Last Name</h5>
+                        <input type="text" value="<?php echo $elname?>" name="elName" id="elName" class="form-control" disabled>
+                    </div>
+                    <div class="col-md-2 pt-4">
+                        <h5>Gender</h5>
+                        <input type="text" value="<?php echo $egender?>" name="egender" id="egender" class="form-control" disabled>
+                    </div>
+                    <div class="col-md-2 pt-4">
+                        <h5>Date of Birth</h5>
+                        <input type="date" value="<?php echo $edob?>" name="edob" id="edob" class="form-control" disabled>
+                    </div>
+                    <div class="col-md-2 pt-4">
+                        <h5>Employee</h5>
+                        <input type="text" value="<?php echo $emp?>" name="e_emp" id="e_emp" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 pt-4">
+                        <h5>CNIC</h5>
+                        <input type="number" value="<?php echo $ecnic?>" name="ecnic" id="ecnic" class="form-control" disabled>
+                    </div>
+                    <div class="col-md-4 pt-4">
+                        <h5>Emergency Address</h5>
+                        <input type="text" value="<?php echo $eaddress?>" name="eAddress" id="eAddress" class="form-control" disabled>
+                    </div>
+                    <div class="col-md-4 pt-4">
+                        <h5>Emergency Contact</h5>
+                        <input type="number" value="<?php echo $econtact?>" name="eNumber" id="eNumber" class="form-control" disabled>
                     </div>
                 </div>
             </div>
