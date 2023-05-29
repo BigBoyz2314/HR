@@ -9,16 +9,20 @@
         $mname = ucwords($_REQUEST["mName"]);
         $lname = ucwords($_REQUEST["lName"]);
         $dob = $_REQUEST["dob"];
+        $edob = $_REQUEST["edob"];
         $mStatus = $_REQUEST["mStatus"];
         $children = $_REQUEST["children"];
         $spousename = ucwords($_REQUEST["spouseName"]);
         $cnic = $_REQUEST["cnic"];
+        $ecnic = $_REQUEST["ecnic"];
         $passport = $_REQUEST["passport"];
         $paddress = ucwords($_REQUEST["pAddress"]);
         $saddress = ucwords($_REQUEST["sAddress"]);
         $caddress = ucwords($_REQUEST["cAddress"]);
+        $eaddress = ucwords($_REQUEST["eAddress"]);
         $pnumber = $_REQUEST["pNumber"];
         $snumber = $_REQUEST["sNumber"];
+        $enumber = $_REQUEST["eNumber"];
         $basicsalary = $_REQUEST["basicSalary"];
         $allowence = $_REQUEST["allowence"];
         $deduction = $_REQUEST["deduction"];
@@ -45,7 +49,12 @@
         $shift = $_REQUEST["shift"];
         $status = $_REQUEST["status"];
         $gender = $_REQUEST["gender"];
+        $egender = $_REQUEST["egender"];
         $disability = $_REQUEST["disability"];
+        $emp = $_REQUEST["e_emp"];
+        $efname = ucwords($_REQUEST["efName"]);
+        $emname = ucwords($_REQUEST["emName"]);
+        $elname = ucwords($_REQUEST["elName"]);
 
 
         $target_dir = "uploads/";
@@ -122,15 +131,15 @@
         $moj = date('m', strtotime($joindate));
         $mor = date('m', strtotime($leavedate));
 
-        $sql = "INSERT INTO `employees`(`employeeID`, `fname`, `mname`, `lname`, `dob`,`yob`,`gender`, `designation`, `designationID`, `grade`, `department`, `departmentID`, `martital_status`, `status`, `children`, `spouse_name`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `join_date`, `leave_date`, `primary_address`, `secondary_address`, `current_address`, `primary_number`, `secondary_number`, `bank_name`, `bank_account_no`, `iban`, `employee_code`, `manager_name`, `managerID`, `warnings`, `leaves`, `allowed_leaves`, `absents`, `presents`, `days_working`, `loan`, `loan_amount`, `cnic`, `passport_no`, `working_hours`, `start_time`, `end_time`, `shift`, `join_month`, `leave_month`, `disability`, `photo`, `created_at`) VALUES
-         ('','$fname','$mname','$lname','$dob','$yob','$gender','$desig','$designation','$grade','$dept','$department','$mStatus','$status','$children','$spousename','$basicsalary','$allowence','$deduction','$grosssalary','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift','$moj','$mor','$disability','$filename', current_timestamp())";
+        $sql = "INSERT INTO `employees`(`employeeID`, `fname`, `mname`, `lname`, `dob`,`yob`,`gender`, `designation`, `designationID`, `grade`, `department`, `departmentID`, `martital_status`, `status`, `children`, `spouse_name`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `join_date`, `leave_date`, `primary_address`, `secondary_address`, `current_address`, `primary_number`, `secondary_number`, `bank_name`, `bank_account_no`, `iban`, `employee_code`, `manager_name`, `managerID`, `warnings`, `leaves`, `allowed_leaves`, `absents`, `presents`, `days_working`, `loan`, `loan_amount`, `cnic`, `passport_no`, `working_hours`, `start_time`, `end_time`, `shift`, `join_month`, `leave_month`, `disability`, `photo`, `created_at`, `e_fname`, `e_mname`, `e_lname`, `e_dob`, `e_cnic`, `e_contact`, `e_gender`, `e_address`, `e_emp`) VALUES
+         ('','$fname','$mname','$lname','$dob','$yob','$gender','$desig','$designation','$grade','$dept','$department','$mStatus','$status','$children','$spousename','$basicsalary','$allowence','$deduction','$grosssalary','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift','$moj','$mor','$disability','$filename', current_timestamp(), '$efname','$emname','$elname','$edob','$ecnic','$enumber','$egender','$eaddress','$emp')";
 
 
         if(mysqli_query($conn, $sql)){
             $last_id = $conn->insert_id;
 
-            $sql1 = "INSERT INTO `employees_log`(`employeeID`, `fname`, `mname`, `lname`, `dob`,`yob`,`gender`, `designation`, `designationID`, `grade`, `department`, `departmentID`, `martital_status`, `status`, `children`, `spouse_name`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `join_date`, `leave_date`, `primary_address`, `secondary_address`, `current_address`, `primary_number`, `secondary_number`, `bank_name`, `bank_account_no`, `iban`, `employee_code`, `manager_name`, `managerID`, `warnings`, `leaves`, `allowed_leaves`, `absents`, `presents`, `days_working`, `loan`, `loan_amount`, `cnic`, `passport_no`, `working_hours`, `start_time`, `end_time`, `shift`, `join_month`, `leave_month`, `disability`, `photo`, `created_at`) VALUES
-            ('$last_id','$fname','$mname','$lname','$dob','$yob','$gender','$desig','$designation','$grade','$dept','$department','$mStatus','$status','$children','$spousename','$basicsalary','$allowence','$deduction','$grosssalary','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift','$moj','$mor','$disability','$filename', current_timestamp())";
+            $sql1 = "INSERT INTO `employees_log`(`employeeID`, `fname`, `mname`, `lname`, `dob`,`yob`,`gender`, `designation`, `designationID`, `grade`, `department`, `departmentID`, `martital_status`, `status`, `children`, `spouse_name`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `join_date`, `leave_date`, `primary_address`, `secondary_address`, `current_address`, `primary_number`, `secondary_number`, `bank_name`, `bank_account_no`, `iban`, `employee_code`, `manager_name`, `managerID`, `warnings`, `leaves`, `allowed_leaves`, `absents`, `presents`, `days_working`, `loan`, `loan_amount`, `cnic`, `passport_no`, `working_hours`, `start_time`, `end_time`, `shift`, `join_month`, `leave_month`, `disability`, `photo`, `created_at`, `e_fname`, `e_mname`, `e_lname`, `e_dob`, `e_cnic`, `e_contact`, `e_gender`, `e_address`, `e_emp`) VALUES
+            ('$last_id','$fname','$mname','$lname','$dob','$yob','$gender','$desig','$designation','$grade','$dept','$department','$mStatus','$status','$children','$spousename','$basicsalary','$allowence','$deduction','$grosssalary','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift','$moj','$mor','$disability','$filename', current_timestamp(), '$efname','$emname','$elname','$edob','$ecnic','$enumber','$egender','$eaddress','$emp')";
    
                 
             $sql2 = "UPDATE department SET current_Strength = current_Strength + 1 WHERE departmentID = $department";

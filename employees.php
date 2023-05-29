@@ -41,7 +41,7 @@ $result = $conn->query($sql);
             </div>
         </div>
         <form action="add-employee.php" method="post" enctype="multipart/form-data">
-            <div class="personal-info border mt-2">
+            <div class="personal-info border rounded p-2 mt-2">
                 <h3>Personal Information</h3>
                 <div class="row">
                     <div class="col-md-2 pt-4">
@@ -109,8 +109,6 @@ $result = $conn->query($sql);
                     </div>
                 </div>
                 <div class="row">
-                </div>
-                <div class="row">
                     <div class="col-md-4 pt-4">
                         <h5>Primary Address</h5>
                         <input type="text" name="pAddress" id="pAddress" class="form-control" required>
@@ -137,7 +135,7 @@ $result = $conn->query($sql);
                     </div>
                 </div>
             </div>
-            <div class="emergency-info border mt-2">
+            <div class="emergency-info border rounded p-2 mt-2">
                 <h3>Emergency Information</h3>
                 <div class="row">
                     <div class="col-md-2 pt-4">
@@ -187,7 +185,7 @@ $result = $conn->query($sql);
                     </div>
                 </div>
             </div>
-            <div class="salary-information border mt-2">
+            <div class="salary-information border rounded p-2 mt-2">
                 <h3>Salary Information</h3>
                 <div class="row">
                     <div class="col-md-3 pt-4">
@@ -222,7 +220,7 @@ $result = $conn->query($sql);
                     </div>
                 </div>     
             </div>
-            <div class="official-information border mt-2">
+            <div class="official-information border rounded p-2 mt-2">
                 <h3>Official Information</h3>
                 <div class="row">
                     <div class="col-md-2 pt-4">

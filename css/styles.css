@@ -6,6 +6,7 @@
 }
 
 @media print {
+  
     body {
       visibility: hidden;
     }
@@ -15,21 +16,4 @@
       left: 0;
       top: 0;
     }
-  }
-
-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-}
-
-table tbody {
-    display: table;
-    width: 100%;
-}
-
-.border {
-  border: 2px solid gray;
-  border-radius: 5px;
-  padding: 7px;
 }
