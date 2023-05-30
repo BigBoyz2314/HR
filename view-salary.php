@@ -82,17 +82,18 @@ require_once('config.php');
                         <th>First Name</th>
                         <th>Middle Name</th>
                         <th>Last Name</th>
-                        <th>D.O.B</th> 
                         <th>Designation</th>
-                        <th>Gender</th>
                         <th>Department</th>
-                        <th>Status</th>
-                        <th>Joining Date</th>
+                        <th>Days Payable</th>
                         <th>Basic Salary</th>
                         <th>Allowance</th>
                         <th>Deduction</th>
+                        <th>Absent Deduc.</th>
                         <th>Gross Salary</th>
-                        <th>Updated</th>
+                        <th>Payable</th>
+                        <th>Paid</th>
+                        <th>Remaining</th>
+                        <!-- <th></th> -->
                     </thead>
                     <tbody>
                         <?php
@@ -104,10 +105,12 @@ require_once('config.php');
                                 $i = 1;
                                 $totaldays = cal_days_in_month(CAL_GREGORIAN,$_GET['month'],$_GET['year']);
                                 $today = date("d M y");
+                                $thismonth = date("n");
+                                $thisyear = date("Y");
                                 $date = date("d");
                                 $firstDate = date("Ymd", strtotime($today));
-                                $secondDate = $_GET['year'];
-                                $secondDate = date("Ym", strtotime($secondDate));
+                                $secondDates = $_GET['year'] .'-0'. $_GET['month'];
+                                $secondDate = date("Ym", strtotime($secondDates));
         
                                 if ($result->num_rows > 0) {
                                     // output data of each row
@@ -117,47 +120,60 @@ require_once('config.php');
                                         $fname = $row['fname'];
                                         $mname = $row['mname'];
                                         $lname = $row['lname'];
-                                        $dob = $row['dob'];
                                         $desig = $row['designation'];
                                         $dept = $row['department'];
                                         $gender = $row['gender'];
-                                        $joindate = $row['join_date'];
-                                        $status = $row['status'];
-                                        $children = $row['children'];
                                         $basic = $row['basic_salary'];
                                         $allowance = $row['allowance'];
                                         $deduction = $row['deduction'];
-                                        $gross = $row['gross_salary'];
-                                        $updated = $row['updated_at'];                                        
-
-                                        if ($secondDate < $firstDate) {
-                                            $days = 365 / 12;
-                                            $day = 30;
-                                            $dpay = $gross / $days;
-                                            if ($date < $day) {
-                                                $pay = $dpay * $date;
+                                        $gross = $row['gross_salary'];                                      
+                                        
+                                        $day = 30;
+                                        if ($_GET['month'] == 2) {
+                                            $day = 28;
+                                        }
+                                        $dpay = $gross / $day;
+                                        if ($thismonth == $_GET['month']) {
+                                            $abs = $day - $date;
+                                            if ($abs < 1) {
+                                                $abs = 0;
                                             }
-                                            else {
-                                                $pay = $dpay * ($days);
+                                            $absent = $abs * $dpay;
+                                        }
+                                        else {
+                                            $absent = 0;
+                                        }
+
+                                        if ($secondDate < $firstDate && $thismonth == $_GET['month']) {
+                                            $pay = $dpay * $date;
+                                            if ($date == 31) {
+                                                $pay = $dpay * $day;
+                                                $date = 30;
                                             }
                                         }
-                                        
+                                        elseif ($thismonth >= $_GET['month']) {
+                                            $pay = $dpay * $day;
+                                            $date = $totaldays;
+                                        }
+                                        else {
+                                            $pay = 0;
+                                        }
                                         echo "<tr>";
                                         echo "<td>". $i++ ."</td>";
                                         echo "<td>$fname</td>";
                                         echo "<td>$mname</td>";
                                         echo "<td>$lname</td>";
-                                        echo "<td>". date("d M y", strtotime($dob)) ."</td>";
                                         echo "<td>$desig</td>";
-                                        echo "<td>$gender</td>";
-                                        echo "<td>$dept</td>";
-                                        echo "<td>$status</td>";
-                                        echo "<td id='day'></td>";
+                                        echo "<td>$dept</td>"; 
+                                        echo "<td id='day'>". $date ."</td>";
                                         echo "<td>$basic</td>";
                                         echo "<td>$allowance</td>";
                                         echo "<td>$deduction</td>";
+                                        echo "<td>". number_format($absent) ."</td>";
                                         echo "<td id='gross'>$gross</td>";
-                                        echo "<td id='pay'>$pay</td>";
+                                        echo "<td id='pay'>". number_format($pay) ."</td>";
+                                        echo "<td id=''>0</td>";
+                                        echo "<td id=''>0</td>";
                                         echo "</tr>";
         
                                     }
