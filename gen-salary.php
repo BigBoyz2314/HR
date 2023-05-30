@@ -6,9 +6,13 @@ session_start();
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
-
-
 }
+
+if ($_SESSION['role'] != '1') {
+    header("location: index.php");
+    exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +30,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             $('.js-example-basic-single').select2();
         });
     </script>
-    <title>View Employees By Month</title>
+    <title>Generate Salary</title>
 </head>
 <body>  
     <?php include 'nav.php' ?>

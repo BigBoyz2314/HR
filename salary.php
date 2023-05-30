@@ -26,7 +26,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             $('.js-example-basic-single').select2();
         });
     </script>
-    <title>View Employees By Month</title>
+    <title>View Salary</title>
 </head>
 <body>  
     <?php include 'nav.php' ?>

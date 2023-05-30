@@ -64,12 +64,12 @@ require_once('config.php');
     </script>
    
     <link rel="stylesheet" href="css/styles.css">
-    <title>View Employees</title>
+    <title>View Salary</title>
 </head>
 <body>
 <?php include 'nav.php' ?>
     <div class="container-fluid py-5">
-        <h1>View Employees</h1>
+        <h1>View Salary</h1>
 
         <div class="row mt-5">
             <button class="btn btn-info m-3 export-btn">Export to Excel</button>
@@ -93,7 +93,7 @@ require_once('config.php');
                         <th>Payable</th>
                         <th>Paid</th>
                         <th>Remaining</th>
-                        <!-- <th></th> -->
+                        <th>Update</th>
                     </thead>
                     <tbody>
                         <?php
@@ -143,8 +143,9 @@ require_once('config.php');
                                         echo "<td>". number_format($absent) ."</td>";
                                         echo "<td id='gross'>$gross</td>";
                                         echo "<td id='pay'>". number_format($payable) ."</td>";
-                                        echo "<td id=''>0</td>";
-                                        echo "<td id=''>0</td>";
+                                        echo "<td>$paid</td>";
+                                        echo "<td>$remaining</td>";
+                                        echo '<td><form action="edit-salary.php" method="get"><input type="hidden" name="id" value="'. $id .'"> <input class="btn btn-success" type="submit" value="Edit"></form></td>';
                                         echo "</tr>";
         
                                     }
