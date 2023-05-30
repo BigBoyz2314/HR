@@ -99,65 +99,36 @@ require_once('config.php');
                         <?php
 
                             if (isset($_GET['year'])) {
+                                $year = $_GET['year'];
+                                $month = $_GET['month'];
                             
-                                $stmt = "SELECT * FROM employees";
+                                $stmt = "SELECT * FROM salary WHERE `year` = $year AND `month` = $month";
                                 $result = $conn->query($stmt);
                                 $i = 1;
-                                $totaldays = cal_days_in_month(CAL_GREGORIAN,$_GET['month'],$_GET['year']);
-                                $today = date("d M y");
-                                $thismonth = date("n");
-                                $thisyear = date("Y");
-                                $date = date("d");
-                                $firstDate = date("Ymd", strtotime($today));
-                                $secondDates = $_GET['year'] .'-0'. $_GET['month'];
-                                $secondDate = date("Ym", strtotime($secondDates));
-        
+
                                 if ($result->num_rows > 0) {
                                     // output data of each row
                                     
                                     while($row = $result->fetch_assoc()) { 
-                                        $id = $row['employeeID'];
+                                        $id = $row['id'];
+                                        $eid = $row['employeeID'];
                                         $fname = $row['fname'];
                                         $mname = $row['mname'];
                                         $lname = $row['lname'];
                                         $desig = $row['designation'];
                                         $dept = $row['department'];
                                         $gender = $row['gender'];
+                                        $paydays = $row['pay_days'];
                                         $basic = $row['basic_salary'];
                                         $allowance = $row['allowance'];
                                         $deduction = $row['deduction'];
-                                        $gross = $row['gross_salary'];                                      
-                                        
-                                        $day = 30;
-                                        if ($_GET['month'] == 2) {
-                                            $day = 28;
-                                        }
-                                        $dpay = $gross / $day;
-                                        if ($thismonth == $_GET['month']) {
-                                            $abs = $day - $date;
-                                            if ($abs < 1) {
-                                                $abs = 0;
-                                            }
-                                            $absent = $abs * $dpay;
-                                        }
-                                        else {
-                                            $absent = 0;
-                                        }
+                                        $gross = $row['gross_salary'];                                    
+                                        $payable = $row['payable'];                             
+                                        $absent = $row['absent'];                                 
+                                        $paid = $row['paid'];
+                                        $remaining = $row['remaining'];                                    
 
-                                        if ($secondDate < $firstDate && $thismonth == $_GET['month']) {
-                                            $pay = $dpay * $date;
-                                            if ($date == 31) {
-                                                $pay = $dpay * $day;
-                                                $date = 30;
-                                            }
-                                        }
-                                        elseif ($thismonth >= $_GET['month']) {
-                                            $pay = $dpay * $day;
-                                            $date = $totaldays;
-                                        }
-                                        else {
-                                            $pay = 0;
-                                        }
+
                                         echo "<tr>";
                                         echo "<td>". $i++ ."</td>";
                                         echo "<td>$fname</td>";
@@ -165,13 +136,13 @@ require_once('config.php');
                                         echo "<td>$lname</td>";
                                         echo "<td>$desig</td>";
                                         echo "<td>$dept</td>"; 
-                                        echo "<td id='day'>". $date ."</td>";
+                                        echo "<td id='day'>$paydays</td>";
                                         echo "<td>$basic</td>";
                                         echo "<td>$allowance</td>";
                                         echo "<td>$deduction</td>";
                                         echo "<td>". number_format($absent) ."</td>";
                                         echo "<td id='gross'>$gross</td>";
-                                        echo "<td id='pay'>". number_format($pay) ."</td>";
+                                        echo "<td id='pay'>". number_format($payable) ."</td>";
                                         echo "<td id=''>0</td>";
                                         echo "<td id=''>0</td>";
                                         echo "</tr>";

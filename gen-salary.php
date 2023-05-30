@@ -31,10 +31,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <body>  
     <?php include 'nav.php' ?>
     <div class="container-fluid p-5">
-        <h1>View Salary</h1>
+        <h1>Generate Salary</h1>
         <div class="row">
             <div class="col-md-6 pt-4">
-                <form action="generate-salary.php" method="post">
+                <form action="generate-salary.php" method="get">
                     <h4>Month</h4>
                     <select class="js-example-basic-single w-50" name="month" required>
                         <option></option>

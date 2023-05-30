@@ -32,10 +32,20 @@
                     <a class="nav-link" href="department.php">Departments</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="designation.php">Designations</a>
+                    <a class="nav-link" href="designation.php">Designation</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="salary.php">Salary</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    Payroll
+                    </a>
+                    <div class="dropdown-menu bg-dark">
+                        <?php
+                        if ($_SESSION['role'] == '1') {
+                            echo '<a class="dropdown-item bg-dark text-white-50" href="gen-salary.php">Generate Salary</a>';
+                        }
+                        ?>
+                        <a class="dropdown-item bg-dark text-white-50" href="salary.php">View Salary</a>
+                    </div>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
