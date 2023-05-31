@@ -57,16 +57,34 @@ session_start();
 <?php include 'nav.php' ?>
     <div class="container-fluid p-5">
         <h1>Edit Salary</h1>
-        <form action="" method="post">
+        <form action="pay-salary.php" method="post">
             <div class="row">
-                <div class="col-6 pt-4">
+                <div class="col-md-3 pt-4">
                     <h4>Name</h4>
-                    <input type="text" disabled name="name" id="name" value="<?php echo $name?>" class="form-control w-50">
-                    <input type="hidden" name="id" id="id" value="<?php echo $id ?>" class="form-control w-50">
+                    <input type="text" disabled name="name" id="name" value="<?php echo $name?>" class="form-control">
+                    <input type="hidden" name="id" id="id" value="<?php echo $id ?>" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Payable</h4>
+                    <input type="text" disabled name="payable" id="payable" value="<?php echo $payable?>" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Paid</h4>
+                    <input type="text" disabled name="paid" id="paid" value="<?php echo $paid?>" class="form-control">
                 </div>
             </div>
             <div class="row">
-                <div class="col-3 pt-4">
+                <div class="col-md-3 pt-4">
+                    <h4>Remaining</h4>
+                        <input type="text" disabled name="remaining" id="remaining" value="<?php echo $remaining?>" class="form-control">
+                </div>
+                <div class="col-md-3 pt-4">
+                    <h4>Pay</h4>
+                        <input type="number" name="pay" id="pay" value="" max="<?php echo $remaining ?>" min="0" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 pt-4">
                     <button type="submit" class="btn btn-success">Submit</button>
                 </div>
             </div>

@@ -93,7 +93,7 @@ require_once('config.php');
                         <th>Payable</th>
                         <th>Paid</th>
                         <th>Remaining</th>
-                        <th>Update</th>
+                        <th>Edit</th>
                     </thead>
                     <tbody>
                         <?php
@@ -137,14 +137,14 @@ require_once('config.php');
                                         echo "<td>$desig</td>";
                                         echo "<td>$dept</td>"; 
                                         echo "<td id='day'>$paydays</td>";
-                                        echo "<td>$basic</td>";
-                                        echo "<td>$allowance</td>";
-                                        echo "<td>$deduction</td>";
+                                        echo "<td>". number_format($basic) ."</td>";
+                                        echo "<td>". number_format($allowance) ."</td>";
+                                        echo "<td>". number_format($deduction) ."</td>";
                                         echo "<td>". number_format($absent) ."</td>";
-                                        echo "<td id='gross'>$gross</td>";
+                                        echo "<td id='gross'>". number_format($gross) ."</td>";
                                         echo "<td id='pay'>". number_format($payable) ."</td>";
-                                        echo "<td>$paid</td>";
-                                        echo "<td>$remaining</td>";
+                                        echo "<td>". number_format($paid) ."</td>";
+                                        echo "<td>". number_format($remaining) ."</td>";
                                         echo '<td><form action="edit-salary.php" method="get"><input type="hidden" name="id" value="'. $id .'"> <input class="btn btn-success" type="submit" value="Edit"></form></td>';
                                         echo "</tr>";
         
