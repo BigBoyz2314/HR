@@ -10,13 +10,20 @@
         $paid = $_REQUEST["paid"];
         $remaining = $_REQUEST["remaining"];
         $pay = $_REQUEST["pay"];
+        $fname = $_REQUEST["fname"];
     }
 
-        $sql ="UPDATE `designation` SET `name`='$name', `grade`='$grade',`updated_at` = current_timestamp() WHERE `name` = '$name' AND `designationID` = '$id'";
+    $pai = $paid + $pay;
+    
+    $remain = $remaining - $pai;
+
+    echo $remaining;
+
+        $sql ="UPDATE `salary` SET `remaining`='$remain', `paid`='$pai', `updated_at` = current_timestamp() WHERE `fname` = '$fname' AND `id` = '$id'";
         
         if(mysqli_query($conn, $sql)){
 
-            header('Location: designation.php');
+            header('Location: salary.php?action=paid');
         
         } else{
             echo "ERROR: Hush! Sorry $sql. "

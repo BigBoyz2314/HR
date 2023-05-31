@@ -63,6 +63,10 @@ session_start();
                     <h4>Name</h4>
                     <input type="text" disabled name="name" id="name" value="<?php echo $name?>" class="form-control">
                     <input type="hidden" name="id" id="id" value="<?php echo $id ?>" class="form-control">
+                    <input type="hidden" name="fname" id="fname" value="<?php echo $fname ?>" class="form-control">
+                    <input type="hidden" name="payable" id="payable" value="<?php echo $payable ?>" class="form-control">
+                    <input type="hidden" name="paid" id="paid" value="<?php echo $paid ?>" class="form-control">
+                    <input type="hidden" name="remaining" id="remaining" value="<?php echo $remaining ?>" class="form-control">
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Payable</h4>
