@@ -56,7 +56,7 @@ require_once('config.php');
 </head>
 <body>
 <?php include 'nav.php' ?>
-    <div class="container-fluid py-5">
+    <div class="container-fluid pt-5">
         <h1>View Employees</h1>
 
         <div class="row mt-5">
@@ -604,7 +604,6 @@ require_once('config.php');
             </div>
             </div>
         </div>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
 </body>
 </html>
