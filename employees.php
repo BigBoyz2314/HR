@@ -202,19 +202,27 @@ $result = $conn->query($sql);
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3 pt-4">
+                    <div class="col-md-2 pt-4">
                         <h5>Basic Salary</h5>
                         <input type="number" min="0" onchange="salary()" name="basicSalary" id="basicSalary" class="form-control" value="0" required>
                     </div>
-                    <div class="col-md-3 pt-4">
+                    <div class="col-md-2 pt-4">
                         <h5>Allowence</h5>
                         <input type="number" min="0" onchange="salary()" name="allowence" id="allowence" class="form-control" value="0">
                     </div>
-                    <div class="col-md-3 pt-4">
+                    <div class="col-md-2 pt-4">
+                        <h5>Conveyance Allow.</h5>
+                        <input type="number" min="0" onchange="salary()" name="cAllowence" id="cAllowence" class="form-control" value="0">
+                    </div>
+                    <div class="col-md-2 pt-4">
                         <h5>Deduction</h5>
                         <input type="number" min="0" onchange="salary()" name="deduction" id="deduction" class="form-control" value="0">
                     </div>
-                    <div class="col-md-3 pt-4">
+                    <div class="col-md-2 pt-4">
+                        <h5>EOBI</h5>
+                        <input type="number" min="0" onchange="salary()" name="eobi" id="eobi" class="form-control" value="0">
+                    </div>
+                    <div class="col-md-2 pt-4">
                         <h5>Gross Salary</h5>
                         <input type="number" name="grossSalary" id="grossSalary" class="form-control" value="0" required>
                     </div>
@@ -351,9 +359,11 @@ $result = $conn->query($sql);
         function salary() {
             $basic = document.getElementById('basicSalary').value;
             $allow = document.getElementById('allowence').value;
+            $con = document.getElementById('cAllowence').value;
             $deduc = document.getElementById('deduction').value;
+            $eobi = document.getElementById('eobi').value;
             
-            $sum = parseInt($basic) + parseInt($allow) - parseInt($deduc);
+            $sum = parseInt($basic) + parseInt($allow) + parseInt($con) - parseInt($deduc) - parseInt($eobi);
 
             console.log($sum);
 

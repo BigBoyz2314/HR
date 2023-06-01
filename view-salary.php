@@ -54,13 +54,6 @@ require_once('config.php');
             });
         });
 
-        $gross = $("#gross").text();
-        $ndays = 365/12;
-        const d = new Date();
-        $day = d.getDate();
-        $("#day").text = $day;
-        console.log($gross);
-
     </script>
    
     <link rel="stylesheet" href="css/styles.css">
@@ -87,7 +80,9 @@ require_once('config.php');
                         <th>Days Payable</th>
                         <th>Basic Salary</th>
                         <th>Allowance</th>
+                        <th>Conveyance Allow.</th>
                         <th>Deduction</th>
+                        <th>EOBI</th>
                         <th>Absent Deduc.</th>
                         <th>Gross Salary</th>
                         <th>Payable</th>
@@ -139,7 +134,9 @@ require_once('config.php');
                                         echo "<td id='day'>$paydays</td>";
                                         echo "<td>". number_format($basic) ."</td>";
                                         echo "<td>". number_format($allowance) ."</td>";
+                                        echo "<td>". number_format($cAllowance) ."</td>";
                                         echo "<td>". number_format($deduction) ."</td>";
+                                        echo "<td>". number_format($eobi) ."</td>";
                                         echo "<td>". number_format($absent) ."</td>";
                                         echo "<td id='gross'>". number_format($gross) ."</td>";
                                         echo "<td id='pay'>". number_format($payable) ."</td>";
