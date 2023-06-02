@@ -16,7 +16,7 @@
     $today = date("d M y");
     $thismonth = date("n");
     $thisyear = date("Y");
-    $date = date("d");
+    $date = date(31);
     $dayspayable = $date;
     if ($date == 31) {
         $dayspayable = 30;
@@ -36,6 +36,8 @@
             $gender = $row['gender'];
             $basic = $row['basic_salary'];
             $allowance = $row['allowance'];
+            $cAllowance = $row['c_allowance'];
+            $eobi = $row['eobi'];
             $deduction = $row['deduction'];
             $gross = $row['gross_salary'];                                      
             
@@ -63,8 +65,8 @@
 
             $pay = $pay - $absent;
 
-            $sql ="INSERT INTO `salary`(`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`)
-            VALUES ('$id','$fname','$mname','$lname','$desig','$dept','$gender','$basic','$allowance','$deduction','$gross','$month','$year','$totaldays','$dayspayable','$absent','$pay','','$pay',current_timestamp(),current_timestamp())";
+            $sql ="INSERT INTO `salary`(`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `c_allowance`, `eobi`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`)
+            VALUES ('$id','$fname','$mname','$lname','$desig','$dept','$gender','$basic','$allowance','$cAllowance','$eobi','$deduction','$gross','$month','$year','$totaldays','$dayspayable','$absent','$pay','','$pay',current_timestamp(),current_timestamp())";
             
             mysqli_query($conn, $sql);
         }

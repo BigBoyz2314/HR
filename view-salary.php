@@ -116,6 +116,8 @@ require_once('config.php');
                                         $paydays = $row['pay_days'];
                                         $basic = $row['basic_salary'];
                                         $allowance = $row['allowance'];
+                                        $cAllowance = $row['c_allowance'];
+                                        $eobi = $row['eobi'];
                                         $deduction = $row['deduction'];
                                         $gross = $row['gross_salary'];                                    
                                         $payable = $row['payable'];                             
