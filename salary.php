@@ -6,8 +6,6 @@ session_start();
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
-
-
 }
 ?>
 <!DOCTYPE html>
@@ -24,11 +22,37 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <script>
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
+
+            setTimeout(function() {
+            $(".alert").alert('close');
+            }, 3000);
         });
     </script>
     <title>View Salary</title>
 </head>
 <body>  
+<?php 
+if (isset($_GET['action'])) {
+    if (($_GET['action']) == 'paid') {
+    echo '<div class="alert alert-success alert-dismissible fade show position-absolute paid" role="alert">
+            <strong>Salary Paid!</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>';
+    }
+    elseif (($_GET['action']) == 'generated') {
+        $month = $_GET['month'];
+        $monthName = date('F', mktime(0, 0, 0, $month, 10));
+        echo '<div class="alert alert-success alert-dismissible fade show position-absolute paid" role="alert">
+            <strong>Salary Generated</strong> for '. $monthName .''. ' '. $_GET['year'] .'
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>';
+    } 
+}
+?>
     <?php include 'nav.php' ?>
     <div class="container-fluid p-5">
         <h1>View Salary</h1>

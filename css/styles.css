@@ -17,3 +17,8 @@
       top: 0;
     }
 }
+
+.paid {
+  bottom: 0px;
+  right: 0px;
+}
