@@ -148,6 +148,66 @@ require_once('config.php');
                                         echo "</tr>";
         
                                     }
+                                $stmt1 = "SELECT SUM(basic_salary) AS `basic` FROM salary WHERE `year` = $year AND `month` = $month";
+                                $stmt2 = "SELECT SUM(allowance) AS `allowance` FROM salary WHERE `year` = $year AND `month` = $month";
+                                $stmt3 = "SELECT SUM(c_allowance) AS `cAllowance` FROM salary WHERE `year` = $year AND `month` = $month";
+                                $stmt4 = "SELECT SUM(deduction) AS `deduction` FROM salary WHERE `year` = $year AND `month` = $month";
+                                $stmt5 = "SELECT SUM(eobi) AS `eobi` FROM salary WHERE `year` = $year AND `month` = $month";
+                                $stmt6 = "SELECT SUM(absent) AS `absent` FROM salary WHERE `year` = $year AND `month` = $month";
+                                $stmt7 = "SELECT SUM(gross_salary) AS `gross` FROM salary WHERE `year` = $year AND `month` = $month";
+                                $stmt8 = "SELECT SUM(payable) AS `payable` FROM salary WHERE `year` = $year AND `month` = $month";
+                                $stmt9 = "SELECT SUM(paid) AS `paid` FROM salary WHERE `year` = $year AND `month` = $month";
+                                $stmt0 = "SELECT SUM(remaining) AS `remaining` FROM salary WHERE `year` = $year AND `month` = $month";
+                                $result1 = $conn->query($stmt1);
+                                $row1 = $result1->fetch_assoc();
+
+                                $result2 = $conn->query($stmt2);
+                                $row2 = $result2->fetch_assoc();
+
+                                $result3 = $conn->query($stmt3);
+                                $row3 = $result3->fetch_assoc();
+
+
+                                $result4 = $conn->query($stmt4);
+                                $row4 = $result4->fetch_assoc();
+
+                                $result5 = $conn->query($stmt5);
+                                $row5 = $result5->fetch_assoc();
+
+                                $result6 = $conn->query($stmt6);
+                                $row6 = $result6->fetch_assoc();
+
+                                $result7 = $conn->query($stmt7);
+                                $row7 = $result7->fetch_assoc();
+
+                                $result8 = $conn->query($stmt8);
+                                $row8 = $result8->fetch_assoc();
+
+                                $result9 = $conn->query($stmt9);
+                                $row9 = $result9->fetch_assoc();
+
+                                $result0 = $conn->query($stmt0);
+                                $row0 = $result0->fetch_assoc();
+
+                                echo "<tr id='total'>";
+                                    echo "<td colspan='7' class='font-weight-bold'>Total</td>";
+                                    // echo "<td></td>";
+                                    // echo "<td></td>";
+                                    // echo "<td></td>";
+                                    // echo "<td></td>";
+                                    // echo "<td></td>"; 
+                                    // echo "<td></td>";
+                                    echo "<td>". number_format($row1['basic']) ."</td>";
+                                    echo "<td>". number_format($row2['allowance']) ."</td>";
+                                    echo "<td>". number_format($row3['cAllowance']) ."</td>";
+                                    echo "<td>". number_format($row4['deduction']) ."</td>";
+                                    echo "<td>". number_format($row5['eobi']) ."</td>";
+                                    echo "<td>". number_format($row6['absent']) ."</td>";
+                                    echo "<td>". number_format($row7['gross']) ."</td>";
+                                    echo "<td>". number_format($row8['payable']) ."</td>";
+                                    echo "<td>". number_format($row9['paid']) ."</td>";
+                                    echo "<td>". number_format($row0['remaining']) ."</td>";
+                                echo "</tr>";
                                 }
                                 else {
                                     echo "No Employee";
