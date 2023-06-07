@@ -8,11 +8,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-if ($_SESSION['role'] != '1') {
-    header("location: index.php");
-    exit;
-}
-
+require_once('config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,18 +25,37 @@ if ($_SESSION['role'] != '1') {
     <script>
         $(document).ready(function() {
             $('.js-example-basic-single').select2({theme: "bootstrap4"});
+
+            setTimeout(function() {
+            $(".alert").alert('close');
+            }, 3000);
         });
     </script>
-    <title>Generate Salary</title>
+    <title>Deductions</title>
 </head>
-<body>  
+<body>
     <?php include 'nav.php' ?>
     <div class="container-fluid p-5">
-        <h1>Generate Salary</h1>
+        <h1>Deductions</h1>
         <div class="row">
             <div class="col-md-6 pt-4">
-                <form action="generate-salary.php" method="get">
-                    <h4>Month</h4>
+                <form action="add-deduction.php" method="get">
+                    <h4>Employee</h4>
+                    <select class="js-example-basic-single w-50" name="emp" required>
+                        <option></option>
+                        <?php
+                        $stmt = "SELECT employeeID, fname, mname, lname FROM employees";
+                        $result = $conn->query($stmt);
+                        
+                        if ($result->num_rows > 0) {
+                            // output data of each row
+                            while($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['employeeID'] .'">' . $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'] . '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                    <h4 class="mt-3">Month</h4>
                     <select class="js-example-basic-single w-50" name="month" required>
                         <option></option>
                         <?php
@@ -61,9 +76,6 @@ if ($_SESSION['role'] != '1') {
             </div>
         </div>
     </div> 
-    <script>
-        
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
 </body>
 </html>

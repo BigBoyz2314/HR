@@ -23,20 +23,21 @@ require_once('config.php');
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.js-example-basic-single').select2();
+            $('.js-example-basic-single').select2({theme: "bootstrap4"});
         });
     </script>
     <title>View Employees Log</title>
 </head>
 <body>
 <?php include 'nav.php' ?>
-    <div class="container-fluid py-5">
+    <div class="container-fluid p-5">
+        
         <h1>View Employees Log</h1>
-
-        <div class="row mt-5">
+        <div class="row mt-4">
 
         <div class="col-md-6 pt-4">
                 <form action="view-emp-log.php" method="get">

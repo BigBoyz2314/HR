@@ -49,13 +49,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             }, 3000);
         });
     </script>
-    <title>Add Allowances</title>
+    <title>Add Deductions</title>
 </head>
 <body>
 <?php include 'nav.php' ?>
     <div class="container-fluid p-5">
-        <h1>Add Allowance</h1>
-        <form action="add-allow.php" method="post">
+        <h1>Add Deduction</h1>
+        <form action="add-deduc.php" method="post">
             <div class="row pt-4">
                 <div class="col-md-3">
                     <h5>Employee Name</h5>
@@ -76,12 +76,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </div>
             <div class="row pt-4 align-items-end">
                 <div class="col-md-2">
-                    <h5>Allowance Type</h5>
+                    <h5>Deduction Type</h5>
                     <select class="js-example-basic-single w-100" name="type" required>
                         <option></option>
                         <option value="Travel">Travel</option>
                         <option value="Food">Food</option>
-                        <option value="Mobile">Mobile</option>
+                        <option value="Fine">Fine</option>
                         <option value="Others">Others</option>
                     </select>
                 </div>
@@ -103,7 +103,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 <table class="table text-nowrap table-bordered w-100 text-center" id="table">
                     <thead class="font-weight-bolder">
                         <th>Sr.</th>
-                        <th>Allowance Type</th>
+                        <th>Deduction Type</th>
                         <th>Description</th>
                         <th>Amount</th>
                         <th>Created</th>
@@ -111,7 +111,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </thead>
                     <tbody class="">
                         <?php
-                            $stmt = "SELECT * FROM allowances WHERE employeeID = $eid";
+                            $stmt = "SELECT * FROM deductions WHERE employeeID = $eid";
                             $result = $conn->query($stmt);
                             $i = 1;
     
@@ -121,7 +121,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                 while($row = $result->fetch_assoc()) {
                                     $id = $row['id'];
                                     $eid = $row['employeeID'];
-                                    $type = $row['allowance_type'];
+                                    $type = $row['deduction_type'];
                                     $amount = $row['amount'];
                                     $desc = $row['description'];
                                     $created = $row['created_at']; 
@@ -135,13 +135,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                     echo "<td>". date("d M y g:i:s A", strtotime($created)) ."</td>";
                                     echo "<td>". date("d M y g:i:s A", strtotime($updated)) ."</td>";
                                     if ($_SESSION['role'] == '1') {
-                                        echo "<td><form action='edit-allowance.php' method='get'><input type='hidden' name='deptName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
+                                        echo "<td><form action='edit-deduction.php' method='get'><input type='hidden' name='year' value='". $year ."'><input type='hidden' name='month' value='". $month ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
                                         echo "<td><form id='del-form' action='del-deduction.php' method='get'><input type='hidden' name='year' value='". $year ."'><input type='hidden' name='month' value='". $month ."'><input type='hidden' name='eid' value='". $eid ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                     }
                                     echo "</tr>";
     
                                 }
-                              }
+                              } 
                         ?>
                     </tbody>
             </table>

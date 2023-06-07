@@ -20,17 +20,18 @@ require_once('config.php');
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.js-example-basic-single').select2();
+            $('.js-example-basic-single').select2({theme: "bootstrap4"});
 
             setTimeout(function() {
             $(".alert").alert('close');
             }, 3000);
         });
     </script>
-    <title>View Salary</title>
+    <title>Allowances</title>
 </head>
 <body>
     <?php include 'nav.php' ?>
@@ -38,7 +39,7 @@ require_once('config.php');
         <h1>Allowances</h1>
         <div class="row">
             <div class="col-md-6 pt-4">
-                <form action="allowance.php" method="get">
+                <form action="add-allowance.php" method="get">
                     <h4>Employee</h4>
                     <select class="js-example-basic-single w-50" name="emp" required>
                         <option></option>
