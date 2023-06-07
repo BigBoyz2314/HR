@@ -88,21 +88,21 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <div class="col-md-3">
                 <h1>View Employee</h1>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 text-center">
                     <h5>Created</h5>
-                    <input value="<?php echo $created;?>" disabled type="text" name="created" id="created" class="form-control">
+                    <input value="<?php echo $created ?>" disabled type="text" name="created" id="created" class="form-control font-weight-bold bg-info text-white text-center">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 text-center">
                     <h5>Updated</h5>
-                    <input value="<?php echo $updated?>" disabled type="text" name="created" id="created" class="form-control">
+                    <input value="<?php echo $updated ?>" disabled type="text" name="created" id="created" class="form-control font-weight-bold bg-info text-white text-center">
                 </div>    
-                <div class="col-md-2">
+                <div class="col-md-2 text-center">
                     <h5>Employee ID</h5>
-                    <input value="<?php echo $eid?>" disabled type="text" name="eid" id="eid" class="form-control text-center">
+                    <input value="<?php echo $eid ?>" disabled type="text" name="eid" id="eid" class="form-control font-weight-bold bg-info text-white text-center">
                 </div>    
         </div>
         <form action="" method="post">
-            <div class="personal-info border rounded p-2 mt-2">
+            <div class="personal-info border rounded p-2 mt-4">
                 <h3>Personal Information</h3>
                 <div class="row">
                     <div class="col-md-2 pt-4">
@@ -183,7 +183,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
             </div>
-            <div class="emergency-info border rounded p-2 mt-2">
+            <div class="emergency-info border rounded p-2 mt-4">
                 <h3>Emergency Information</h3>
                 <div class="row">
                     <div class="col-md-2 pt-4">
@@ -226,7 +226,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
             </div>
-            <div class="salary-information border rounded p-2 mt-2">
+            <div class="salary-information border rounded p-2 mt-4">
                 <h3>Salary Information</h3>
                 <div class="row">
                     <div class="col-md-3 pt-4">
@@ -269,7 +269,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
             </div>
-            <div class="official-information border rounded p-2 mt-2">
+            <div class="official-information border rounded p-2 mt-4">
                 <h3>Official Information</h3>
                 <div class="row">
                     <div class="col-md-2 pt-4">
@@ -324,7 +324,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <div class="row">
-                    
                     <div class="col-md-2 pt-4">
                         <h5>Days Workings</h5>
                         <input value="<?php echo $daysworking?>" disabled type="number" min="0" name="daysWorking" id="daysWorking" class="form-control">
@@ -356,7 +355,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <?php
         
         if ($_SESSION['role'] == '1') {
-            echo '<form action="edit-employee.php" method="get" class="mt-4 ">
+            echo '<form action="edit-employee.php" method="get" class="mt-4">
                     <input type="hidden" name="empID" id="empID" value="'. $id .'">
                     <input type="submit" value="Edit" class="btn btn-warning">
                 </form>';

@@ -28,6 +28,7 @@ session_start();
     $allow = $row["allowance"];
     $deduc = $row["deduction"];
     $gross = $row["gross_salary"];
+    $photo = $row["photo"];
 
 ?>
 <!DOCTYPE html>
@@ -123,7 +124,11 @@ session_start();
                         }
                         ?>
                     </select>
-                </div>                
+                </div> 
+                <div class="col-md-4 text-center">
+                        <img src="<?php echo "uploads/".$photo ?>" height="150px" width="150px">
+                        <input type="file" name="photo" id="photo" class="mt-2">
+                </div>               
             </div>
             <div class="row">
                 <div class="col-3 pt-4">
