@@ -67,7 +67,7 @@ require_once('config.php');
         <div class="row mt-5">
             <button class="btn btn-info m-3 export-btn">Export to Excel</button>
             <button class="btn btn-danger m-3" id="browserPrint">Print PDF</button>
-            <input type="text" name="search" id="search" class="form-control w-25 ml-auto" placeholder="Search...">	
+            <input type="text" name="search" id="search" class="form-control m-3 w-25 ml-auto" placeholder="Search...">	
             <div class="col-md-12">
                 <table class="table table-responsive text-nowrap table-bordered w-100 text-center" id="table">
                     <thead class="font-weight-bolder">
@@ -96,6 +96,7 @@ require_once('config.php');
                             if (isset($_GET['year'])) {
                                 $year = $_GET['year'];
                                 $month = $_GET['month'];
+                                
                             
                                 $stmt = "SELECT * FROM salary WHERE `year` = $year AND `month` = $month";
                                 $result = $conn->query($stmt);

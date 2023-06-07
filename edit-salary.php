@@ -21,6 +21,8 @@ session_start();
     $fname = $row['fname'];
     $mname = $row['mname'];
     $lname = $row['lname'];
+    $month = $row['month'];
+    $year = $row['year'];
     $desig = $row['designation'];
     $dept = $row['department'];
     $gender = $row['gender'];
@@ -67,6 +69,8 @@ session_start();
                     <input type="hidden" name="payable" id="payable" value="<?php echo $payable ?>" class="form-control">
                     <input type="hidden" name="paid" id="paid" value="<?php echo $paid ?>" class="form-control">
                     <input type="hidden" name="remaining" id="remaining" value="<?php echo $remaining ?>" class="form-control">
+                    <input type="hidden" name="year" id="year" value="<?php echo $year ?>" class="form-control">
+                    <input type="hidden" name="month" id="month" value="<?php echo $month ?>" class="form-control">
                 </div>
                 <div class="col-md-3 pt-4">
                     <h4>Payable</h4>
