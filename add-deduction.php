@@ -111,7 +111,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </thead>
                     <tbody class="">
                         <?php
-                            $stmt = "SELECT * FROM deductions WHERE employeeID = $eid";
+                            $stmt = "SELECT * FROM `deductions` WHERE `employeeID` = '$eid' AND `month` = '$month' AND `year` = '$year'";
                             $result = $conn->query($stmt);
                             $i = 1;
     
@@ -135,7 +135,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                     echo "<td>". date("d M y g:i:s A", strtotime($created)) ."</td>";
                                     echo "<td>". date("d M y g:i:s A", strtotime($updated)) ."</td>";
                                     if ($_SESSION['role'] == '1') {
-                                        echo "<td><form action='edit-deduction.php' method='get'><input type='hidden' name='year' value='". $year ."'><input type='hidden' name='month' value='". $month ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
+                                        // echo "<td><form action='edit-deduction.php' method='get'><input type='hidden' name='year' value='". $year ."'><input type='hidden' name='month' value='". $month ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
                                         echo "<td><form id='del-form' action='del-deduction.php' method='get'><input type='hidden' name='year' value='". $year ."'><input type='hidden' name='month' value='". $month ."'><input type='hidden' name='eid' value='". $eid ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                     }
                                     echo "</tr>";
