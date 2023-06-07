@@ -167,7 +167,6 @@ require_once('config.php');
                                 $result3 = $conn->query($stmt3);
                                 $row3 = $result3->fetch_assoc();
 
-
                                 $result4 = $conn->query($stmt4);
                                 $row4 = $result4->fetch_assoc();
 
@@ -191,12 +190,6 @@ require_once('config.php');
 
                                 echo "<tr id='total'>";
                                     echo "<td colspan='7' class='font-weight-bold'>Total</td>";
-                                    // echo "<td></td>";
-                                    // echo "<td></td>";
-                                    // echo "<td></td>";
-                                    // echo "<td></td>";
-                                    // echo "<td></td>"; 
-                                    // echo "<td></td>";
                                     echo "<td>". number_format($row1['basic']) ."</td>";
                                     echo "<td>". number_format($row2['allowance']) ."</td>";
                                     echo "<td>". number_format($row3['cAllowance']) ."</td>";
