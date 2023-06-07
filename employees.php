@@ -188,7 +188,7 @@ $result = $conn->query($sql);
             <div class="salary-information border rounded p-2 mt-4">
                 <h3>Salary Information</h3>
                 <div class="row">
-                    <div class="col-md-3 pt-4">
+                    <div class="col-md-2 pt-4">
                         <h5>Bank Name</h5>
                         <input type="text" name="bank" id="bank" class="form-control">
                     </div>
@@ -196,37 +196,15 @@ $result = $conn->query($sql);
                         <h5>Bank Account no.</h5>
                         <input type="number" name="bankAcc" id="bankAcc" class="form-control">
                     </div>
-                    <div class="col-md-5 pt-4">
+                    <div class="col-md-4 pt-4">
                         <h5>IBAN</h5>
                         <input type="text" name="iban" id="iban" class="form-control">
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-2 pt-4">
                         <h5>Basic Salary</h5>
                         <input type="number" min="0" onchange="salary()" name="basicSalary" id="basicSalary" class="form-control" value="0" required>
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Allowence</h5>
-                        <input type="number" min="0" onchange="salary()" name="allowence" id="allowence" class="form-control" value="0">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Conveyance Allow.</h5>
-                        <input type="number" min="0" onchange="salary()" name="cAllowence" id="cAllowence" class="form-control" value="0">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Deduction</h5>
-                        <input type="number" min="0" onchange="salary()" name="deduction" id="deduction" class="form-control" value="0">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>EOBI</h5>
-                        <input type="number" min="0" onchange="salary()" name="eobi" id="eobi" class="form-control" value="0">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Gross Salary</h5>
-                        <input type="number" name="grossSalary" id="grossSalary" class="form-control" value="0" required>
-                    </div>
-                </div>     
+                </div>   
             </div>
             <div class="official-information border rounded p-2 mt-4">
                 <h3>Official Information</h3>

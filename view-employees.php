@@ -79,9 +79,6 @@ require_once('config.php');
                         <th>Joining Date</th>
                         <th>Spouse Name</th>
                         <th>Basic Salary</th>
-                        <th>Total Allowances</th>
-                        <th>Total Deductions</th>
-                        <th>Gross Salary</th>
                         <th></th>
                     </thead>
                     <tbody class="">
@@ -113,15 +110,7 @@ require_once('config.php');
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
                                         $basic = $row['basic_salary'];
-                                        $allow = $row['allowance'];
-                                        $cAllowance = $row['c_allowance'];
-                                        $eobi = $row['eobi'];
-                                        $deduc = $row['deduction'];
                                         $gross = $row['gross_salary'];
-
-                                        $allowance = $allow + $cAllowance;
-                                        $deduction = $deduc + $eobi;
-
 
                                         echo "<tr>";
                                         echo "<td>". $i++ ."</td>";
@@ -137,9 +126,6 @@ require_once('config.php');
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>". number_format($basic) ."</td>";
-                                        echo "<td>". number_format($allowance) ."</td>";
-                                        echo "<td>". number_format($deduction) ."</td>";
-                                        echo "<td>". number_format($gross) ."</td>";
                                         echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                         // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                         echo "</tr>";
@@ -160,16 +146,7 @@ require_once('config.php');
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
                                         $basic = $row['basic_salary'];
-                                        $allow = $row['allowance'];
-                                        $cAllowance = $row['c_allowance'];
-                                        $eobi = $row['eobi'];
-                                        $deduc = $row['deduction'];
                                         $gross = $row['gross_salary'];
-
-                                        $allowance = $allow + $cAllowance;
-                                        $deduction = $deduc + $eobi;
-
-                                        
 
                                         echo "<tr>";
                                         echo "<td>". $i++ ."</td>";
@@ -185,9 +162,6 @@ require_once('config.php');
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>". number_format($basic) ."</td>";
-                                        echo "<td>". number_format($allowance) ."</td>";
-                                        echo "<td>". number_format($deduction) ."</td>";
-                                        echo "<td>". number_format($gross) ."</td>";
                                         echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                         // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                         echo "</tr>";
@@ -224,14 +198,6 @@ require_once('config.php');
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
                                         $basic = $row['basic_salary'];
-                                        $allow = $row['allowance'];
-                                        $cAllowance = $row['c_allowance'];
-                                        $eobi = $row['eobi'];
-                                        $deduc = $row['deduction'];
-                                        $gross = $row['gross_salary'];
-
-                                        $allowance = $allow + $cAllowance;
-                                        $deduction = $deduc + $eobi;
 
                                         echo "<tr>";
                                         echo "<td>". $i++ ."</td>";
@@ -247,9 +213,6 @@ require_once('config.php');
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>".number_format($basic)."</td>";
-                                        echo "<td>". number_format($allowance) ."</td>";
-                                        echo "<td>". number_format($deduction) ."</td>";
-                                        echo "<td>". number_format($gross) ."</td>";
                                         echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                         // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                         echo "</tr>";
@@ -286,14 +249,6 @@ require_once('config.php');
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
                                         $basic = $row['basic_salary'];
-                                        $allow = $row['allowance'];
-                                        $cAllowance = $row['c_allowance'];
-                                        $eobi = $row['eobi'];
-                                        $deduc = $row['deduction'];
-                                        $gross = $row['gross_salary'];
-
-                                        $allowance = $allow + $cAllowance;
-                                        $deduction = $deduc + $eobi;
 
                                         echo "<tr>";
                                         echo "<td>". $i++ ."</td>";
@@ -309,9 +264,6 @@ require_once('config.php');
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>". number_format($basic) ."</td>";
-                                        echo "<td>". number_format($allowance) ."</td>";
-                                        echo "<td>". number_format($deduction) ."</td>";
-                                        echo "<td>". number_format($gross) ."</td>";
                                         echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                         // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                         echo "</tr>";
@@ -348,14 +300,6 @@ require_once('config.php');
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
                                         $basic = $row['basic_salary'];
-                                        $allow = $row['allowance'];
-                                        $cAllowance = $row['c_allowance'];
-                                        $eobi = $row['eobi'];
-                                        $deduc = $row['deduction'];
-                                        $gross = $row['gross_salary'];
-
-                                        $allowance = $allow + $cAllowance;
-                                        $deduction = $deduc + $eobi;
 
                                         echo "<tr>";
                                         echo "<td>". $i++ ."</td>";
@@ -371,9 +315,6 @@ require_once('config.php');
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>". number_format($basic) ."</td>";
-                                        echo "<td>". number_format($allowance) ."</td>";
-                                        echo "<td>". number_format($deduction) ."</td>";
-                                        echo "<td>". number_format($gross) ."</td>";
                                         echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                         // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                         echo "</tr>";
@@ -411,14 +352,6 @@ require_once('config.php');
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
                                         $basic = $row['basic_salary'];
-                                        $allow = $row['allowance'];
-                                        $cAllowance = $row['c_allowance'];
-                                        $eobi = $row['eobi'];
-                                        $deduc = $row['deduction'];
-                                        $gross = $row['gross_salary'];
-
-                                        $allowance = $allow + $cAllowance;
-                                        $deduction = $deduc + $eobi;
 
                                         echo "<tr>";
                                         echo "<td>". $i++ ."</td>";
@@ -434,9 +367,6 @@ require_once('config.php');
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>". number_format($basic) ."</td>";
-                                        echo "<td>". number_format($allowance) ."</td>";
-                                        echo "<td>". number_format($deduction) ."</td>";
-                                        echo "<td>". number_format($gross) ."</td>";
                                         echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                         // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                         echo "</tr>";
@@ -473,14 +403,6 @@ require_once('config.php');
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
                                         $basic = $row['basic_salary'];
-                                        $allow = $row['allowance'];
-                                        $cAllowance = $row['c_allowance'];
-                                        $eobi = $row['eobi'];
-                                        $deduc = $row['deduction'];
-                                        $gross = $row['gross_salary'];
-
-                                        $allowance = $allow + $cAllowance;
-                                        $deduction = $deduc + $eobi;
 
                                         echo "<tr>";
                                         echo "<td>". $i++ ."</td>";
@@ -495,10 +417,6 @@ require_once('config.php');
                                         echo "<td>$status</td>";
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
-                                        echo "<td>". number_format($basic) ."</td>";
-                                        echo "<td>". number_format($allowance) ."</td>";
-                                        echo "<td>". number_format($deduction) ."</td>";
-                                        echo "<td>". number_format($gross) ."</td>";
                                         echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                         // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                         echo "</tr>";
@@ -535,14 +453,6 @@ require_once('config.php');
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
                                         $basic = $row['basic_salary'];
-                                        $allow = $row['allowance'];
-                                        $cAllowance = $row['c_allowance'];
-                                        $eobi = $row['eobi'];
-                                        $deduc = $row['deduction'];
-                                        $gross = $row['gross_salary'];
-
-                                        $allowance = $allow + $cAllowance;
-                                        $deduction = $deduc + $eobi;
 
                                         echo "<tr>";
                                         echo "<td>". $i++ ."</td>";
@@ -558,9 +468,6 @@ require_once('config.php');
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>". number_format($basic) ."</td>";
-                                        echo "<td>". number_format($allowance) ."</td>";
-                                        echo "<td>". number_format($deduction) ."</td>";
-                                        echo "<td>". number_format($gross) ."</td>";
                                         echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                         // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                         echo "</tr>";
@@ -576,7 +483,7 @@ require_once('config.php');
                                 $salfrom = $_GET['salfrom'];
                                 $salto = $_GET['salto'];
                             
-                                $stmt = "SELECT * FROM employees WHERE gross_salary BETWEEN $salfrom AND $salto";
+                                $stmt = "SELECT * FROM employees WHERE basic_salary BETWEEN $salfrom AND $salto";
                                 $result = $conn->query($stmt);
                                 $i = 1;
         
@@ -598,14 +505,6 @@ require_once('config.php');
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
                                         $basic = $row['basic_salary'];
-                                        $allow = $row['allowance'];
-                                        $cAllowance = $row['c_allowance'];
-                                        $eobi = $row['eobi'];
-                                        $deduc = $row['deduction'];
-                                        $gross = $row['gross_salary'];
-
-                                        $allowance = $allow + $cAllowance;
-                                        $deduction = $deduc + $eobi;
 
                                         echo "<tr>";
                                         echo "<td>". $i++ ."</td>";
@@ -621,9 +520,6 @@ require_once('config.php');
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
                                         echo "<td>".number_format($basic) . " </td>";
-                                        echo "<td>". number_format($allowance) ."</td>";
-                                        echo "<td>". number_format($deduction) ."</td>";
-                                        echo "<td>". number_format($gross) ."</td>";
                                         echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                         // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                         echo "</tr>";
@@ -658,14 +554,6 @@ require_once('config.php');
                                     $children = $row['children'];
                                     $spouse = $row['spouse_name'];
                                     $basic = $row['basic_salary'];
-                                    $allow = $row['allowance'];
-                                    $cAllowance = $row['c_allowance'];
-                                    $eobi = $row['eobi'];
-                                    $deduc = $row['deduction'];
-                                    $gross = $row['gross_salary'];
-
-                                    $allowance = $allow + $cAllowance;
-                                    $deduction = $deduc + $eobi;
 
                                     echo "<tr>";
                                     echo "<td>". $i++ ."</td>";
@@ -681,9 +569,6 @@ require_once('config.php');
                                     echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                     echo "<td>$spouse</td>";
                                     echo "<td>". number_format($basic) ." </td>";
-                                    echo "<td>". number_format($allowance) ."</td>";
-                                    echo "<td>". number_format($deduction) ."</td>";
-                                    echo "<td>". number_format($gross) ."</td>";
                                     echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                     // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                     echo "</tr>";

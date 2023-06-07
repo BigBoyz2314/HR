@@ -81,9 +81,6 @@ require_once('config.php');
                         <th>Status</th>
                         <th>Joining Date</th>
                         <th>Basic Salary</th>
-                        <th>Allowance</th>
-                        <th>Deduction</th>
-                        <th>Gross Salary</th>
                         <th>Updated</th>
                     </thead>
                     <tbody>
@@ -113,9 +110,6 @@ require_once('config.php');
                                         $status = $row['status'];
                                         $children = $row['children'];
                                         $basic = $row['basic_salary'];
-                                        $allowance = $row['allowance'];
-                                        $deduction = $row['deduction'];
-                                        $gross = $row['gross_salary'];
                                         $updated = $row['updated_at'];
 
                                         echo "<tr>";
@@ -129,10 +123,7 @@ require_once('config.php');
                                         echo "<td>$dept</td>";
                                         echo "<td>$status</td>";
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
-                                        echo "<td>$basic</td>";
-                                        echo "<td>$allowance</td>";
-                                        echo "<td>$deduction</td>";
-                                        echo "<td>$gross</td>";
+                                        echo "<td>$basic</td>";;
                                         echo "<td>". date("d M y h:i:s a", strtotime($updated)) ."</td>";
                                         echo "</tr>";
         

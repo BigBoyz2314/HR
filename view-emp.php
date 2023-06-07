@@ -26,11 +26,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     $children = $row['children'];
     $spouse = $row['spouse_name'];
     $basic = $row['basic_salary'];
-    $deduction = $row['deduction'];
-    $allowance = $row['allowance'];
-    $cAllowance = $row['c_allowance'];
-    $eobi = $row['eobi'];
-    $gross = $row['gross_salary'];
     $joindate = $row['join_date'];
     $leavedate = $row['leave_date'];
     $paddress = $row['primary_address'];
@@ -229,7 +224,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <div class="salary-information border rounded p-2 mt-4">
                 <h3>Salary Information</h3>
                 <div class="row">
-                    <div class="col-md-3 pt-4">
+                    <div class="col-md-2 pt-4">
                         <h5>Bank Name</h5>
                         <input value="<?php echo $bank?>" disabled type="text" name="bank" id="bank" class="form-control">
                     </div>
@@ -237,35 +232,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                         <h5>Bank Account no.</h5>
                         <input value="<?php echo $bankacc?>" disabled type="number" name="bankAcc" id="bankAcc" class="form-control">
                     </div>
-                    <div class="col-md-5 pt-4">
+                    <div class="col-md-4 pt-4">
                         <h5>IBAN</h5>
                         <input value="<?php echo $iban?>" disabled type="text" name="iban" id="iban" class="form-control">
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-2 pt-4">
                         <h5>Basic Salary</h5>
                         <input value="<?php echo $basic?>" disabled type="number" min="0" name="basicSalary" id="basicSalary" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Allowence</h5>
-                        <input value="<?php echo $allowance?>" disabled type="number" min="0" name="allowence" id="allowence" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Conveyance Allow.</h5>
-                        <input value="<?php echo $cAllowance?>" disabled type="number" min="0" name="allowence" id="allowence" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Deduction</h5>
-                        <input value="<?php echo $deduction?>" disabled type="number" min="0" name="deduction" id="deduction" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>EOBI</h5>
-                        <input value="<?php echo $eobi?>" disabled type="number" min="0" name="deduction" id="deduction" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Gross Salary</h5>
-                        <input value="<?php echo $gross?>" disabled type="number" name="grossSalary" id="grossSalary" class="form-control">
                     </div>
                 </div>
             </div>
