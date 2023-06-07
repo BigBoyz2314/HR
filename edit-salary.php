@@ -36,6 +36,11 @@ session_start();
     $paid = $row['paid'];
     $remaining = $row['remaining']; 
 
+    $stmt1 = "SELECT SUM(remaining) AS total_remaining FROM salary WHERE employeeID = $eid";
+    $result1 = $conn->query($stmt1);
+    $row1 = $result1->fetch_assoc();
+    $total_remaining = $row1['total_remaining'];
+
     if ($mname == '') {
         $name = $fname . ' ' . $lname;
     }
@@ -82,6 +87,10 @@ session_start();
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-3 pt-4">
+                    <h4>Total Remaining</h4>
+                    <input type="text" disabled name="total-remaining" id="total-remanining" value="<?php echo $total_remaining?>" class="form-control">
+                </div>
                 <div class="col-md-3 pt-4">
                     <h4>Remaining</h4>
                         <input type="text" disabled name="remaining" id="remaining" value="<?php echo $remaining?>" class="form-control">

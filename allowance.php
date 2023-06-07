@@ -7,6 +7,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+
+require_once('config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,28 +32,29 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </script>
     <title>View Salary</title>
 </head>
-<body>  
-<?php 
-    if (isset($_GET['action'])) {
-    if (($_GET['action']) == 'generated') {
-        $month = $_GET['month'];
-        $monthName = date('F', mktime(0, 0, 0, $month, 10));
-        echo '<div class="alert alert-success alert-dismissible fade show position-absolute paid" role="alert">
-            <strong>Salary Generated</strong> for '. $monthName .''. ' '. $_GET['year'] .'
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>';
-        }
-    }
-?>
+<body>
     <?php include 'nav.php' ?>
     <div class="container-fluid p-5">
-        <h1>View Salary</h1>
+        <h1>Allowances</h1>
         <div class="row">
             <div class="col-md-6 pt-4">
-                <form action="view-salary.php" method="get">
-                    <h4>Month</h4>
+                <form action="allowance.php" method="get">
+                    <h4>Employee</h4>
+                    <select class="js-example-basic-single w-50" name="emp" required>
+                        <option></option>
+                        <?php
+                        $stmt = "SELECT employeeID, fname, mname, lname FROM employees";
+                        $result = $conn->query($stmt);
+                        
+                        if ($result->num_rows > 0) {
+                            // output data of each row
+                            while($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['employeeID'] .'">' . $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'] . '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                    <h4 class="mt-3">Month</h4>
                     <select class="js-example-basic-single w-50" name="month" required>
                         <option></option>
                         <?php

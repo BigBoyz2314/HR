@@ -52,6 +52,10 @@ require_once('config.php');
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
+
+            setTimeout(function() {
+            $(".alert").alert('close');
+            }, 3000);
         });
 
     </script>
@@ -61,6 +65,18 @@ require_once('config.php');
 </head>
 <body>
 <?php include 'nav.php' ?>
+<?php 
+    if (isset($_GET['action'])) {
+    if (($_GET['action']) == 'paid') {
+        echo '<div class="alert alert-success alert-dismissible fade show paid" role="alert">
+                <strong>Salary Paid!</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+        } 
+    }
+    ?>
     <div class="container-fluid py-5">
         <h1>View Salary</h1>
 
@@ -135,16 +151,16 @@ require_once('config.php');
                                         echo "<td>$desig</td>";
                                         echo "<td>$dept</td>"; 
                                         echo "<td id='day'>$paydays</td>";
-                                        echo "<td>". number_format($basic) ."</td>";
-                                        echo "<td>". number_format($allowance) ."</td>";
-                                        echo "<td>". number_format($cAllowance) ."</td>";
-                                        echo "<td>". number_format($deduction) ."</td>";
-                                        echo "<td>". number_format($eobi) ."</td>";
-                                        echo "<td>". number_format($absent) ."</td>";
-                                        echo "<td id='gross'>". number_format($gross) ."</td>";
-                                        echo "<td id='pay'>". number_format($payable) ."</td>";
-                                        echo "<td>". number_format($paid) ."</td>";
-                                        echo "<td>". number_format($remaining) ."</td>";
+                                        echo "<td class='text-right'>". number_format($basic) ."</td>";
+                                        echo "<td class='text-right'>". number_format($allowance) ."</td>";
+                                        echo "<td class='text-right'>". number_format($cAllowance) ."</td>";
+                                        echo "<td class='text-right'>". number_format($deduction) ."</td>";
+                                        echo "<td class='text-right'>". number_format($eobi) ."</td>";
+                                        echo "<td class='text-right'>". number_format($absent) ."</td>";
+                                        echo "<td id='gross' class='text-right'>". number_format($gross) ."</td>";
+                                        echo "<td id='pay' class='text-right'>". number_format($payable) ."</td>";
+                                        echo "<td class='text-right'>". number_format($paid) ."</td>";
+                                        echo "<td class='text-right'>". number_format($remaining) ."</td>";
                                         echo '<td><form action="edit-salary.php" method="get"><input type="hidden" name="id" value="'. $id .'"> <input class="btn btn-success" type="submit" value="Edit"></form></td>';
                                         echo "</tr>";
         

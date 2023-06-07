@@ -36,6 +36,19 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                        Allow/Deduc
+                    </a>
+                    <div class="dropdown-menu bg-dark">
+                        <?php
+                        if ($_SESSION['role'] == '1') {
+                            echo '<a class="dropdown-item bg-dark text-white-50" href="allowance.php">Add Allowances</a>';
+                            echo '<a class="dropdown-item bg-dark text-white-50" href="deduction.php">Add Deductions</a>';
+                        }
+                        ?>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                     Payroll
                     </a>
                     <div class="dropdown-menu bg-dark">
