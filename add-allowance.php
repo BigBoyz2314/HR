@@ -136,7 +136,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                     echo "<td>". date("d M y g:i:s A", strtotime($updated)) ."</td>";
                                     if ($_SESSION['role'] == '1') {
                                         // echo "<td><form action='edit-allowance.php' method='get'><input type='hidden' name='year' value='". $year ."'><input type='hidden' name='month' value='". $month ."'><input type='hidden' name='eid' value='". $eid ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Edit' class='btn btn-warning'></form></td>";
-                                        echo "<td><form id='del-form' action='del-deduction.php' method='get'><input type='hidden' name='year' value='". $year ."'><input type='hidden' name='month' value='". $month ."'><input type='hidden' name='eid' value='". $eid ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
+                                        echo "<td><form id='del-form' action='del-allowance.php' method='get'><input type='hidden' name='year' value='". $year ."'><input type='hidden' name='month' value='". $month ."'><input type='hidden' name='eid' value='". $eid ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                     }
                                     echo "</tr>";
     
