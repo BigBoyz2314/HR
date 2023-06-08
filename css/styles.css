@@ -19,6 +19,7 @@
 }
 
 .paid {
+  z-index: 99999;
   bottom: 0px;
   right: 0px;
 }

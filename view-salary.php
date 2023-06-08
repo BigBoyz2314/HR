@@ -68,7 +68,7 @@ require_once('config.php');
 <?php 
     if (isset($_GET['action'])) {
     if (($_GET['action']) == 'paid') {
-        echo '<div class="alert alert-success alert-dismissible fade show paid" role="alert">
+        echo '<div class="alert alert-success alert-dismissible position-fixed paid" role="alert">
                 <strong>Salary Paid!</strong>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -95,10 +95,8 @@ require_once('config.php');
                         <th>Department</th>
                         <th>Days Payable</th>
                         <th>Basic Salary</th>
-                        <th>Allowance</th>
-                        <th>Conveyance Allow.</th>
+                        <th>Allowances</th>
                         <th>Deduction</th>
-                        <th>EOBI</th>
                         <th>Absent Deduc.</th>
                         <th>Gross Salary</th>
                         <th>Payable</th>
@@ -133,8 +131,6 @@ require_once('config.php');
                                         $paydays = $row['pay_days'];
                                         $basic = $row['basic_salary'];
                                         $allowance = $row['allowance'];
-                                        $cAllowance = $row['c_allowance'];
-                                        $eobi = $row['eobi'];
                                         $deduction = $row['deduction'];
                                         $gross = $row['gross_salary'];                                    
                                         $payable = $row['payable'];                             
@@ -153,9 +149,7 @@ require_once('config.php');
                                         echo "<td id='day'>$paydays</td>";
                                         echo "<td class='text-right'>". number_format($basic) ."</td>";
                                         echo "<td class='text-right'>". number_format($allowance) ."</td>";
-                                        echo "<td class='text-right'>". number_format($cAllowance) ."</td>";
                                         echo "<td class='text-right'>". number_format($deduction) ."</td>";
-                                        echo "<td class='text-right'>". number_format($eobi) ."</td>";
                                         echo "<td class='text-right'>". number_format($absent) ."</td>";
                                         echo "<td id='gross' class='text-right'>". number_format($gross) ."</td>";
                                         echo "<td id='pay' class='text-right'>". number_format($payable) ."</td>";
@@ -167,9 +161,7 @@ require_once('config.php');
                                     }
                                 $stmt1 = "SELECT SUM(basic_salary) AS `basic` FROM salary WHERE `year` = $year AND `month` = $month";
                                 $stmt2 = "SELECT SUM(allowance) AS `allowance` FROM salary WHERE `year` = $year AND `month` = $month";
-                                $stmt3 = "SELECT SUM(c_allowance) AS `cAllowance` FROM salary WHERE `year` = $year AND `month` = $month";
                                 $stmt4 = "SELECT SUM(deduction) AS `deduction` FROM salary WHERE `year` = $year AND `month` = $month";
-                                $stmt5 = "SELECT SUM(eobi) AS `eobi` FROM salary WHERE `year` = $year AND `month` = $month";
                                 $stmt6 = "SELECT SUM(absent) AS `absent` FROM salary WHERE `year` = $year AND `month` = $month";
                                 $stmt7 = "SELECT SUM(gross_salary) AS `gross` FROM salary WHERE `year` = $year AND `month` = $month";
                                 $stmt8 = "SELECT SUM(payable) AS `payable` FROM salary WHERE `year` = $year AND `month` = $month";
@@ -181,14 +173,8 @@ require_once('config.php');
                                 $result2 = $conn->query($stmt2);
                                 $row2 = $result2->fetch_assoc();
 
-                                $result3 = $conn->query($stmt3);
-                                $row3 = $result3->fetch_assoc();
-
                                 $result4 = $conn->query($stmt4);
                                 $row4 = $result4->fetch_assoc();
-
-                                $result5 = $conn->query($stmt5);
-                                $row5 = $result5->fetch_assoc();
 
                                 $result6 = $conn->query($stmt6);
                                 $row6 = $result6->fetch_assoc();
@@ -209,9 +195,7 @@ require_once('config.php');
                                     echo "<td colspan='7' class='font-weight-bold'>Total</td>";
                                     echo "<td>". number_format($row1['basic']) ."</td>";
                                     echo "<td>". number_format($row2['allowance']) ."</td>";
-                                    echo "<td>". number_format($row3['cAllowance']) ."</td>";
                                     echo "<td>". number_format($row4['deduction']) ."</td>";
-                                    echo "<td>". number_format($row5['eobi']) ."</td>";
                                     echo "<td>". number_format($row6['absent']) ."</td>";
                                     echo "<td>". number_format($row7['gross']) ."</td>";
                                     echo "<td>". number_format($row8['payable']) ."</td>";

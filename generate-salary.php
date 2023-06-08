@@ -4,6 +4,20 @@
 
 <?php
 
+    // Initialize the session
+    session_start();
+
+    // Check if the user is logged in, if not then redirect him to login page
+    if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+        header("location: login.php");
+        exit;
+    }
+
+    if ($_SESSION['role'] != '1') {
+        header("location: index.php");
+        exit;
+    }
+
     $name = $_SESSION['name'];
 
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -38,11 +52,21 @@
             $gender = $row['gender'];
             $basic = $row['basic_salary'];
             $allowance = $row['allowance'];
-            $cAllowance = $row['c_allowance'];
-            $eobi = $row['eobi'];
             $deduction = $row['deduction'];
-            $gross = $row['gross_salary'];
+
+            $stmt1 = "SELECT SUM(amount) AS amount FROM allowances where `month` = $month AND `year` = $year AND `employeeID` = $id";
+            $stmt2 = "SELECT SUM(amount) AS amount FROM deductions where `month` = $month AND `year` = $year AND `employeeID` = $id";
+            $result1 = $conn->query($stmt1);
+            $result2 = $conn->query($stmt2);
+
+            $row1 = $result1->fetch_assoc();
+            $allowance = $row1['amount'];
             
+            $row2 = $result2->fetch_assoc();
+            $deduction = $row2['amount'];
+
+            $gross = $basic + $allowance - $deduction;
+
             $day = 365/12;
 
             $dpay = $gross / $day;
@@ -67,11 +91,11 @@
 
             $pay = $pay - $absent;
 
-            $sql ="INSERT IGNORE INTO `salary`(`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `c_allowance`, `eobi`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`)
-            VALUES ('$id','$fname','$mname','$lname','$desig','$dept','$gender','$basic','$allowance','$cAllowance','$eobi','$deduction','$gross','$month','$year','$totaldays','$dayspayable','$absent','$pay','','$pay',current_timestamp(),current_timestamp())";
+            $sql ="INSERT IGNORE INTO `salary`(`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`)
+            VALUES ('$id','$fname','$mname','$lname','$desig','$dept','$gender','$basic','$allowance','$deduction','$gross','$month','$year','$totaldays','$dayspayable','$absent','$pay','','$pay',current_timestamp(),current_timestamp())";
 
-            $sql1 ="INSERT IGNORE INTO `salary_log` (`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `c_allowance`, `eobi`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`, `updated_by`)
-            VALUES ('$id','$fname','$mname','$lname','$desig','$dept','$gender','$basic','$allowance','$cAllowance','$eobi','$deduction','$gross','$month','$year','$totaldays','$dayspayable','$absent','$pay','','$pay',current_timestamp(),current_timestamp(),'$name')";
+            $sql1 ="INSERT IGNORE INTO `salary_log` (`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`, `updated_by`)
+            VALUES ('$id','$fname','$mname','$lname','$desig','$dept','$gender','$basic','$allowance','$deduction','$gross','$month','$year','$totaldays','$dayspayable','$absent','$pay','','$pay',current_timestamp(),current_timestamp(),'$name')";
             
             mysqli_query($conn, $sql);
             mysqli_query($conn, $sql1);

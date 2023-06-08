@@ -41,17 +41,15 @@
             $totaldays = $row['total_days'];
             $basic = $row['basic_salary'];
             $allowance = $row['allowance'];
-            $cAllowance = $row['c_allowance'];
             $deduction = $row['deduction'];
-            $eobi = $row['eobi'];
             $gross = $row['gross_salary'];                                    
             $payable = $row['payable'];                             
             $absent = $row['absent'];                                 
             $paid = $row['paid'];
             $remaining = $row['remaining'];
 
-            $sql1 ="INSERT IGNORE INTO `salary_log`(`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `c_allowance`, `eobi`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`, `updated_by`)
-            VALUES ('$id','$fname','$mname','$lname','$desig','$dept','$gender','$basic','$allowance','$cAllowance','$eobi','$deduction','$gross','$month','$year','$totaldays','$paydays','$absent','$pay','$paid','$remaining',current_timestamp(),current_timestamp(),'$name')";
+            $sql1 ="INSERT IGNORE INTO `salary_log`(`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`, `updated_by`)
+            VALUES ('$id','$fname','$mname','$lname','$desig','$dept','$gender','$basic','$allowance','$deduction','$gross','$month','$year','$totaldays','$paydays','$absent','$pay','$paid','$remaining',current_timestamp(),current_timestamp(),'$name')";
            
            mysqli_query($conn, $sql1);
 
