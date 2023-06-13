@@ -68,7 +68,7 @@ require_once('config.php');
 <?php 
     if (isset($_GET['action'])) {
     if (($_GET['action']) == 'paid') {
-        echo '<div class="alert alert-success alert-dismissible position-fixed paid" role="alert">
+        echo '<div class="alert alert-success alert-dismissible fade show position-fixed paid" role="alert">
                 <strong>Salary Paid!</strong>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>

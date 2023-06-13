@@ -60,6 +60,19 @@
                         <a class="dropdown-item bg-dark text-white-50" href="salary.php">View Salary</a>
                     </div>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    Attendences
+                    </a>
+                    <div class="dropdown-menu bg-dark">
+                        <?php
+                        if ($_SESSION['role'] == '1') {
+                            echo '<a class="dropdown-item bg-dark text-white-50" href="gen-attendence.php">Generate Attendences</a>';
+                        }
+                        ?>
+                        <a class="dropdown-item bg-dark text-white-50" href="view-attendence.php">View Attendences</a>
+                    </div>
+                </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
