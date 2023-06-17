@@ -17,12 +17,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/script.js"></script>
-    <title>View Attendence</title>
+    <title>View Attendance</title>
 </head>
 <body>
     <?php include 'nav.php' ?>
     <div class="container-fluid p-5">
-        <h1>View Attendence</h1>
+        <h1>View Attendance</h1>
     </div>
     <script>
         
