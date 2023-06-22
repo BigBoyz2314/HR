@@ -64,7 +64,7 @@ require_once('config.php');
                                     $current = $row['current_Strength'];
                                     $allowed = $row['allowed_Strength']; 
                                     $created = $row['created_at']; 
-                                    $updated = $row['updated_at']; 
+                                    $updated = $row['updated_at'];
 
                                     echo "<tr>";
                                     echo "<td>". $i++ ."</td>";

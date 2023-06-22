@@ -73,7 +73,18 @@ require_once('config.php');
                                 }
                               }
 
-                              if ($_REQUEST && $_SESSION['role'] == '1') {
+                            //   if ($_REQUEST) {
+                            //     $delID = $_GET['id'];
+                            //     $delName = $_GET['desigName'];
+                                  
+                            //         echo '<script type="text/javascript"> ';  
+                            //         echo '  if (confirm("Are you sure you want to DELETE '. "'$delName'" .'?")) {';  
+                            //         echo '    window.location.href = "del-designation.php?delName='. $delName .'&delID='. $delID .'";';  
+                            //         echo '  }';
+                            //         echo '</script>';  
+                            //   }
+
+                            if ($_REQUEST) {
                                 $delID = $_GET['id'];
                                 $delName = $_GET['desigName'];
                                   
