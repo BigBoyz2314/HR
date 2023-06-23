@@ -9,18 +9,14 @@
         $eid = $_REQUEST["eid"];
         $month = $_REQUEST["month"];
         $year = $_REQUEST["year"];
-
     }
 
         $sql ="DELETE FROM `allowances` WHERE `id` = '$id' AND `employeeID` = '$eid' AND `month` = '$month' AND `year` = '$year'";
         
         if(mysqli_query($conn, $sql)){
-
             header('Location: add-allowance.php?emp='. $eid .'&month='. $month .'&year='. $year .'');
-        
         } else{
-            echo "ERROR: Hush! Sorry $sql. "
-            . mysqli_error($conn);
+            echo "ERROR: Hush! Sorry $sql. " . mysqli_error($conn);
         }
 
 ?>

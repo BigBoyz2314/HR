@@ -113,14 +113,10 @@
     $workinghours = $row['working_hours'];
     $moj = $row['join_month'];
     $mor = $row['leave_month'];
-
-
     
     $sql ="UPDATE `employees` SET `basic_salary`='$newbasic',`gross_salary`='$newgross',`allowance`='$newallow',`deduction`='$newdeduc', `department`='$newDept',`designation`='$newDesig',`grade`='$newGrade',`updated_at` = current_timestamp() WHERE `fname` = '$fname' AND `employeeID` = '$id'";
-
         
         if(mysqli_query($conn, $sql)){
-
             $sql1 = "INSERT INTO `employees_log`(`employeeID`, `fname`, `mname`, `lname`, `dob`,`yob`,`gender`, `designation`, `designationID`, `grade`, `department`, `departmentID`, `martital_status`, `status`, `children`, `spouse_name`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `join_date`, `leave_date`, `primary_address`, `secondary_address`, `current_address`, `primary_number`, `secondary_number`, `bank_name`, `bank_account_no`, `iban`, `employee_code`, `manager_name`, `managerID`, `warnings`, `leaves`, `allowed_leaves`, `absents`, `presents`, `days_working`, `loan`, `loan_amount`, `cnic`, `passport_no`, `working_hours`, `start_time`, `end_time`, `shift`, `join_month`, `leave_month`, `created_at`, `updated_at`) VALUES
             ('$id','$fname','$mname','$lname','$dob','$yob','$gender','$newDesig','$DesigID','$newGrade','$newDept','$deptID','$mstatus','$status','$children','$spouse','$newbasic','$newallow','$newdeduc','$newgross','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift','$moj','$mor', '$created', current_timestamp())";
                 
@@ -133,8 +129,7 @@
             header('Location: view-employees.php');
         
         } else{
-            echo "ERROR: Hush! Sorry $sql. "
-            . mysqli_error($conn);
+            echo "ERROR: Hush! Sorry $sql. " . mysqli_error($conn);
         }
 
 ?>

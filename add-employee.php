@@ -58,7 +58,6 @@
         $emname = ucwords($_REQUEST["emName"]);
         $elname = ucwords($_REQUEST["elName"]);
 
-
         $target_dir = "uploads/";
         $filename = basename($_FILES["photo"]["name"]);
         $target_file = $target_dir . basename($_FILES["photo"]["name"]);
@@ -111,8 +110,7 @@
         $stmt1 = "SELECT * FROM department WHERE departmentID = $department";
         $result1 = $conn->query($stmt1);
         
-        if ($result1->num_rows > 0) {
-                                    
+        if ($result1->num_rows > 0) {                   
             while($row = $result1->fetch_assoc()) { 
                 $dept = $row['name'];
             }
@@ -121,8 +119,7 @@
         $stmt2 = "SELECT * FROM designation WHERE designationID = $designation";
         $result2 = $conn->query($stmt2);
         
-        if ($result2->num_rows > 0) {
-                                    
+        if ($result2->num_rows > 0) {                       
             while($row = $result2->fetch_assoc()) { 
                 $desig = $row['name'];
                 $grade = $row['grade'];
@@ -136,22 +133,20 @@
         $sql = "INSERT INTO `employees`(`employeeID`, `fname`, `mname`, `lname`, `dob`,`yob`,`gender`, `designation`, `designationID`, `grade`, `department`, `departmentID`, `martital_status`, `status`, `children`, `spouse_name`, `basic_salary`, `allowance`, `c_allowance`, `eobi`, `deduction`, `gross_salary`, `join_date`, `leave_date`, `primary_address`, `secondary_address`, `current_address`, `primary_number`, `secondary_number`, `bank_name`, `bank_account_no`, `iban`, `employee_code`, `manager_name`, `managerID`, `warnings`, `leaves`, `allowed_leaves`, `absents`, `presents`, `days_working`, `loan`, `loan_amount`, `cnic`, `passport_no`, `working_hours`, `start_time`, `end_time`, `shift`, `join_month`, `leave_month`, `disability`, `photo`, `created_at`, `e_fname`, `e_mname`, `e_lname`, `e_dob`, `e_cnic`, `e_contact`, `e_gender`, `e_address`, `e_emp`) VALUES
          ('','$fname','$mname','$lname','$dob','$yob','$gender','$desig','$designation','$grade','$dept','$department','$mStatus','$status','$children','$spousename','$basicsalary','$allowance','$cAllowance','$eobi','$deduction','$grosssalary','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift','$moj','$mor','$disability','$filename', current_timestamp(), '$efname','$emname','$elname','$edob','$ecnic','$enumber','$egender','$eaddress','$emp')";
 
-
         if(mysqli_query($conn, $sql)){
             $last_id = $conn->insert_id;
 
             $sql1 = "INSERT INTO `employees_log`(`employeeID`, `fname`, `mname`, `lname`, `dob`,`yob`,`gender`, `designation`, `designationID`, `grade`, `department`, `departmentID`, `martital_status`, `status`, `children`, `spouse_name`, `basic_salary`, `allowance`, `c_allowance`, `eobi`, `deduction`, `gross_salary`, `join_date`, `leave_date`, `primary_address`, `secondary_address`, `current_address`, `primary_number`, `secondary_number`, `bank_name`, `bank_account_no`, `iban`, `employee_code`, `manager_name`, `managerID`, `warnings`, `leaves`, `allowed_leaves`, `absents`, `presents`, `days_working`, `loan`, `loan_amount`, `cnic`, `passport_no`, `working_hours`, `start_time`, `end_time`, `shift`, `join_month`, `leave_month`, `disability`, `photo`, `created_at`, `e_fname`, `e_mname`, `e_lname`, `e_dob`, `e_cnic`, `e_contact`, `e_gender`, `e_address`, `e_emp`) VALUES
             ('$last_id','$fname','$mname','$lname','$dob','$yob','$gender','$desig','$designation','$grade','$dept','$department','$mStatus','$status','$children','$spousename','$basicsalary','$allowance','$cAllowance','$eobi','$deduction','$grosssalary','$joindate','$leavedate','$paddress','$saddress','$caddress','$pnumber','$snumber','$bank','$bankacc','$iban','','$manager','','$warnings','$leaves','$allowleaves','$absents','$presents','$daysworking','$loan','$loanamount','$cnic','$passport','$workinghours','$starttime','$endtime','$shift','$moj','$mor','$disability','$filename', current_timestamp(), '$efname','$emname','$elname','$edob','$ecnic','$enumber','$egender','$eaddress','$emp')";
-   
                 
             $sql2 = "UPDATE department SET current_Strength = current_Strength + 1 WHERE departmentID = $department";
 
             mysqli_query($conn, $sql1);
             mysqli_query($conn, $sql2);
             header('Location: employees.php');
-        }else{
-            echo "ERROR: Hush! Sorry $sql. "
-            . mysqli_error($conn);
+        }
+        else {
+            echo "ERROR: Hush! Sorry $sql. " . mysqli_error($conn);
         }
 
 ?>
