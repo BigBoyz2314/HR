@@ -32,7 +32,7 @@
     $today = date("d M y");
     $thismonth = date("n");
     $thisyear = date("Y");
-    $date = date(31);
+    $date = date("d");
     $dayspayable = $date;
     if ($date == 31) {
         $dayspayable = 30;
