@@ -79,6 +79,8 @@ require_once('config.php');
     ?>
     <div class="container-fluid py-5">
         <h1>View Salary</h1>
+        <h4>Month: <?php echo date("F", mktime(0, 0, 0, $_GET['month'], 10)); ?></h4>
+        <h4>Year: <?php echo $_GET['year']; ?></h4>
 
         <div class="row mt-5">
             <button class="btn btn-info m-3 export-btn">Export to Excel</button>

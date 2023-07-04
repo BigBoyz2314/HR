@@ -96,8 +96,10 @@ session_start();
                         <input type="text" disabled name="remaining" id="remaining" value="<?php echo $remaining?>" class="form-control">
                 </div>
                 <div class="col-md-3 pt-4">
-                    <h4>Pay</h4>
-                        <input type="number" name="pay" id="pay" value="" max="<?php echo $remaining ?>" min="0" class="form-control">
+                    <h4 class="d-inline-block">Pay</h4>
+                    <input type="checkbox" name="same" id="same" class="float-right mt-1 ml-1" onclick="check()">
+                    <p class="d-inline-block float-right">Pay Full</p>
+                    <input type="number" name="pay" id="pay" value="" max="<?php echo $remaining ?>" min="0" class="form-control">
                 </div>
             </div>
             <div class="row">
@@ -109,7 +111,20 @@ session_start();
         </div> 
     </div>
     <script>
-        
+        function check() {
+            
+            if (document.getElementById('same').checked) {
+
+                console.log('checked');
+
+                $remaining = document.getElementById('remaining').value;
+
+                document.getElementById('pay').value = $remaining;
+            }
+            else {
+                document.getElementById('pay').value = '';
+            }
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
