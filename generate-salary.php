@@ -34,6 +34,11 @@
     $thisyear = date("Y");
     $date = date("d");
     $dayspayable = $date;
+
+    if ($thismonth > $month) {
+        $date = date(30);
+        $dayspayable = $date;
+    }
     if ($date == 31) {
         $dayspayable = 30;
     }
@@ -73,7 +78,7 @@
 
             $abs = $day - $date;
 
-            if ($date == 31) {
+            if ($date == 31 || 30) {
 
                 $abs = 0;
             
@@ -83,7 +88,7 @@
 
             $pay = $dpay * $date;
 
-            if ($date == 31) {
+            if ($date == 31 || 30) {
 
                 $pay = $dpay * $day;
 
