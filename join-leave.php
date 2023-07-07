@@ -82,9 +82,6 @@ require_once('config.php');
                         <th>Joining Date</th>
                         <th>Spouse Name</th>
                         <th>Basic Salary</th>
-                        <th>Allowance</th>
-                        <th>Deduction</th>
-                        <th>Gross Salary</th>
                         <th></th>
                     </thead>
                     <tbody class="">
@@ -116,9 +113,6 @@ require_once('config.php');
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
                                         $basic = $row['basic_salary'];
-                                        $allowance = $row['allowance'];
-                                        $deduction = $row['deduction'];
-                                        $gross = $row['gross_salary'];
 
                                         echo "<tr>";
                                         echo "<td>". ++$i ."</td>";
@@ -133,10 +127,7 @@ require_once('config.php');
                                         echo "<td>$status</td>";
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
-                                        echo "<td>$basic</td>";
-                                        echo "<td>$allowance</td>";
-                                        echo "<td>$deduction</td>";
-                                        echo "<td>$gross</td>";
+                                        echo "<td>". number_format($basic) ." </td>";
                                         echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                         // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                         echo "</tr>";
@@ -167,7 +158,7 @@ require_once('config.php');
                                     
                                     echo '<div class="row mt-5">
                                 <button class="btn btn-info m-3 export-btn2">Export to Excel</button>	
-                                    <table class="table text-nowrap table-bordered w-100 text-center" id="table2">
+                                    <table class="table table-responsive text-nowrap table-bordered w-100 text-center" id="table2">
                                         <thead class="font-weight-bolder">
                                             <th>Sr.</th>
                                             <th>First Name</th>
@@ -182,9 +173,6 @@ require_once('config.php');
                                             <th>Joining Date</th>
                                             <th>Spouse Name</th>
                                             <th>Basic Salary</th>
-                                            <th>Allowance</th>
-                                            <th>Deduction</th>
-                                            <th>Gross Salary</th>
                                             <th></th>
                                         </thead>
                                         <tbody>';
@@ -204,9 +192,6 @@ require_once('config.php');
                                         $children = $row['children'];
                                         $spouse = $row['spouse_name'];
                                         $basic = $row['basic_salary'];
-                                        $allowance = $row['allowance'];
-                                        $deduction = $row['deduction'];
-                                        $gross = $row['gross_salary'];
 
                                         echo "<tr>";
                                         echo "<td>". ++$j ."</td>";
@@ -221,10 +206,7 @@ require_once('config.php');
                                         echo "<td>$status</td>";
                                         echo "<td>". date("d M y", strtotime($joindate)) ."</td>";
                                         echo "<td>$spouse</td>";
-                                        echo "<td>$basic</td>";
-                                        echo "<td>$allowance</td>";
-                                        echo "<td>$deduction</td>";
-                                        echo "<td>$gross</td>";
+                                        echo "<td>". number_format($basic) ." </td>";
                                         echo "<td><form action='view-emp.php' method='get'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='View Details' class='btn btn-info'></form></td>";
                                         // echo "<td><form action='' method='get'><input type='hidden' name='desigName' value='". $name ."'><input type='hidden' name='id' value='". $id ."'><input type='submit' value='Delete' class='btn btn-danger'></form></td>";
                                         echo "</tr>";
