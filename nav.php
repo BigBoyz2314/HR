@@ -70,7 +70,7 @@
                             echo '<a class="dropdown-item bg-dark text-white-50" href="gen-attendance.php">Generate Attendances</a>';
                         }
                         ?>
-                        <a class="dropdown-item bg-dark text-white-50" href="view-attendance.php">View Attendances</a>
+                        <a class="dropdown-item bg-dark text-white-50" href="attendance.php">View Attendances</a>
                     </div>
                 </li>
             </ul>

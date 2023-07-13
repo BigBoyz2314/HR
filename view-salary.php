@@ -206,7 +206,7 @@ require_once('config.php');
                                 echo "</tr>";
                                 }
                                 else {
-                                    echo "No Employee";
+                                    echo "Salary Not Generated.";
                                 }
                             }
 

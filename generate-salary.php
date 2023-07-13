@@ -36,7 +36,7 @@
     $dayspayable = $date;
 
     if ($thismonth > $month) {
-        $date = date(30);
+        $date = $totaldays;
         $dayspayable = $date;
     }
     if ($date == 31) {
@@ -56,8 +56,6 @@
             $dept = $row['department'];
             $gender = $row['gender'];
             $basic = $row['basic_salary'];
-            $allowance = $row['allowance'];
-            $deduction = $row['deduction'];
 
             $stmt1 = "SELECT SUM(amount) AS amount FROM allowances where `month` = $month AND `year` = $year AND `employeeID` = $id";
             $stmt2 = "SELECT SUM(amount) AS amount FROM deductions where `month` = $month AND `year` = $year AND `employeeID` = $id";
@@ -76,27 +74,34 @@
 
             $dpay = $gross / $day;
 
-            $abs = $day - $date;
-
-            if ($date == 31 || 30) {
-
+            
+            if ($dayspayable <= 0) {
+                $abs = 30;
+            }
+            elseif ($dayspayable === 30 || 31) {
                 $abs = 0;
+            }
+            else {
+                $abs = $day - $dayspayable;
+            }
+            
+            $pay = $dpay * $dayspayable;
+
+            if ($dayspayable <= 0) {
+            
+                $pay = 0;
             
             }
 
-            $absent = $abs * $dpay;
-
-            $pay = $dpay * $date;
-
-            if ($date == 31 || 30) {
+            if ($dayspayable === 31 || 30) {
 
                 $pay = $dpay * $day;
 
             }
 
-            $pay = $pay - $absent;
+            $absent = $abs * $dpay;
 
-            $sql ="INSERT IGNORE INTO `salary`(`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`)
+            $sql ="INSERT INTO `salary`(`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`)
             VALUES ('$id','$fname','$mname','$lname','$desig','$dept','$gender','$basic','$allowance','$deduction','$gross','$month','$year','$totaldays','$dayspayable','$absent','$pay','','$pay',current_timestamp(),current_timestamp())";
 
             $sql1 ="INSERT IGNORE INTO `salary_log` (`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`, `updated_by`)
