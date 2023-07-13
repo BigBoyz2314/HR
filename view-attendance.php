@@ -62,7 +62,7 @@ require_once('config.php');
 <?php include 'nav.php' ?>
     <div class="container-fluid py-5">
         <h1>View Attendance</h1>
-        <h4>Month: <?php echo date("F", mktime(0, 0, 0, $_GET['month'], 10)); ?></h4>
+        <h4>Month: <?php echo date("F", mktime($_GET['month'])); ?></h4>
         <h4>Year: <?php echo $_GET['year']; ?></h4>
 
         <div class="row mt-5">
@@ -71,12 +71,33 @@ require_once('config.php');
                 <input type="text" name="search" id="search" class="form-control w-25 ml-auto" placeholder="Search...">	
             <div class="col-md-12">
                 <table class="table table-responsive text-nowrap table-bordered w-100 text-center" id="table">
+                    <thead>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <?php
+                        $d = 1;
+                        $t = cal_days_in_month(CAL_GREGORIAN,$_GET['month'],$_GET['year']);
+                        $dt = date($_GET['year']."-".$_GET['month']."-".$d);
+                        $ld = date($_GET['year'].'-'.$_GET['month'].'-'.$t);
+                        $dt1 = strtotime($dt);
+                        $dt2 = date("D j", $dt1);
 
+                        while ($d <= $t) {
+                            $dt = date($_GET['year']."-".$_GET['month']."-".$d);
+                            $dt1 = strtotime($dt);
+                            $dt2 = date("D", $dt1);
+                            $dt3 = date("j", $dt1);
+                            echo '<th>'.$dt2.'<br>'.$dt3.'</th>';
+                            $d++;
+                        }
+                        
+                        ?>
+                    </thead>
                 </table>
             </div>
         </div>
     </div>
-  
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
 </body>
 </html>
