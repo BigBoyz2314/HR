@@ -52,6 +52,47 @@ require_once('config.php');
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
+
+            // Get the employee IDs from the table.
+            var employeeIDs = [];
+            $(".id").each(function() {
+                employeeIDs.push($(this).text());
+            });
+
+            var geturl = window.location.href;
+
+            var url = new URL(geturl);
+
+            var month = url.searchParams.get("month");
+            var year = url.searchParams.get("year");
+
+            // Iterate for each employee ID.
+            for (var i = 0; i < employeeIDs.length; i++) {
+
+                // Create the AJAX request.
+                var request = $.ajax({
+                    url: "get-attend.php",
+                    type: "POST",
+                    data: {
+                        employeeID: employeeIDs[i],
+                        month: month,
+                        year: year
+                    },
+                    success: function(data) {
+                        // Add the name to the table.
+                        var name = JSON.parse(data)[0];
+
+                        console.log(name);
+                        
+                    }
+                });
+
+                // Asynchronously execute the request.
+                request.fail(function() {
+                    // Do something if the request fails.
+                });
+            }
+
         });
     </script>
    
@@ -62,37 +103,95 @@ require_once('config.php');
 <?php include 'nav.php' ?>
     <div class="container-fluid py-5">
         <h1>View Attendance</h1>
-        <h4>Month: <?php echo date("F", mktime($_GET['month'])); ?></h4>
-        <h4>Year: <?php echo $_GET['year']; ?></h4>
+        <h4 id="month">Month: <?php echo $_GET["month"]; ?></h4>
+        <h4 id="year">Year: <?php echo $_GET["year"]; ?></h4>
 
         <div class="row mt-5">
             <button class="btn btn-info m-3 export-btn">Export to Excel</button>
             <button class="btn btn-danger m-3" id="browserPrint">Print PDF</button>
                 <input type="text" name="search" id="search" class="form-control w-25 ml-auto" placeholder="Search...">	
             <div class="col-md-12">
-                <table class="table table-responsive text-nowrap table-bordered w-100 text-center" id="table">
+                <table class="table table-responsive table-bordered w-100 text-center" id="table">
                     <thead>
                         <th>Employee ID</th>
                         <th>Name</th>
                         <?php
+                        $year = $_GET["year"];   
+                        $month = $_GET["month"];
                         $d = 1;
-                        $t = cal_days_in_month(CAL_GREGORIAN,$_GET['month'],$_GET['year']);
-                        $dt = date($_GET['year']."-".$_GET['month']."-".$d);
-                        $ld = date($_GET['year'].'-'.$_GET['month'].'-'.$t);
+                        $t = cal_days_in_month(CAL_GREGORIAN,$month,$year);
+                        $dt = date($year."-".$month."-".$d);
+                        $ld = date($year.'-'.$month.'-'.$t);
                         $dt1 = strtotime($dt);
                         $dt2 = date("D j", $dt1);
 
                         while ($d <= $t) {
-                            $dt = date($_GET['year']."-".$_GET['month']."-".$d);
+                            $dt = date($year."-".$month."-".$d);
                             $dt1 = strtotime($dt);
                             $dt2 = date("D", $dt1);
                             $dt3 = date("j", $dt1);
-                            echo '<th>'.$dt2.'<br>'.$dt3.'</th>';
+                            if ($dt2 == 'Sun') {
+                                echo '<th class="bg-success">'.$dt2.'<br>'.$dt3.'</th>';
+                            }
+                            else {
+                                echo '<th>'.$dt2.'<br>'.$dt3.'</th>';
+                            }
                             $d++;
                         }
-                        
                         ?>
+                        <th>Present</th>
+                        <th>Absents</th>
                     </thead>
+                    <tbody>
+                        <?php
+                        $sql = "SELECT * FROM `employees`";
+                        $result = $conn->query($sql);
+
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) { 
+                                $id = $row['employeeID'];
+                                $fname = $row['fname'];
+                                $mname = $row['mname'];
+                                $lname = $row['lname'];
+                                $doj = $row['join_date'];
+
+                                $j = 1;
+                                $k = 0;
+
+                                echo "<tr class='text-nowrap'>";
+                                echo "<td class='id'>$id</td>";
+                                echo "<td>". $fname ." ". $mname ." ". $lname ."</td>";
+                                while ($j <= $t) {
+                                    echo "<td id='$id-$j'></td>";
+                                    $j++;
+                                }
+                                echo "<td id='$id-present'></td><td id='$id-absent'></td>";
+
+                                $sql1 = "SELECT * FROM `attendance` WHERE `employeeID` = '$id' AND `month` = '$month' AND `year` = '$year'";
+                                $result1 = $conn->query($sql1);
+
+                                if ($result1->num_rows > 0) {
+                                    while($row1 = $result1->fetch_assoc()) {
+                                        $unit = $row1['unit'];
+                                        $day = $row1['day'];
+                                        $amonth = $row1['month'];
+                                        $ayear = $row1['year'];
+                                        $date = $row1['date'];
+                                        $timeIn = $row1['time_in'];
+                                        $timeOut = $row1['time_out'];
+                                        $created_at = $row1['created_at'];
+                                        $updated_at = $row1['updated_at'];
+                                        $updated_by = $row1['updated_by'];
+
+                                        $timeIn = date('h:i A', strtotime($timeIn));
+                                        $timeOut = date('h:i A', strtotime($timeOut));
+                                    }
+                                }
+                            } 
+                        }
+
+                        ?>
+                    </tbody>
                 </table>
             </div>
         </div>

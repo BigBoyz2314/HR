@@ -67,10 +67,10 @@
                     <div class="dropdown-menu bg-dark">
                         <?php
                         if ($_SESSION['role'] == '1') {
-                            echo '<a class="dropdown-item bg-dark text-white-50" href="gen-attendance.php">Generate Attendances</a>';
+                            echo '<a class="dropdown-item bg-dark text-white-50" href="add-attendance.php">Add Attendance</a>';
                         }
                         ?>
-                        <a class="dropdown-item bg-dark text-white-50" href="attendance.php">View Attendances</a>
+                        <a class="dropdown-item bg-dark text-white-50" href="attendance.php">View Attendance</a>
                     </div>
                 </li>
             </ul>
