@@ -124,8 +124,7 @@ require_once('config.php');
                         $ld = date($year.'-'.$month.'-'.$t);
                         $dt1 = strtotime($dt);
                         $dt2 = date("D j", $dt1);
-                        $absent = $t;
-                        $present = 0;
+                        $fs = array();
 
                         while ($d <= $t) {
                             $dt = date($year."-".$month."-".$d);
@@ -133,12 +132,13 @@ require_once('config.php');
                             $dt2 = date("D", $dt1);
                             $dt3 = date("j", $dt1);
                             if ($dt2 == 'Sun') {
-                                $fs = $dt3; 
-                                echo '<th class="bg-success">'.$dt2.'<br>'.$dt3.'</th>';
+                                $fs[] = $dt3; 
+                                $day = "bg-success";
                             }
                             else {
-                                echo '<th>'.$dt2.'<br>'.$dt3.'</th>';
+                                $day = "";
                             }
+                            echo '<th class="'.$day.'">'.$dt2.'<br>'.$dt3.'</th>';
                             $d++;
                         }
                         ?>
@@ -166,6 +166,9 @@ require_once('config.php');
 
                                 $sql1 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year'";
                                 $result1 = $conn->query($sql1);
+                                $absent = $t;
+                                $present = 0; 
+                                $prevDay = "";  
 
                                 if ($result1->num_rows > 0) {
                                     while($row1 = $result1->fetch_assoc()) {
@@ -183,22 +186,65 @@ require_once('config.php');
                                         $timeIn = date('h:i A', strtotime($timeIn));
                                         $timeOut = date('h:i A', strtotime($timeOut));
 
-                                        if (isset($day)) {
-                                            echo "<td>$timeIn<br>$timeOut</td>";
+                                        if ($prevDay == "") {
+                                            for ($i=1; $i < $day ; $i++) { 
+                                                if (in_array($i, $fs)) {
+                                                    echo "<td class='bg-success'></td>";
+                                                    $absent--;
+                                                    $present++;
+                                                }
+                                                else {
+                                                echo "<td></td>";
+                                                }
+                                            }
                                         }
+                                        elseif ($prevDay != "") {
+                                            for ($i=$prevDay+1; $i < $day; $i++) { 
+                                                if (in_array($i, $fs)) {
+                                                    echo "<td class='bg-success'></td>";
+                                                    $absent--;
+                                                    $present++;
+                                                }
+                                                else {
+                                                echo "<td></td>";
+                                                }
+                                            }
+                                        }
+                                        $prevDay = $day;
+                                            
+                                        echo "<td>$timeIn<br>$timeOut</td>";
+                                        
+                                        $absent--;
+                                        $present++;
+
+                                        }
+                                        for ($l=$day; $l < $t ; $l++) {
+                                            if (in_array($l+1, $fs)) {
+                                                echo "<td class='bg-success'></td>";
+                                            }
+                                            else {
+                                            echo "<td></td>";
+                                            }
+                                        }
+                                        echo "<td id='$id-present'>$present</td><td id='$id-absent'>$absent</td>";
                                     }
-                                    for ($l=$day; $l < $t ; $l++) {
-                                        echo "<td></td>";
+                                    elseif ($result1->num_rows == 0) {
+                                        for ($k=0; $k < $t ; $k++) { 
+                                            if (in_array($k+1, $fs)) {
+                                                echo "<td class='bg-success'></td>";
+                                            }
+                                            else {
+                                            echo "<td></td>";
+                                            }
+                                        }
+                                        $absent = $t;
+                                        $present = 0;  
+                                        echo "<td id='$id-present'>$present</td><td id='$id-absent'>$absent</td>";
+
                                     }
                                 }
-                                elseif ($result1->num_rows == 0) {
-                                    for ($k=0; $k < $t ; $k++) { 
-                                        echo "<td></td>";
-                                    }
-                                }
-                                echo "<td id='$id-present'>$present</td><td id='$id-absent'>$absent</td>";  
-                            } 
-                        }
+                                
+                            }
 
                         ?>
                     </tbody>
