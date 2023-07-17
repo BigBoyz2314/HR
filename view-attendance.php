@@ -29,7 +29,7 @@ require_once('config.php');
                 $("#table").removeClass();
                 var divToPrint = document.getElementById("table");
                 newWin= window.open("");
-                newWin.document.write('<!DOCTYPE html><html><head>  <title>Print Preview</title>  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >  <style>    table {        font-size: small;    }   form { display: none;   }  </style></head><body><div class="table table-bordered w-100 text-center">');
+                newWin.document.write('<!DOCTYPE html><html><head>  <title>Print Preview</title>  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >  <style>    table {        font-size: 7px;     }   form { display: none;   }  </style></head><body><div class="table table-bordered text-center">');
                 newWin.document.write(divToPrint.outerHTML);
                 newWin.document.write('</body></html>');
                 newWin.document.close();
@@ -42,7 +42,7 @@ require_once('config.php');
             $(".export-btn").click(function(){  
                 $("#table").tableHTMLExport({
                 type:'csv',
-                filename:'employee-log.csv',
+                filename:'employee-attendance.csv',
                 });
             });
 
@@ -161,8 +161,8 @@ require_once('config.php');
                                 $k = 0;
 
                                 echo "<tr class='text-nowrap'>";
-                                echo "<td class='id'>$id</td>";
-                                echo "<td>". $fname ." ". $mname ." ". $lname ."</td>";
+                                echo "<td class='id font-weight-bold'>$id</td>";
+                                echo "<td class='text-left'>". $fname ." ". $mname ." ". $lname ."</td>";
 
                                 $sql1 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year'";
                                 $result1 = $conn->query($sql1);
