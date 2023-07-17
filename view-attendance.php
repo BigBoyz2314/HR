@@ -77,7 +77,7 @@ require_once('config.php');
                         employeeID: employeeIDs[i],
                         month: month,
                         year: year
-                    },
+                    }, 
                     success: function(data) {
                         // Add the name to the table.
                         var name = JSON.parse(data)[0];
@@ -124,6 +124,8 @@ require_once('config.php');
                         $ld = date($year.'-'.$month.'-'.$t);
                         $dt1 = strtotime($dt);
                         $dt2 = date("D j", $dt1);
+                        $absent = $t;
+                        $present = 0;
 
                         while ($d <= $t) {
                             $dt = date($year."-".$month."-".$d);
@@ -131,6 +133,7 @@ require_once('config.php');
                             $dt2 = date("D", $dt1);
                             $dt3 = date("j", $dt1);
                             if ($dt2 == 'Sun') {
+                                $fs = $dt3; 
                                 echo '<th class="bg-success">'.$dt2.'<br>'.$dt3.'</th>';
                             }
                             else {
@@ -155,19 +158,13 @@ require_once('config.php');
                                 $lname = $row['lname'];
                                 $doj = $row['join_date'];
 
-                                $j = 1;
                                 $k = 0;
 
                                 echo "<tr class='text-nowrap'>";
                                 echo "<td class='id'>$id</td>";
                                 echo "<td>". $fname ." ". $mname ." ". $lname ."</td>";
-                                while ($j <= $t) {
-                                    echo "<td id='$id-$j'></td>";
-                                    $j++;
-                                }
-                                echo "<td id='$id-present'></td><td id='$id-absent'></td>";
 
-                                $sql1 = "SELECT * FROM `attendance` WHERE `employeeID` = '$id' AND `month` = '$month' AND `year` = '$year'";
+                                $sql1 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year'";
                                 $result1 = $conn->query($sql1);
 
                                 if ($result1->num_rows > 0) {
@@ -185,8 +182,21 @@ require_once('config.php');
 
                                         $timeIn = date('h:i A', strtotime($timeIn));
                                         $timeOut = date('h:i A', strtotime($timeOut));
+
+                                        if (isset($day)) {
+                                            echo "<td>$timeIn<br>$timeOut</td>";
+                                        }
+                                    }
+                                    for ($l=$day; $l < $t ; $l++) { 
+                                        echo "<td></td>";
                                     }
                                 }
+                                elseif ($result1->num_rows == 0) {
+                                    for ($k=0; $k < $t ; $k++) { 
+                                        echo "<td></td>";
+                                    }
+                                }
+                                echo "<td id='$id-present'>$present</td><td id='$id-absent'>$absent</td>";  
                             } 
                         }
 
