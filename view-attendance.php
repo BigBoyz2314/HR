@@ -187,7 +187,7 @@ require_once('config.php');
                                             echo "<td>$timeIn<br>$timeOut</td>";
                                         }
                                     }
-                                    for ($l=$day; $l < $t ; $l++) { 
+                                    for ($l=$day; $l < $t ; $l++) {
                                         echo "<td></td>";
                                     }
                                 }
