@@ -52,47 +52,6 @@ require_once('config.php');
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
-
-            // Get the employee IDs from the table.
-            var employeeIDs = [];
-            $(".id").each(function() {
-                employeeIDs.push($(this).text());
-            });
-
-            var geturl = window.location.href;
-
-            var url = new URL(geturl);
-
-            var month = url.searchParams.get("month");
-            var year = url.searchParams.get("year");
-
-            // Iterate for each employee ID.
-            for (var i = 0; i < employeeIDs.length; i++) {
-
-                // Create the AJAX request.
-                var request = $.ajax({
-                    url: "get-attend.php",
-                    type: "POST",
-                    data: {
-                        employeeID: employeeIDs[i],
-                        month: month,
-                        year: year
-                    }, 
-                    success: function(data) {
-                        // Add the name to the table.
-                        var name = JSON.parse(data)[0];
-
-                        console.log(name);
-                        
-                    }
-                });
-
-                // Asynchronously execute the request.
-                request.fail(function() {
-                    // Do something if the request fails.
-                });
-            }
-
         });
     </script>
    
