@@ -145,8 +145,10 @@ require_once('config.php');
                                         $timeIn = date('h:i A', strtotime($timeIn));
                                         $timeOut = date('h:i A', strtotime($timeOut));
 
+                                        // check if its first present of month
                                         if ($prevDay == "") {
                                             for ($i=1; $i < $day ; $i++) { 
+                                                // check if day is sunday
                                                 if (in_array($i, $fs)) {
                                                     echo "<td class='bg-success'></td>";
                                                     $absent--;
@@ -157,8 +159,10 @@ require_once('config.php');
                                                 }
                                             }
                                         }
+                                        //check if it is not first present of month
                                         elseif ($prevDay != "") {
                                             for ($i=$prevDay+1; $i < $day; $i++) { 
+                                                //check if day is sunday
                                                 if (in_array($i, $fs)) {
                                                     echo "<td class='bg-success'></td>";
                                                     $absent--;
@@ -169,15 +173,18 @@ require_once('config.php');
                                                 }
                                             }
                                         }
+
                                         $prevDay = $day;
-                                            
+                                        
                                         echo "<td>$timeIn<br>$timeOut</td>";
                                         
                                         $absent--;
                                         $present++;
 
                                         }
+
                                         for ($l=$day; $l < $t ; $l++) {
+                                            // check if day is sunday
                                             if (in_array($l+1, $fs)) {
                                                 echo "<td class='bg-success'></td>";
                                             }
@@ -187,7 +194,9 @@ require_once('config.php');
                                         }
                                         echo "<td id='$id-present'>$present</td><td id='$id-absent'>$absent</td>";
                                     }
+                                    // check if not present any day of month
                                     elseif ($result1->num_rows == 0) {
+                                        //check if day is sunday
                                         for ($k=0; $k < $t ; $k++) { 
                                             if (in_array($k+1, $fs)) {
                                                 echo "<td class='bg-success'></td>";
