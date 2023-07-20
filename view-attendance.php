@@ -79,9 +79,12 @@ require_once('config.php');
                         $month = $_GET["month"];
                         $d = 1;
                         $t = cal_days_in_month(CAL_GREGORIAN,$month,$year);
+                        $df = date($year."-".$month."-01");
                         $dt = date($year."-".$month."-".$d);
                         $ld = date($year.'-'.$month.'-'.$t);
                         $dt1 = strtotime($dt);
+                        $df1 = strtotime($df);
+                        $df2 = date("d-m-y", $df1);
                         $dt2 = date("D j", $dt1);
                         $fs = array();
 
@@ -117,17 +120,22 @@ require_once('config.php');
                                 $lname = $row['lname'];
                                 $doj = $row['join_date'];
 
+                                $doj1 = strtotime($doj);
+                                $doj2 = date("d-m-y", $doj1);
+                                $dojd = date("d", $doj1);
                                 $k = 0;
 
                                 echo "<tr class='text-nowrap'>";
                                 echo "<td class='id font-weight-bold'>$id</td>";
                                 echo "<td class='text-left'>". $fname ." ". $mname ." ". $lname ."</td>";
+                                // echo $doj2."<br>".++$dojd."<br>";
 
                                 $sql1 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year'";
                                 $result1 = $conn->query($sql1);
                                 $absent = $t;
                                 $present = 0; 
-                                $prevDay = "";  
+                                $prevDay = "";
+
 
                                 if ($result1->num_rows > 0) {
                                     while($row1 = $result1->fetch_assoc()) {
@@ -147,6 +155,11 @@ require_once('config.php');
 
                                         // check if its first present of month
                                         if ($prevDay == "") {
+                                            if ($doj1 > $df1) {
+                                                for ($i=0; $i < $dojd && $doj1 > $df1; $i++) { 
+                                                    echo "<td class='bg-info font-weight-bold'>DNJ</td>";
+                                                }
+                                            }else {
                                             for ($i=1; $i < $day ; $i++) { 
                                                 // check if day is sunday
                                                 if (in_array($i, $fs)) {
@@ -159,6 +172,7 @@ require_once('config.php');
                                                 }
                                             }
                                         }
+                                    }
                                         //check if it is not first present of month
                                         elseif ($prevDay != "") {
                                             for ($i=$prevDay+1; $i < $day; $i++) { 
@@ -175,11 +189,12 @@ require_once('config.php');
                                         }
 
                                         $prevDay = $day;
-                                        
+
+
                                         echo "<td>$timeIn<br>$timeOut</td>";
-                                        
                                         $absent--;
                                         $present++;
+                                        
 
                                         }
 
@@ -196,15 +211,31 @@ require_once('config.php');
                                     }
                                     // check if not present any day of month
                                     elseif ($result1->num_rows == 0) {
-                                        //check if day is sunday
-                                        for ($k=0; $k < $t ; $k++) { 
-                                            if (in_array($k+1, $fs)) {
-                                                echo "<td class='bg-success'></td>";
+                                        if ($doj1 > $df1) {
+                                            for ($i=0; $i < $dojd && $doj1 > $df1; $i++) { 
+                                                echo "<td class='bg-info font-weight-bold'>DNJ</td>";
                                             }
-                                            else {
-                                            echo "<td></td>";
+                                            for ($k=$i; $k < $t ; $k++) { 
+                                                if (in_array($k+1, $fs)) {
+                                                    echo "<td class='bg-success'></td>";
+                                                }
+                                                else {
+                                                echo "<td></td>";
+                                                }
+                                        }
+                                        }
+                                        else {
+                                            for ($k=0; $k < $t ; $k++) { 
+                                                if (in_array($k+1, $fs)) {
+                                                    echo "<td class='bg-success'></td>";
+                                                }
+                                                else {
+                                                echo "<td></td>";
+                                                }
                                             }
                                         }
+                                        //check if day is sunday
+                                        
                                         $absent = $t;
                                         $present = 0;  
                                         echo "<td id='$id-present'>$present</td><td id='$id-absent'>$absent</td>";
