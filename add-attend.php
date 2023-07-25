@@ -18,7 +18,6 @@
     $timeIn = date('Y-m-d h:i A', strtotime($timeIn));
     $timeOut = date('Y-m-d h:i A', strtotime($timeOut));
 
-
     $sql ="INSERT INTO `attendance` VALUES ('', '$eid', '', '$day', '$month', '$year', '$date', '$timeIn', '$timeOut', current_timestamp(), current_timestamp(), '')";
     
     if(mysqli_query($conn, $sql)){

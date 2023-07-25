@@ -130,7 +130,7 @@ require_once('config.php');
                                 echo "<td class='text-left'>". $fname ." ". $mname ." ". $lname ."</td>";
                                 // echo $doj2."<br>".++$dojd."<br>";
 
-                                $sql1 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year'";
+                                $sql1 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year' ORDER BY `day` ASC";
                                 $result1 = $conn->query($sql1);
                                 $absent = $t;
                                 $present = 0; 
