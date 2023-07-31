@@ -40,7 +40,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                         <?php
                         $i = 1;
                         while ($i <= 12) {
-                            echo '<option value="'. $i .'">';echo date("F", mktime(0, 0, 0, $i));'</option>';
+                            echo '<option value="'. $i .'">';echo date("F", mktime(0, 0, 0, $i, $i));'</option>';
                             $i++;
                         }
                         ?>
