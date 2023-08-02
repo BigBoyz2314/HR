@@ -29,7 +29,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             }, 3000);
         });
     </script>
-    <title>View Salary</title>
+    <title>Add Gazette Holiday</title>
 </head>
 <body>  
 <?php include 'nav.php' ?>
