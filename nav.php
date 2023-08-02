@@ -68,6 +68,7 @@
                         <?php
                         if ($_SESSION['role'] == '1') {
                             echo '<a class="dropdown-item bg-dark text-white-50" href="add-attendance.php">Add Attendance</a>';
+                            echo '<a class="dropdown-item bg-dark text-white-50" href="gazette.php">Add Gazette Holiday</a>';
                         }
                         ?>
                         <a class="dropdown-item bg-dark text-white-50" href="attendance.php">View Attendance</a>
