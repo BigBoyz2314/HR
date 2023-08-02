@@ -33,9 +33,21 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 </head>
 <body>  
 <?php include 'nav.php' ?>
+<?php 
+    if (isset($_GET['action'])) {
+    if (($_GET['action']) == 'added') {
+        echo '<div class="alert alert-success alert-dismissible fade show position-fixed paid" role="alert">
+                <strong>Holiday Added!</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+        } 
+    }
+?>
     <div class="container-fluid p-5">
         <h1>Add Gazette Holiday</h1>
-        <form action="add-gazette.php" method="get">
+        <form action="add-gazette.php" method="post">
             <div class="row pt-4">
                 <div class="col-md-3">
                     <h4>Name</h4>

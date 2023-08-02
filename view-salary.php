@@ -76,7 +76,7 @@ require_once('config.php');
             </div>';
         } 
     }
-    ?>
+?>
     <div class="container-fluid py-5">
         <h1>View Salary</h1>
         <h4>Month: <?php echo date("F", mktime(0, 0, 0, $_GET['month'], 10)); ?></h4>
