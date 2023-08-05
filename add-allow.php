@@ -3,7 +3,6 @@
 ?>
 
 <?php
-
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $eid = ucwords($_REQUEST["eid"]);
         $type = ucwords($_REQUEST["type"]);
@@ -23,5 +22,4 @@
             echo "ERROR: Hush! Sorry $sql. "
             . mysqli_error($conn);
         }
-
 ?>
