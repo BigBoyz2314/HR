@@ -163,12 +163,19 @@ require_once('config.php');
                                             for ($i=1; $i < $day ; $i++) { 
                                                 // check if day is sunday
                                                 if (in_array($i, $fs)) {
-                                                    echo "<td class='bg-success'></td>";
-                                                    $absent--;
-                                                    $present++;
+                                                    $stmt2 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year' and `day` = $day+1 and `day` = $day-1 ORDER BY `day` ASC";
+                                                    $result2 = $conn->query($stmt1);
+                                                    if ($result1->num_rows > 0) {
+                                                        echo "<td class='bg-success'></td>";
+                                                        $absent--;
+                                                        $present++;
+                                                    }
+                                                    else {
+                                                        echo "<td></td>";
+                                                    }
                                                 }
                                                 else {
-                                                echo "<td></td>";
+                                                    echo "<td></td>";
                                                 }
                                             }
                                         }
@@ -178,9 +185,16 @@ require_once('config.php');
                                             for ($i=$prevDay+1; $i < $day; $i++) { 
                                                 //check if day is sunday
                                                 if (in_array($i, $fs)) {
-                                                    echo "<td class='bg-success'></td>";
-                                                    $absent--;
-                                                    $present++;
+                                                    $stmt1 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year' AND `day` = $day+1 OR `day` = $day-2";
+                                                    $result2 = $conn->query($stmt1);
+                                                    if ($result2->num_rows > 0) {
+                                                        echo "<td class='bg-success'></td>";
+                                                        $absent--;
+                                                        $present++;
+                                                    }
+                                                    else {
+                                                        echo "<td></td>";
+                                                    }
                                                 }
                                                 else {
                                                 echo "<td></td>";
@@ -189,22 +203,35 @@ require_once('config.php');
                                         }
 
                                         $prevDay = $day;
-
-
-                                        echo "<td>$timeIn<br>$timeOut</td>";
-                                        $absent--;
-                                        $present++;
+                                        if (in_array($day, $fs)) { 
+                                            echo "<td class='bg-success'></td>";
+                                            $absent--;
+                                            $present++;
+                                        }
+                                        else {
+                                            echo "<td>$timeIn<br>$timeOut</td>";
+                                            $absent--;
+                                            $present++;
+                                        }
                                         
-
                                         }
 
                                         for ($l=$day; $l < $t ; $l++) {
-                                            // check if day is sunday
                                             if (in_array($l+1, $fs)) {
-                                                echo "<td class='bg-success'></td>";
+                                                $stmt1 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year' AND `day` = $day+1 OR `day` = $day-2";
+                                                $result2 = $conn->query($stmt1);
+                                                if ($result2->num_rows > 0) {
+                                                    echo "<td class='bg-success'></td>";
+                                                    // $absent--;
+                                                    // $present++;
+                                                }
+                                                else {
+                                                    echo "<td class='bg-success'></td>";
+                                                }
                                             }
+                                            // check if day is sunday
                                             else {
-                                            echo "<td></td>";
+                                                echo "<td></td>";
                                             }
                                         }
                                         echo "<td id='$id-present'>$present</td><td id='$id-absent'>$absent</td>";

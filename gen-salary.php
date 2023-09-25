@@ -39,7 +39,7 @@ if ($_SESSION['role'] != '1') {
         <h1>Generate Salary</h1>
         <div class="row">
             <div class="col-md-6 pt-4">
-                <form action="generate-salary.php" method="get">
+                <form action="generate-salary-new.php" method="get">
                     <h4>Month</h4>
                     <select class="js-example-basic-single w-50" name="month" required>
                         <option></option>
