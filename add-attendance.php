@@ -28,12 +28,28 @@ require_once('config.php');
     <script>
         $(document).ready(function() {
             $('.js-example-basic-single').select2({theme: "bootstrap4"});
+
+            setTimeout(function() {
+            $(".alert").alert('close');
+            }, 3000); 
         });
     </script>
     <title>Add Attendance</title>
 </head>
 <body>
     <?php include 'nav.php' ?>
+    <?php 
+    if (isset($_GET['action'])) {
+        $action = $_GET['action'];
+        $id = $_GET['emp'];
+        echo '<div class="alert alert-success alert-dismissible fade show position-fixed paid" role="alert">
+                Attendance Added For ID: <strong>'. $id .'</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+    }
+    ?>
     <div class="container-fluid p-5">
         <h1>Add Attendance</h1>
         <form action="add-attend.php" method="post">

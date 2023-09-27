@@ -13,7 +13,7 @@
         
         if(mysqli_query($conn, $sql)){
 
-            header('Location: department.php');
+            header('Location: department.php?add='. $name .'');
         
         } else{
             echo "ERROR: Hush! Sorry $sql. "

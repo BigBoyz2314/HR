@@ -14,7 +14,7 @@
         
         if(mysqli_query($conn, $sql)){
 
-            header('Location: designation.php');
+            header('Location: designation.php?edit='. $name .'');
         
         } else{
             echo "ERROR: Hush! Sorry $sql. "

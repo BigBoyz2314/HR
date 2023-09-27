@@ -17,10 +17,46 @@ require_once('config.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
     <link rel="stylesheet" href="css/styles.css">
+    <script>
+        $(document).ready(function(){
+            setTimeout(function() {
+            $(".alert").alert('close');
+            }, 3000); 
+        });
+    </script>
     <title>Department</title>
 </head>
 <body>
 <?php include 'nav.php' ?>
+<?php 
+    if (isset($_GET['del'])) {
+        $del = $_GET['del'];
+        echo '<div class="alert alert-danger alert-dismissible fade show position-fixed paid" role="alert">
+                <strong>'. $del .'</strong> Department Deleted!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+    }
+    elseif (isset($_GET['add'])) {
+        $add = $_GET['add'];
+        echo '<div class="alert alert-success alert-dismissible fade show position-fixed paid" role="alert">
+                <strong>'. $add .'</strong> Department Added!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+    }
+    elseif (isset($_GET['edit'])) {
+        $edit = $_GET['edit'];
+        echo '<div class="alert alert-warning alert-dismissible fade show position-fixed paid" role="alert">
+                <strong>'. $edit .'</strong> Department Updated!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+    }
+?>
     <div class="container-fluid p-5">
         <h1>Add Department</h1>
         <form action="add-department.php" method="post">
@@ -80,7 +116,7 @@ require_once('config.php');
                                 }
                               }
 
-                              if ($_REQUEST) {
+                              if (isset($_GET['id'])) {
                                 $delID = $_GET['id'];
                                 $delName = $_GET['deptName'];
                                   

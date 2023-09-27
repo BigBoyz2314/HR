@@ -12,7 +12,7 @@
         $sql ="DELETE FROM `department` WHERE `departmentID` = '$id' AND `name` = '$name'";
         
         if(mysqli_query($conn, $sql)){
-            header('Location: department.php');
+            header('Location: department.php?del='. $name .'');
         } else{
             echo "ERROR: Hush! Sorry $sql. " . mysqli_error($conn);
         }
