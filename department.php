@@ -1,8 +1,7 @@
 <?php
-// Initialize the session
+
 session_start();
 
-// Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
@@ -126,15 +125,14 @@ require_once('config.php');
                                     echo '  }';
                                     echo '</script>';  
                               }
+                            
                         ?>
                     </tbody>
             </table>
             </div>
         </div> 
     </div>
-    <script>
-        
-    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
 </body>
