@@ -69,14 +69,14 @@ require_once('config.php');
                     <h5>Allowed Strength</h5>
                     <input type="number" min="1" name="allowed" id="allowed" class="form-control w-100" required>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 mt-sm-2">
                     <button type="submit" class="btn btn-success">Submit</button>
                 </div>
             </div>
         </form> 
         <div class="row mt-5">
-            <div class="col-md-12">
-                <table class="table text-nowrap table-bordered w-100 text-center" id="table">
+            <div class="col-md-12 d-flex justify-content-center">
+                <table class="table text-nowrap table-responsive table-bordered w-auto text-center" id="table">
                     <thead class="font-weight-bolder">
                         <th>Sr.</th>
                         <th>Department Name</th>
@@ -84,6 +84,7 @@ require_once('config.php');
                         <th>Allowed Strength</th>
                         <th>Created</th>
                         <th>Updated</th>
+                        <th colspan="2"></th>
                     </thead>
                     <tbody class="">
                         <?php

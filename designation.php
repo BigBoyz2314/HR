@@ -60,27 +60,28 @@ require_once('config.php');
     <div class="container-fluid p-5">
         <h1>Add Designation</h1>
         <form action="add-designation.php" method="post">
-            <div class="row align-items-end">
-                <div class="col-md-3 pt-4">
+            <div class="row pt-4 align-items-end">
+                <div class="col-md-3">
                     <h5>Designation</h5>
                     <input type="text" name="name" id="name" class="form-control w-100" required>
                 </div>
-                <div class="col-md-2 pt-4">
+                <div class="col-md-2">
                     <h5>Grade</h5>
                     <input type="number" min="1" name="grade" id="grade" class="form-control w-100" required>
                 </div>
-                <div class="col-md-3 pt-4">
+                <div class="col-md-1 mt-sm-2">
                     <button type="submit" class="btn btn-success">Submit</button>
                 </div>
             </div>
         </form>  
         <div class="row mt-5">
-            <div class="col-md-12">
-                <table class="table text-nowrap table-bordered w-75 text-center" id="table">
+            <div class="col-md-12 d-flex justify-content-center">
+                <table class="table text-nowrap table-responsive table-bordered w-auto text-center" id="table">
                     <thead class="font-weight-bolder">
                         <th>Sr.</th>
                         <th>Designation Name</th>
                         <th>Grade</th>
+                        <th colspan="2"></th>
                     </thead>
                     <tbody class="">
                         <?php
