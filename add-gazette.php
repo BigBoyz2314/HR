@@ -18,7 +18,7 @@
         
         if(mysqli_query($conn, $sql)){
 
-            header('Location: gazette.php?action=added');
+            header('Location: gazette.php?add='. $name .'');
         
         } else{
             echo "ERROR: Hush! Sorry $sql. "

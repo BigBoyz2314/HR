@@ -50,6 +50,11 @@
 
             $stmt3 = "SELECT COUNT(day) as paydays FROM attendance WHERE `month` = $month AND `year` = $year AND `employeeID` = $id";
             $result3 = $conn->query($stmt3);
+            $stmt4 = "SELECT * FROM holidays WHERE `month` = $month AND `year` = $year";
+            $result4 = $conn->query($stmt4);
+
+            $row4 = $result4->fetch_all(MYSQLI_ASSOC);
+            $holidays[] = $row4[0]['day'];
 
             $row3 = $result3->fetch_assoc();
             $paydays = $row3['paydays'];
@@ -59,6 +64,10 @@
             
             $row2 = $result2->fetch_assoc();
             $deduction = $row2['amount'];
+
+            for ($i=1; $i < array_count_values($holidays); $i++) { 
+                $paydays++;
+            }
 
             if ($paydays == 31) {
                 $dayspayable = 30;

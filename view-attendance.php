@@ -130,25 +130,28 @@ require_once('config.php');
                                 echo "<td class='text-left'>". $fname ." ". $mname ." ". $lname ."</td>";
                                 // echo $doj2."<br>".++$dojd."<br>";
 
-                                $sql1 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year' ORDER BY `day` ASC";
+                                $sql0 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year' ORDER BY `day` ASC";
+                                $result0 = $conn->query($sql0);
+                                $sql1 = "SELECT * FROM `holidays` WHERE `month` = '$month' AND `year` = '$year' ORDER BY `day` ASC";
                                 $result1 = $conn->query($sql1);
+                                $row1 = $result1->fetch_all(MYSQLI_ASSOC);
+                                $holidays[] = $row1[0]['day'];
                                 $absent = $t;
                                 $present = 0; 
                                 $prevDay = "";
 
-
-                                if ($result1->num_rows > 0) {
-                                    while($row1 = $result1->fetch_assoc()) {
-                                        $unit = $row1['unit'];
-                                        $day = $row1['day'];
-                                        $amonth = $row1['month'];
-                                        $ayear = $row1['year'];
-                                        $date = $row1['date'];
-                                        $timeIn = $row1['time_in'];
-                                        $timeOut = $row1['time_out'];
-                                        $created_at = $row1['created_at'];
-                                        $updated_at = $row1['updated_at'];
-                                        $updated_by = $row1['updated_by'];
+                                if ($result0->num_rows > 0) {
+                                    while($row0 = $result0->fetch_assoc()) {
+                                        $unit = $row0['unit'];
+                                        $day = $row0['day'];
+                                        $amonth = $row0['month'];
+                                        $ayear = $row0['year'];
+                                        $date = $row0['date'];
+                                        $timeIn = $row0['time_in'];
+                                        $timeOut = $row0['time_out'];
+                                        $created_at = $row0['created_at'];
+                                        $updated_at = $row0['updated_at'];
+                                        $updated_by = $row0['updated_by'];
 
                                         $timeIn = date('h:i A', strtotime($timeIn));
                                         $timeOut = date('h:i A', strtotime($timeOut));
@@ -164,8 +167,13 @@ require_once('config.php');
                                                 // check if day is sunday
                                                 if (in_array($i, $fs)) {
                                                     $stmt2 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year' and `day` = $day+1 and `day` = $day-1 ORDER BY `day` ASC";
-                                                    $result2 = $conn->query($stmt1);
-                                                    if ($result1->num_rows > 0) {
+                                                    $result2 = $conn->query($stmt2);
+                                                    if (in_array($i, $holidays) || $i == current($holidays)) {
+                                                        echo "<td class='bg-warning'></td>";
+                                                        $absent--;
+                                                        $present++;
+                                                    }
+                                                    elseif ($result2->num_rows > 0) {
                                                         echo "<td class='bg-success'></td>";
                                                         $absent--;
                                                         $present++;
@@ -183,8 +191,13 @@ require_once('config.php');
                                         //check if it is not first present of month
                                         elseif ($prevDay != "") {
                                             for ($i=$prevDay+1; $i < $day; $i++) { 
+                                                if (in_array($i, $holidays) || $i == current($holidays)) {
+                                                    echo "<td class='bg-warning'></td>";
+                                                    $absent--;
+                                                    $present++;
+                                                }
                                                 //check if day is sunday
-                                                if (in_array($i, $fs)) {
+                                                elseif (in_array($i, $fs)) {
                                                     $stmt1 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year' AND `day` = $day+1 OR `day` = $day-2";
                                                     $result2 = $conn->query($stmt1);
                                                     if ($result2->num_rows > 0) {
@@ -203,7 +216,12 @@ require_once('config.php');
                                         }
 
                                         $prevDay = $day;
-                                        if (in_array($day, $fs)) { 
+                                        if (in_array($prevDay, $holidays) || $prevDay == current($holidays)) {
+                                            echo "<td class='bg-warning'></td>";
+                                            $absent--;
+                                            $present++;
+                                        }
+                                        elseif (in_array($day, $fs)) { 
                                             echo "<td class='bg-success'></td>";
                                             $absent--;
                                             $present++;
@@ -217,7 +235,12 @@ require_once('config.php');
                                         }
 
                                         for ($l=$day; $l < $t ; $l++) {
-                                            if (in_array($l+1, $fs)) {
+                                            if (in_array($l+1, $holidays) || $l+1 == current($holidays)) {
+                                                echo "<td class='bg-warning'></td>";
+                                                $absent--;
+                                                $present++;
+                                            }
+                                            elseif (in_array($l+1, $fs)) {
                                                 $stmt1 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year' AND `day` = $day+1 OR `day` = $day-2";
                                                 $result2 = $conn->query($stmt1);
                                                 if ($result2->num_rows > 0) {
@@ -237,12 +260,12 @@ require_once('config.php');
                                         echo "<td id='$id-present'>$present</td><td id='$id-absent'>$absent</td>";
                                     }
                                     // check if not present any day of month
-                                    elseif ($result1->num_rows == 0) {
+                                    elseif ($result0->num_rows == 0) {
                                         if ($doj1 > $df1) {
                                             for ($i=0; $i < $dojd && $doj1 > $df1; $i++) { 
                                                 echo "<td class='bg-info font-weight-bold'>DNJ</td>";
                                             }
-                                            for ($k=$i; $k < $t ; $k++) { 
+                                            for ($k=$i; $k < $t ; $k++) {
                                                 if (in_array($k+1, $fs)) {
                                                     echo "<td class='bg-success'></td>";
                                                 }
@@ -253,7 +276,10 @@ require_once('config.php');
                                         }
                                         else {
                                             for ($k=0; $k < $t ; $k++) { 
-                                                if (in_array($k+1, $fs)) {
+                                                if (in_array($k+1, $holidays) || $k+1 == current($holidays)) {
+                                                    echo "<td class='bg-warning'></td>";
+                                                } 
+                                                elseif (in_array($k+1, $fs)) {
                                                     echo "<td class='bg-success'></td>";
                                                 }
                                                 else {

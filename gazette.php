@@ -34,15 +34,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <body>  
 <?php include 'nav.php' ?>
 <?php 
-    if (isset($_GET['action'])) {
-    if (($_GET['action']) == 'added') {
+    if (isset($_GET['add'])) {
         echo '<div class="alert alert-success alert-dismissible fade show position-fixed paid" role="alert">
-                <strong>Holiday Added!</strong>
+                <strong>'. $_GET['action'] .'</strong>Holiday Added!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>';
-        } 
     }
 ?>
     <div class="container-fluid p-5">
