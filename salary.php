@@ -44,6 +44,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </button>
         </div>';
         }
+    if (($_GET['action']) == 'updated') {
+        $month = $_GET['month'];
+        $monthName = date('F', mktime(0, 0, 0, $month, 10));
+        echo '<div class="alert alert-success alert-dismissible fade show position-fixed paid" role="alert">
+            <strong>Salary Updated</strong> for '. $monthName .''. ' '. $_GET['year'] .'
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>';
+    }
     }
 ?>
     <?php include 'nav.php' ?>
