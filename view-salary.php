@@ -54,7 +54,7 @@ require_once('config.php');
             });
 
             setTimeout(function() {
-            $(".alert").alert('close');
+            $(".alert-dismissible").alert('close');
             }, 3000);
         });
 
@@ -206,7 +206,12 @@ require_once('config.php');
                                 echo "</tr>";
                                 }
                                 else {
-                                    echo "Salary Not Generated.";
+                                    echo '<div class="alert alert-danger" role="alert">
+                                    <strong>Salary Not Generated!</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>';
                                 }
                             }
 

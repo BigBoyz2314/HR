@@ -22,6 +22,8 @@ require_once('config.php');
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <script src="js/tableHTMLExport.js"></script>
+    <link rel="stylesheet" href="css/styles1.css">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function(){
             
@@ -46,7 +48,7 @@ require_once('config.php');
                 });
             });
 
-            $("#search").on("keyup", function() {
+            $("#searc").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
                 $("#table tbody tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
@@ -59,16 +61,19 @@ require_once('config.php');
     <title>View Attendance</title>
 </head>
 <body>
-<?php include 'nav.php' ?>
-    <div class="container-fluid py-5">
+<?php include 'nav1.php' ?>
+<div id="layoutSidenav">
+<?php include 'side-nav.php' ?>
+<div id="layoutSidenav_content">
+    <div class="container-fluid p-4">
         <h1>View Attendance</h1>
         <h4 id="month">Month: <?php echo $_GET["month"]; ?></h4>
         <h4 id="year">Year: <?php echo $_GET["year"]; ?></h4>
 
         <div class="row mt-5">
-            <button class="btn btn-info m-3 export-btn">Export to Excel</button>
-            <button class="btn btn-danger m-3" id="browserPrint">Print PDF</button>
-                <input type="text" name="search" id="search" class="form-control w-25 ml-auto" placeholder="Search...">	
+            <button class="btn btn-info m-3 w-25 export-btn">Export to Excel</button>
+            <button class="btn btn-danger m-3 w-25" id="browserPrint">Print PDF</button>
+                <input type="text" name="searc" id="searc" class="form-control w-25 ms-auto" placeholder="Search...">	
             <div class="col-md-12">
                 <table class="table table-responsive table-bordered w-100 text-center" id="table">
                     <thead>
@@ -134,8 +139,10 @@ require_once('config.php');
                                 $result0 = $conn->query($sql0);
                                 $sql1 = "SELECT * FROM `holidays` WHERE `month` = '$month' AND `year` = '$year' ORDER BY `day` ASC";
                                 $result1 = $conn->query($sql1);
-                                $row1 = $result1->fetch_all(MYSQLI_ASSOC);
-                                $holidays[] = $row1[0]['day'];
+                                if ($result1->num_rows > 0) {
+                                    $row1 = $result1->fetch_all(MYSQLI_ASSOC);
+                                    $holidays[] = $row1[0]['day'];
+                                }
                                 $absent = $t;
                                 $present = 0; 
                                 $prevDay = "";
@@ -168,18 +175,20 @@ require_once('config.php');
                                                 if (in_array($i, $fs)) {
                                                     $stmt2 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year' and `day` = $day+1 and `day` = $day-1 ORDER BY `day` ASC";
                                                     $result2 = $conn->query($stmt2);
-                                                    if (in_array($i, $holidays) || $i == current($holidays)) {
-                                                        echo "<td class='bg-warning'></td>";
-                                                        $absent--;
-                                                        $present++;
+                                                    if (isset($holidays)) {
+                                                        if (in_array($i, $holidays) || $i == current($holidays)) {
+                                                            echo "<td class='bg-warning'></td>";
+                                                            $absent--;
+                                                            $present++;
+                                                        }
                                                     }
                                                     elseif ($result2->num_rows > 0) {
+                                                        echo "<td></td>";
+                                                    }
+                                                    else {
                                                         echo "<td class='bg-success'></td>";
                                                         $absent--;
                                                         $present++;
-                                                    }
-                                                    else {
-                                                        echo "<td></td>";
                                                     }
                                                 }
                                                 else {
@@ -216,10 +225,12 @@ require_once('config.php');
                                         }
 
                                         $prevDay = $day;
-                                        if (in_array($prevDay, $holidays) || $prevDay == current($holidays)) {
-                                            echo "<td class='bg-warning'></td>";
-                                            $absent--;
-                                            $present++;
+                                        if (isset($holidays)) {                                       
+                                            if (in_array($prevDay, $holidays) || $prevDay == current($holidays)) {
+                                                echo "<td class='bg-warning'></td>";
+                                                $absent--;
+                                                $present++;
+                                            }
                                         }
                                         elseif (in_array($day, $fs)) { 
                                             echo "<td class='bg-success'></td>";
@@ -235,10 +246,12 @@ require_once('config.php');
                                         }
 
                                         for ($l=$day; $l < $t ; $l++) {
-                                            if (in_array($l+1, $holidays) || $l+1 == current($holidays)) {
-                                                echo "<td class='bg-warning'></td>";
-                                                $absent--;
-                                                $present++;
+                                            if (isset($holidays)) {
+                                                if (in_array($l+1, $holidays) || $l+1 == current($holidays)) {
+                                                    echo "<td class='bg-warning'></td>";
+                                                    $absent--;
+                                                    $present++;
+                                                }
                                             }
                                             elseif (in_array($l+1, $fs)) {
                                                 $stmt1 = "SELECT * FROM `attendance` WHERE `employeeID`  = '$id' AND `month` = '$month' AND `year` = '$year' AND `day` = $day+1 OR `day` = $day-2";
@@ -274,11 +287,12 @@ require_once('config.php');
                                                 }
                                         }
                                         }
-                                        else {
+                                        else  {
                                             for ($k=0; $k < $t ; $k++) { 
-                                                if (in_array($k+1, $holidays) || $k+1 == current($holidays)) {
+                                                if (isset($holidays)){
+                                                    if (in_array($k+1, $holidays) || $k+1 == current($holidays)) {
                                                     echo "<td class='bg-warning'></td>";
-                                                } 
+                                                } }
                                                 elseif (in_array($k+1, $fs)) {
                                                     echo "<td class='bg-success'></td>";
                                                 }
@@ -304,7 +318,10 @@ require_once('config.php');
             </div>
         </div>
     </div>
+</div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
 </body>
 </html>

@@ -15,8 +15,11 @@ require_once('config.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" > -->
+    <link rel="stylesheet" href="css/styles1.css">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
     <script>
         $(document).ready(function(){
             setTimeout(function() {
@@ -27,7 +30,10 @@ require_once('config.php');
     <title>Designation</title>
 </head>
 <body>
-<?php include 'nav.php' ?>
+<?php include 'nav1.php' ?>
+<div id="layoutSidenav">
+<?php include 'side-nav.php' ?>
+<div id="layoutSidenav_content">
 <?php 
     if (isset($_GET['del'])) {
         $del = $_GET['del'];
@@ -57,7 +63,7 @@ require_once('config.php');
             </div>';
     }
 ?>
-    <div class="container-fluid p-5">
+    <div class="container-fluid p-4">
         <h1>Add Designation</h1>
         <form action="add-designation.php" method="post">
             <div class="row pt-4 align-items-end">
@@ -126,10 +132,12 @@ require_once('config.php');
             </div>
         </div>
     </div>
+</div>
     <script>
         
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>      
 </body>
 </html>

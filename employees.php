@@ -24,20 +24,25 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" > -->
+    <link rel="stylesheet" href="css/styles1.css">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <title>Add Employees</title>
 </head>
 <body>
-<?php include 'nav.php' ?>
-    <div class="container-fluid p-5">
+<?php include 'nav1.php' ?>
+<div id="layoutSidenav">
+<?php include 'side-nav.php' ?>
+<div id="layoutSidenav_content">
+    <div class="container-fluid p-4">
         <div class="row justify-content-between">
             <div class="col-md-3">
                 <h1>Add Employees</h1>
             </div>
             <div class="col-md-2 text-center">
                 <h5>Employee ID</h5>
-                <input type="text" value="<?php echo $eid ?>" class="form-control font-weight-bold bg-info text-white text-center" disabled>
+                <input type="text" value="<?php echo $eid ?>" class="form-control fw-bold bg-info text-white text-center" disabled>
             </div>
         </div>
         <form action="add-employee.php" method="post" enctype="multipart/form-data">
@@ -119,7 +124,7 @@ $result = $conn->query($sql);
                     </div>
                     <div class="col-md-4 pt-3">
                         <h5 class="d-inline-block">Current Address</h5>
-                        <p class="d-inline-block font-italic">Same as Primary Address</p>
+                        <p class="d-inline-block small font-italic">Same as Primary Address</p>
                         <input type="checkbox" name="same" id="same" onclick="check()">
                         <input type="text" name="cAddress" id="cAddress" class="form-control" value="" required>
                     </div>
@@ -331,7 +336,10 @@ $result = $conn->query($sql);
             </div>   
         </form>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>      
     <script>
         
         function salary() {

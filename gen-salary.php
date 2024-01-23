@@ -26,6 +26,8 @@ if ($_SESSION['role'] != '1') {
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="css/styles1.css">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
             $('.js-example-basic-single').select2({theme: "bootstrap4"});
@@ -34,7 +36,10 @@ if ($_SESSION['role'] != '1') {
     <title>Generate Salary</title>
 </head>
 <body>  
-    <?php include 'nav.php' ?>
+<?php include 'nav1.php' ?>
+<div id="layoutSidenav">
+<?php include 'side-nav.php' ?>
+<div id="layoutSidenav_content">
     <div class="container-fluid p-5">
         <h1>Generate Salary</h1>
         <div class="row">
@@ -61,9 +66,11 @@ if ($_SESSION['role'] != '1') {
             </div>
         </div>
     </div> 
+</div>
     <script>
         
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>    
 </body>
 </html>

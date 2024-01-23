@@ -19,6 +19,8 @@ require_once('config.php');
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <script src="js/tableHTMLExport.js"></script>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles1.css">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function(){
 
@@ -60,12 +62,15 @@ require_once('config.php');
     <title>Join / Leave</title>
 </head>
 <body>
-    <?php include 'nav.php' ?>
+<?php include 'nav1.php' ?>
+<div id="layoutSidenav">
+<?php include 'side-nav.php' ?>
+<div id="layoutSidenav_content">
     <div class="container-fluid p-5">
         <h1>Join / Leave</h1>
         <div class="row mt-5">
-            <button class="btn btn-info m-3 export-btn1">Export to Excel</button>	
-            <button class="btn btn-danger m-3" id="browserPrint">Print PDF</button>	
+            <button class="btn btn-info m-3 w-25 export-btn1">Export to Excel</button>	
+            <button class="btn btn-danger m-3 w-25" id="browserPrint">Print PDF</button>	
             <div class="col-md-12">
                 <table class="table table-responsive text-nowrap table-bordered w-100 text-center" id="table1">
                     <thead class="font-weight-bolder">
@@ -157,7 +162,7 @@ require_once('config.php');
                                 if ($result1->num_rows > 0) {
                                     
                                     echo '<div class="row mt-5">
-                                <button class="btn btn-info m-3 export-btn2">Export to Excel</button>	
+                                <button class="btn btn-info m-3 w-25 export-btn2">Export to Excel</button>	
                                     <table class="table table-responsive text-nowrap table-bordered w-100 text-center" id="table2">
                                         <thead class="font-weight-bolder">
                                             <th>Sr.</th>
@@ -219,9 +224,11 @@ require_once('config.php');
         ?>
         </div>
     </div>
+    </div>
     <script>
         
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
 </body>
 </html>

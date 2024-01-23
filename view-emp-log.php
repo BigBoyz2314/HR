@@ -22,6 +22,8 @@ require_once('config.php');
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <script src="js/tableHTMLExport.js"></script>
+    <link rel="stylesheet" href="css/styles1.css">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function(){
             
@@ -46,7 +48,7 @@ require_once('config.php');
                 });
             });
 
-            $("#search").on("keyup", function() {
+            $("#searc").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
                 $("#table tbody tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
@@ -59,14 +61,17 @@ require_once('config.php');
     <title>View Employees</title>
 </head>
 <body>
-<?php include 'nav.php' ?>
+<?php include 'nav1.php' ?>
+<div id="layoutSidenav">
+<?php include 'side-nav.php' ?>
+<div id="layoutSidenav_content">
     <div class="container-fluid py-5">
         <h1>View Employees</h1>
 
         <div class="row mt-5">
-            <button class="btn btn-info m-3 export-btn">Export to Excel</button>
-            <button class="btn btn-danger m-3" id="browserPrint">Print PDF</button>
-            <input type="text" name="search" id="search" class="form-control w-25 ml-auto" placeholder="Search...">	
+            <button class="btn btn-info m-3 w-25 export-btn">Export to Excel</button>
+            <button class="btn btn-danger m-3 w-25" id="browserPrint">Print PDF</button>
+            <input type="text" name="searc" id="searc" class="form-control w-25 ms-auto" placeholder="Search...">	
             <div class="col-md-12">
                 <table class="table table-responsive text-nowrap table-bordered w-100 text-center" id="table">
                     <thead class="font-weight-bolder">
@@ -139,9 +144,11 @@ require_once('config.php');
             </table>
             </div>
             </div>
+    </div>
         </div>
     </div>
   
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
 </body>
 </html>
