@@ -66,7 +66,7 @@ while ($row = $result1->fetch_assoc()) {
                                         <h5>
                                         <?php 
 
-                                        $query1 = "SELECT SUM(current_Strength) AS total_headcount FROM department";
+                                        $query1 = "SELECT COUNT(employeeId) AS total_headcount FROM employees";
                                         $result1 = $conn->query($query1);
                                         $row1 = $result1->fetch_assoc();
                                         echo $row1['total_headcount'];
@@ -77,7 +77,7 @@ while ($row = $result1->fetch_assoc()) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-md-6">
+                            <!-- <div class="col-xl-3 col-md-6">
                                 <div class="card bg-warning text-white mb-4">
                                     <div class="card-body">Warning Card</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
@@ -103,14 +103,14 @@ while ($row = $result1->fetch_assoc()) {
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="row">
                             <div class="col-xl-6">
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-area me-1"></i>
-                                        Area Chart Example
+                                        Monthly Salary
                                     </div>
                                     <div class="card-body"><canvas id="chart1" width="100%" height="40"></canvas></div>
                                 </div>
@@ -119,7 +119,7 @@ while ($row = $result1->fetch_assoc()) {
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-bar me-1"></i>
-                                        Bar Chart Example
+                                        Department Strength
                                     </div>
                                     <div class="card-body"><canvas id="chart2" width="100%" height="40"></canvas></div>
                                 </div>
@@ -127,18 +127,6 @@ while ($row = $result1->fetch_assoc()) {
                         </div>
                     </div>
                 </main>
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -224,13 +212,21 @@ while ($row = $result1->fetch_assoc()) {
         <?php
         require_once('config.php');
 
-        $query1 = "SELECT `name`, `current_Strength` FROM department";
+        $query1 = "SELECT `name` FROM department";
         $result1 = $conn->query($query1);
+
 
         $dept = array();
 
         while ($row = $result1->fetch_assoc()) {
-            $dept[] = array("y" => $row['current_Strength'], "label" => $row['name']);
+            $deptName = $row['name'];
+            $query2 =  "SELECT COUNT(department) AS current_Strength FROM employees WHERE department = '$deptName'";
+        
+            $result2 = $conn->query($query2);
+
+            while ($row2 = $result2->fetch_assoc()) {
+                $dept[] = array("y" => $row2['current_Strength'], "label" => $row['name']);
+            }
         }
         ?>
 

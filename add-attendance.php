@@ -57,27 +57,27 @@ require_once('config.php');
     ?>
     <div class="container-fluid p-4">
         <h1>Add Attendance</h1>
-        <form action="add-attend.php" method="post">
+        <form action="add-attend2.php" method="post">
             <div class="row mt-4">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <h4>Employee Name</h4>
                     <select class="js-example-basic-single w-100" name="emp" required>
                         <option></option>
                         <?php
-                        $stmt = "SELECT employeeID, fname, mname, lname FROM employees";
+                        $stmt = "SELECT employeeID, sNo, fname, mname, lname FROM employees";
                         $result = $conn->query($stmt);
                         
                         if ($result->num_rows > 0) {
                             // output data of each row
                             while($row = $result->fetch_assoc()) {
-                                echo '<option value="' . $row['employeeID'] .'">' . $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'] . '</option>';
+                                echo '<option value="' . $row['employeeID'] .'">'. $row['sNo'] . " - " . $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'] . '</option>';
                             }
                         }
                         ?>
                     </select>
                 </div>
             </div>
-            <div class="row mt-3">
+            <!-- <div class="row mt-3">
                 <div class="col-md-3">
                     <h4>Time In</h4>
                     <input type="datetime-local" name="timeIn" class="form-control" id="timeIn">
@@ -87,6 +87,12 @@ require_once('config.php');
                 <div class="col-md-3">
                     <h4>Time Out</h4>
                     <input type="datetime-local" name="timeOut" class="form-control" id="timeOut">
+                </div>
+            </div> -->
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <h4>Date</h4>
+                    <input type="date" name="date" class="form-control" id="date">
                 </div>
             </div>
             <div class="row mt-3">
