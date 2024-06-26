@@ -120,6 +120,7 @@ require_once('config.php');
                         if ($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) { 
                                 $id = $row['employeeID'];
+                                $sNo = $row['sNo'];
                                 $fname = $row['fname'];
                                 $mname = $row['mname'];
                                 $lname = $row['lname'];
@@ -131,7 +132,7 @@ require_once('config.php');
                                 $k = 0;
 
                                 echo "<tr class='text-nowrap'>";
-                                echo "<td class='id font-weight-bold'>$id</td>";
+                                echo "<td class='id font-weight-bold'>$sNo</td>";
                                 echo "<td class='text-left'>". $fname ." ". $mname ." ". $lname ."</td>";
                                 // echo $doj2."<br>".++$dojd."<br>";
 
