@@ -29,13 +29,13 @@ require_once('config.php');
                 $("#table").removeClass();
                 var divToPrint = document.getElementById("table");
                 newWin= window.open("");
-                newWin.document.write('<!DOCTYPE html><html><head>  <title>Print Preview</title>  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >  <style>    table {        font-size: small;    }   form { display: none;   }  </style></head><body><div class="table table-bordered w-100 text-center">');
+                newWin.document.write('<!DOCTYPE html><html><head>  <title>Print Preview</title>  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >  <style>    table {        font-size: small;    }   form { display: none;   }  @page { size: landscape; }  </style></head><body><div class="table table-bordered w-100 text-center">');
                 newWin.document.write(divToPrint.outerHTML);
                 newWin.document.write('</body></html>');
                 newWin.document.close();
                 newWin.print();
                 newWin.close();
-                window.location.reload()
+                window.location.reload();
             }
             document.querySelector('#browserPrint').addEventListener('click', printData);
 
@@ -63,8 +63,11 @@ require_once('config.php');
     <link rel="stylesheet" href="css/styles.css">
     <title>View Salary</title>
 </head>
-<body>
-<?php include 'nav.php' ?>
+<?php include 'nav1.php' ?>
+<div id="layoutSidenav">
+<?php include 'side-nav.php' ?>
+<div id="layoutSidenav_content">
+    <div class="container-fluid p-4">
 <?php 
     if (isset($_GET['action'])) {
     if (($_GET['action']) == 'paid') {
@@ -77,7 +80,6 @@ require_once('config.php');
         } 
     }
 ?>
-    <div class="container-fluid py-5">
         <h1>View Salary</h1>
         <h4>Month: <?php echo date("F", mktime(0, 0, 0, $_GET['month'], 10)); ?></h4>
         <h4>Year: <?php echo $_GET['year']; ?></h4>
