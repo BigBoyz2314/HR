@@ -14,7 +14,7 @@ session_start();
     require_once('config.php');
 
     $id = $_GET['id'];
-    $stmt = "SELECT * FROM salary WHERE `id` = '$id'";
+    $stmt = "SELECT * FROM salary1 WHERE `employeeID` = '$id'";
     $result = $conn->query($stmt);
     $row = $result->fetch_assoc();
     $eid = $row['employeeID'];
@@ -36,7 +36,7 @@ session_start();
     $paid = $row['paid'];
     $remaining = $row['remaining']; 
 
-    $stmt1 = "SELECT SUM(remaining) AS total_remaining FROM salary WHERE employeeID = $eid";
+    $stmt1 = "SELECT SUM(remaining) AS total_remaining FROM salary1 WHERE employeeID = $eid";
     $result1 = $conn->query($stmt1);
     $row1 = $result1->fetch_assoc();
     $total_remaining = $row1['total_remaining'];

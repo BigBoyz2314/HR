@@ -98,7 +98,7 @@ if ($uploadOk == 0) {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
         }
-
+        header("Location: add-attendance.php?action=success");
         $conn->close();
     } else {
         echo "Sorry, there was an error uploading your file.";

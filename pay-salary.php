@@ -21,11 +21,11 @@
 
     echo $remaining;
 
-        $sql ="UPDATE `salary` SET `remaining`='$remain', `paid`='$pai', `updated_at` = current_timestamp() WHERE `fname` = '$fname' AND `id` = '$id' AND `year` = $year AND `month` = $month";
+        $sql ="UPDATE `salary1` SET `remaining`='$remain', `paid`='$pai', `updated_at` = current_timestamp() WHERE `fname` = '$fname' AND `employeeID` = '$id' AND `year` = $year AND `month` = $month";
         
         if(mysqli_query($conn, $sql)){
 
-            $stmt = "SELECT * FROM salary WHERE id= $id";
+            $stmt = "SELECT * FROM salary1 WHERE employeeID= $id";
             $result = $conn->query($stmt);
             $row = $result->fetch_assoc();
             $eid = $row['employeeID'];
@@ -48,7 +48,7 @@
             $paid = $row['paid'];
             $remaining = $row['remaining'];
 
-            $sql1 ="INSERT IGNORE INTO `salary_log`(`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`, `updated_by`)
+            $sql1 ="INSERT IGNORE INTO `salary_log1`(`employeeID`,`fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance`, `deduction`, `gross_salary`, `month`, `year`, `total_days`, `pay_days`, `absent`, `payable`, `paid`, `remaining`, `created_at`, `updated_at`, `updated_by`)
             VALUES ('$id','$fname','$mname','$lname','$desig','$dept','$gender','$basic','$allowance','$deduction','$gross','$month','$year','$totaldays','$paydays','$absent','$pay','$paid','$remaining',current_timestamp(),current_timestamp(),'$name')";
            
            mysqli_query($conn, $sql1);

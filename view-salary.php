@@ -64,43 +64,41 @@ require_once('config.php');
         });
 
     </script>
-   
     <link rel="stylesheet" href="css/styles.css">
     <title>View Salary</title>
 </head>
+<body>
 <?php include 'nav1.php' ?>
 <div id="layoutSidenav">
 <?php include 'side-nav.php' ?>
 <div id="layoutSidenav_content">
     <div class="container-fluid p-4">
-<?php 
-    if (isset($_GET['action'])) {
-    if (($_GET['action']) == 'paid') {
-        echo '<div class="alert alert-success alert-dismissible fade show position-fixed paid" role="alert">
-                <strong>Salary Paid!</strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>';
-        } 
-    }
-?>
+    <?php 
+        if (isset($_GET['action'])) {
+        if (($_GET['action']) == 'paid') {
+            echo '<div class="alert alert-success alert-dismissible fade show position-fixed paid" role="alert">
+                    <strong>Salary Paid!</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>';
+            } 
+        }
+    ?>
         <h1>View Salary</h1>
-        <h4>Month: <?php echo date("F", mktime(0, 0, 0, $_GET['month'], 10)); ?></h4>
-        <h4>Year: <?php echo $_GET['year']; ?></h4>
+        <h4 id="month">Month: <?php echo $_GET["month"]; ?></h4>
+        <h4 id="year">Year: <?php echo $_GET["year"]; ?></h4>
 
         <div class="row mt-5">
-            <button class="btn btn-info m-3 export-btn">Export to Excel</button>
-            <button class="btn btn-danger m-3" id="browserPrint">Print PDF</button>
-            <input type="text" name="search" id="search" class="form-control m-3 w-25 ml-auto" placeholder="Search...">	
-            <div class="col-md-12">
-                <table class="table table-responsive text-nowrap table-bordered w-100 text-center" id="table">
+            <button class="btn btn-info m-3 w-25 export-btn">Export to Excel</button>
+            <button class="btn btn-danger m-3 w-25" id="browserPrint">Print PDF</button>
+                <input type="text" name="searc" id="searc" class="form-control w-25 ms-auto" placeholder="Search...">	
+            <div class="col-md-12 table-container">
+                <table class="table table-responsive table-bordered w-100 text-center" id="table">
                     <thead class="font-weight-bolder">
                         <th>Sr.</th>
-                        <th>First Name</th>
-                        <th>Middle Name</th>
-                        <th>Last Name</th>
-                        <th>Designation</th>
+                        <th>ID</th>
+                        <th>Name</th>
                         <th>Department</th>
                         <th>Days Payable</th>
                         <th>Basic Salary</th>
@@ -150,10 +148,8 @@ require_once('config.php');
 
                                         echo "<tr>";
                                         echo "<td>". $i++ ."</td>";
+                                        echo "<td>$eid</td>";
                                         echo "<td>$fname</td>";
-                                        echo "<td>$mname</td>";
-                                        echo "<td>$lname</td>";
-                                        echo "<td>$desig</td>";
                                         echo "<td>$dept</td>"; 
                                         echo "<td id='day'>$paydays</td>";
                                         echo "<td class='text-right'>". number_format($basic) ."</td>";
@@ -164,7 +160,7 @@ require_once('config.php');
                                         echo "<td id='pay' class='text-right'>". number_format($payable) ."</td>";
                                         echo "<td class='text-right'>". number_format($paid) ."</td>";
                                         echo "<td class='text-right'>". number_format($remaining) ."</td>";
-                                        echo '<td><form action="edit-salary.php" method="get"><input type="hidden" name="id" value="'. $id .'"> <input class="btn btn-success" type="submit" value="Edit"></form></td>';
+                                        echo '<td><form action="edit-salary.php" method="get"><input type="hidden" name="id" value="'. $eid .'"> <input class="btn btn-success" type="submit" value="Edit"></form></td>';
                                         echo "</tr>";
         
                                     }
@@ -201,7 +197,7 @@ require_once('config.php');
                                 $row0 = $result0->fetch_assoc();
 
                                 echo "<tr id='total'>";
-                                    echo "<td colspan='7' class='font-weight-bold'>Total</td>";
+                                    echo "<td colspan='5' class='font-weight-bold'>Total</td>";
                                     echo "<td>". number_format($row1['basic']) ."</td>";
                                     echo "<td>". number_format($row2['allowance']) ."</td>";
                                     echo "<td>". number_format($row4['deduction']) ."</td>";
@@ -229,7 +225,7 @@ require_once('config.php');
             </div>
         </div>
     </div>
-    
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>   
 </body>

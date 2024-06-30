@@ -78,7 +78,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <title>View Employee</title>
 </head>
-<body>
+<body class="sb-nav-fixed">
 <?php include 'nav1.php' ?>
 <div id="layoutSidenav">
 <?php include 'side-nav.php' ?>
@@ -344,7 +344,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </div>
 </div>
     
-    <script>
+    <script></script></script>
     
     </script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>

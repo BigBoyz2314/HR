@@ -30,7 +30,7 @@ require_once('config.php');
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="sb-nav-fixed">
 <?php include 'nav1.php' ?>
 <div id="layoutSidenav">
 <?php include 'side-nav.php' ?>

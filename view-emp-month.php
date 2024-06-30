@@ -31,7 +31,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </script>
     <title>View Employees By Month</title>
 </head>
-<body>  
+<body class="sb-nav-fixed">  
 <?php include 'nav1.php' ?>
 <div id="layoutSidenav">
 <?php include 'side-nav.php' ?>

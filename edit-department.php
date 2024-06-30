@@ -33,7 +33,7 @@ session_start();
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <title>Edit Department</title>
 </head>
-<body>
+<body class="sb-nav-fixed">
 <?php include 'nav1.php' ?>
 <div id="layoutSidenav">
 <?php include 'side-nav.php' ?>

@@ -61,7 +61,7 @@ require_once('config.php');
     </script>
     <title>Join / Leave</title>
 </head>
-<body>
+<body class="sb-nav-fixed">
 <?php include 'nav1.php' ?>
 <div id="layoutSidenav">
 <?php include 'side-nav.php' ?>

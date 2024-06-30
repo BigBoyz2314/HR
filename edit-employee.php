@@ -52,7 +52,7 @@ session_start();
     </script>
     <title>Edit Employee</title>
 </head>
-<body>
+<body class="sb-nav-fixed">
 <?php include 'nav1.php' ?>
 <div id="layoutSidenav">
 <?php include 'side-nav.php' ?>

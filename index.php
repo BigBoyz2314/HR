@@ -10,7 +10,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 require_once('config.php');
 
-$query = "SELECT `month`, SUM(payable) AS total_payable FROM salary GROUP BY `month`";
+$query = "SELECT `month`, SUM(payable) AS total_payable FROM salary1 GROUP BY `month`";
 
 $result = $conn->query($query);
 

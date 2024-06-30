@@ -2,7 +2,7 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <em class="nav-link fw-bold fs-4 pb-0"><img src="images/Footprint+Logo.png" class="img-fluid"></em>
+                            <em class="nav-link fw-bold fs-4 pb-0 bg-white border-end"><img src="images/Footprint+Logo.png" class="img-fluid"></em>
                             <a class="nav-link" href="index.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
