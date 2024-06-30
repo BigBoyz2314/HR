@@ -21,7 +21,12 @@ require_once('config.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
-    <script src="js/tableHTMLExport.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="css/styles1.css">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function(){
             
@@ -116,7 +121,7 @@ require_once('config.php');
                                 $month = $_GET['month'];
                                 
                             
-                                $stmt = "SELECT * FROM salary WHERE `year` = $year AND `month` = $month";
+                                $stmt = "SELECT * FROM salary1 WHERE `year` = $year AND `month` = $month";
                                 $result = $conn->query($stmt);
                                 $i = 1;
 
@@ -163,14 +168,14 @@ require_once('config.php');
                                         echo "</tr>";
         
                                     }
-                                $stmt1 = "SELECT SUM(basic_salary) AS `basic` FROM salary WHERE `year` = $year AND `month` = $month";
-                                $stmt2 = "SELECT SUM(allowance) AS `allowance` FROM salary WHERE `year` = $year AND `month` = $month";
-                                $stmt4 = "SELECT SUM(deduction) AS `deduction` FROM salary WHERE `year` = $year AND `month` = $month";
-                                $stmt6 = "SELECT SUM(absent) AS `absent` FROM salary WHERE `year` = $year AND `month` = $month";
-                                $stmt7 = "SELECT SUM(gross_salary) AS `gross` FROM salary WHERE `year` = $year AND `month` = $month";
-                                $stmt8 = "SELECT SUM(payable) AS `payable` FROM salary WHERE `year` = $year AND `month` = $month";
-                                $stmt9 = "SELECT SUM(paid) AS `paid` FROM salary WHERE `year` = $year AND `month` = $month";
-                                $stmt0 = "SELECT SUM(remaining) AS `remaining` FROM salary WHERE `year` = $year AND `month` = $month";
+                                $stmt1 = "SELECT SUM(basic_salary) AS `basic` FROM salary1 WHERE `year` = $year AND `month` = $month";
+                                $stmt2 = "SELECT SUM(allowance) AS `allowance` FROM salary1 WHERE `year` = $year AND `month` = $month";
+                                $stmt4 = "SELECT SUM(deduction) AS `deduction` FROM salary1 WHERE `year` = $year AND `month` = $month";
+                                $stmt6 = "SELECT SUM(absent) AS `absent` FROM salary1 WHERE `year` = $year AND `month` = $month";
+                                $stmt7 = "SELECT SUM(gross_salary) AS `gross` FROM salary1 WHERE `year` = $year AND `month` = $month";
+                                $stmt8 = "SELECT SUM(payable) AS `payable` FROM salary1 WHERE `year` = $year AND `month` = $month";
+                                $stmt9 = "SELECT SUM(paid) AS `paid` FROM salary1 WHERE `year` = $year AND `month` = $month";
+                                $stmt0 = "SELECT SUM(remaining) AS `remaining` FROM salary1 WHERE `year` = $year AND `month` = $month";
                                 $result1 = $conn->query($stmt1);
                                 $row1 = $result1->fetch_assoc();
 
@@ -225,6 +230,7 @@ require_once('config.php');
         </div>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>   
 </body>
 </html>

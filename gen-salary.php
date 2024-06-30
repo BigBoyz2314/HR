@@ -60,6 +60,7 @@ if ($_SESSION['role'] != '1') {
                     <select class="js-example-basic-single w-50" name="year" required>
                         <option></option>
                         <option>2023</option>
+                        <option>2024</option>
                     </select>
                     <button type="submit" class="btn btn-success mt-3 d-block">Submit</button>
                 </form>  

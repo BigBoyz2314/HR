@@ -77,6 +77,7 @@
                                     <?php
                                     if ($_SESSION['role'] == '1') {
                                         echo '<a class="nav-link" href="add-attendance.php">Add Attendance</a>';
+                                        echo '<a class="nav-link" href="upload-attendance.php">Upload Attendance</a>';
                                         echo '<a class="nav-link" href="gazette.php">Add Gazette Holiday</a>';
                                     }
                                     ?>        
