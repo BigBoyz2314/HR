@@ -41,7 +41,7 @@
     }
     echo $timeIn;
 
-    $stmt = "SELECT sNo FROM employee WHERE employeeID = '$eid'";
+    $stmt = "SELECT sNo FROM employees WHERE employeeID = '$eid'";
     $result = $conn->query($stmt);
     $row = $result->fetch_assoc();
     $sNo = $row['sNo'];
