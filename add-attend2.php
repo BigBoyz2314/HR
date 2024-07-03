@@ -40,6 +40,11 @@
         
     }
     echo $timeIn;
+
+    $stmt = "SELECT sNo FROM employee WHERE employeeID = '$eid'";
+    $result = $conn->query($stmt);
+    $row = $result->fetch_assoc();
+    $sNo = $row['sNo'];
     // if (in_array($day - 1, $fs)) {
     //     $dayfs = $day - 1;
 
@@ -63,7 +68,7 @@
     //     }
     // }
     
-    $sql1 ="INSERT INTO `attendance1` VALUES ('', '$eid', '', '$date', '$day', '$month', '$year', '$timeIn', '$timeOut', '$current_time', '$current_time', 'system')";
+    $sql1 ="INSERT INTO `attendance1` VALUES ('', '$sNo', '', '$date', '$day', '$month', '$year', '$timeIn', '$timeOut', '$current_time', '$current_time', 'system')";
     
     if(mysqli_query($conn, $sql1)){
 
