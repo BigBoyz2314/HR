@@ -68,7 +68,7 @@
     //     }
     // }
     
-    $sql1 ="INSERT INTO `attendance1` VALUES ('', '$sNo', '', '$date', '$day', '$month', '$year', '$timeIn', '$timeOut', '$current_time', '$current_time', 'system')";
+    $sql1 ="INSERT INTO `attendance1` VALUES ('', '$sNo', 'OUR COMPANY', '$date', '$day', '$month', '$year', '$timeIn', '$timeOut', '$current_time', '$current_time', 'system')";
     
     if(mysqli_query($conn, $sql1)){
 
