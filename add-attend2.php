@@ -38,28 +38,28 @@
         
     }
     echo $timeIn;
-    if (in_array($day - 1, $fs)) {
-        $dayfs = $day - 1;
+    // if (in_array($day - 1, $fs)) {
+    //     $dayfs = $day - 1;
 
-        $stmt ="SELECT * FROM `attendance` WHERE `employeeID`  = '$eid' AND `month` = '$month' AND `year` = '$year' AND `day` = $day - 1";
+    //     $stmt ="SELECT * FROM `attendance` WHERE `employeeID`  = '$eid' AND `month` = '$month' AND `year` = '$year' AND `day` = $day - 1";
 
-        $result = $conn->query($stmt);
-        if ($result->num_rows == 0) {
-            $sql0 ="INSERT INTO `attendance` VALUES ('', '$eid', '', '$dayfs', '$month', '$year', '$date', '$timeIn', '$timeOut', current_timestamp(), current_timestamp(), '')";
-            mysqli_query($conn, $sql0);
-        }
-    }
-    elseif (in_array($day + 1, $fs)) {
-        $dayfs = $day + 1;
+    //     $result = $conn->query($stmt);
+    //     if ($result->num_rows == 0) {
+    //         $sql0 ="INSERT INTO `attendance` VALUES ('', '$eid', '', '$dayfs', '$month', '$year', '$date', '$timeIn', '$timeOut', current_timestamp(), current_timestamp(), '')";
+    //         mysqli_query($conn, $sql0);
+    //     }
+    // }
+    // elseif (in_array($day + 1, $fs)) {
+    //     $dayfs = $day + 1;
 
-        $stmt1 ="SELECT * FROM `attendance` WHERE `employeeID`  = '$eid' AND `month` = '$month' AND `year` = '$year' AND `day` = $day + 1";
+    //     $stmt1 ="SELECT * FROM `attendance` WHERE `employeeID`  = '$eid' AND `month` = '$month' AND `year` = '$year' AND `day` = $day + 1";
 
-        $result1 = $conn->query($stmt1);
-        if ($result1->num_rows == 0) {
-            $sql ="INSERT INTO `attendance` VALUES ('', '$eid', '', '$dayfs', '$month', '$year', '$date', '$timeIn', '$timeOut', current_timestamp(), current_timestamp(), '')";
-            mysqli_query($conn, $sql);
-        }
-    }
+    //     $result1 = $conn->query($stmt1);
+    //     if ($result1->num_rows == 0) {
+    //         $sql ="INSERT INTO `attendance` VALUES ('', '$eid', '', '$dayfs', '$month', '$year', '$date', '$timeIn', '$timeOut', current_timestamp(), current_timestamp(), '')";
+    //         mysqli_query($conn, $sql);
+    //     }
+    // }
     
     $sql1 ="INSERT INTO `attendance` VALUES ('', '$eid', '', '$day', '$month', '$year', '$date', '$timeIn', '$timeOut', current_timestamp(), current_timestamp(), '')";
     
