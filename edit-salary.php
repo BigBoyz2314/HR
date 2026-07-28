@@ -11,7 +11,7 @@ session_start();
         header("location: index.php");
         exit;
     }
-    require_once('config.php');
+    require_once('includes/config.php');
 
     $id = $_GET['id'];
     $stmt = "SELECT * FROM salary1 WHERE `employeeID` = '$id'";
@@ -56,65 +56,67 @@ session_start();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/styles1.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <title>Edit Salary</title>
 </head>
-<body>
-<?php include 'nav1.php' ?>
-<div id="layoutSidenav">
-<?php include 'side-nav.php' ?>
-<div id="layoutSidenav_content">
-    <div class="container-fluid p-5">
-        <h1>Edit Salary</h1>
-        <form action="pay-salary.php" method="post">
-            <div class="row">
-                <div class="col-md-3 pt-4">
-                    <h4>Name</h4>
-                    <input type="text" disabled name="name" id="name" value="<?php echo $name?>" class="form-control">
-                    <input type="hidden" name="id" id="id" value="<?php echo $id ?>" class="form-control">
-                    <input type="hidden" name="fname" id="fname" value="<?php echo $fname ?>" class="form-control">
-                    <input type="hidden" name="payable" id="payable" value="<?php echo $payable ?>" class="form-control">
-                    <input type="hidden" name="paid" id="paid" value="<?php echo $paid ?>" class="form-control">
-                    <input type="hidden" name="remaining" id="remaining" value="<?php echo $remaining ?>" class="form-control">
-                    <input type="hidden" name="year" id="year" value="<?php echo $year ?>" class="form-control">
-                    <input type="hidden" name="month" id="month" value="<?php echo $month ?>" class="form-control">
+<body class="h-screen overflow-hidden">
+<?php include 'includes/nav1.php' ?>
+<div class="flex h-[calc(100vh-4rem)]">
+<?php include 'includes/side-nav.php' ?>
+<div class="flex-1 bg-gray-100 overflow-y-auto">
+    <div class="max-w-4xl mx-auto p-4 md:p-6 bg-white rounded-lg shadow-lg mt-4 md:mt-8 mb-8">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold mb-2 text-gray-800">Edit Salary</h1>
+            <p class="text-gray-600">Update salary information and payment status</p>
+        </div>
+        <form action="includes/pay-salary.php" method="post" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Name</label>
+                    <input type="text" disabled name="name" id="name" value="<?php echo $name?>" class="w-full rounded border-gray-300 bg-gray-100">
+                    <input type="hidden" name="id" id="id" value="<?php echo $id ?>">
+                    <input type="hidden" name="fname" id="fname" value="<?php echo $fname ?>">
+                    <input type="hidden" name="payable" id="payable" value="<?php echo $payable ?>">
+                    <input type="hidden" name="paid" id="paid" value="<?php echo $paid ?>">
+                    <input type="hidden" name="remaining" id="remaining" value="<?php echo $remaining ?>">
+                    <input type="hidden" name="year" id="year" value="<?php echo $year ?>">
+                    <input type="hidden" name="month" id="month" value="<?php echo $month ?>">
                 </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Payable</h4>
-                    <input type="text" disabled name="payable" id="payable" value="<?php echo $payable?>" class="form-control">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Payable</label>
+                    <input type="text" disabled name="payable" id="payable" value="<?php echo $payable?>" class="w-full rounded border-gray-300 bg-gray-100">
                 </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Paid</h4>
-                    <input type="text" disabled name="paid" id="paid" value="<?php echo $paid?>" class="form-control">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 pt-4">
-                    <h4>Total Remaining</h4>
-                    <input type="text" disabled name="total-remaining" id="total-remanining" value="<?php echo $total_remaining?>" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4>Remaining</h4>
-                        <input type="text" disabled name="remaining" id="remaining" value="<?php echo $remaining?>" class="form-control">
-                </div>
-                <div class="col-md-3 pt-4">
-                    <h4 class="d-inline-block">Pay</h4>
-                    <input type="checkbox" name="same" id="same" class="float-right mt-1 ml-1" onclick="check()">
-                    <p class="d-inline-block float-right">Pay Full</p>
-                    <input type="number" name="pay" id="pay" value="" max="<?php echo $remaining ?>" min="0" class="form-control">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Paid</label>
+                    <input type="text" disabled name="paid" id="paid" value="<?php echo $paid?>" class="w-full rounded border-gray-300 bg-gray-100">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-3 pt-4">
-                    <button type="submit" class="btn btn-success">Submit</button>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Total Remaining</label>
+                    <input type="text" disabled name="total-remaining" id="total-remanining" value="<?php echo $total_remaining?>" class="w-full rounded border-gray-300 bg-gray-100">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Remaining</label>
+                    <input type="text" disabled name="remaining" id="remaining" value="<?php echo $remaining?>" class="w-full rounded border-gray-300 bg-gray-100">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Pay</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" name="same" id="same" class="h-5 w-5 text-green-600" onclick="check()">
+                        <span class="text-gray-700">Pay Full</span>
+                    </div>
+                    <input type="number" name="pay" id="pay" value="" max="<?php echo $remaining ?>" min="0" class="w-full rounded border-gray-300 mt-2">
                 </div>
             </div>
-        </form> 
-        </div> 
+            <div>
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">Submit</button>
+            </div>
+        </form>
     </div>
+</div>
 </div>
     <script>
         function check() {

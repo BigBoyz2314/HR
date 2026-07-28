@@ -7,7 +7,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
-require_once('config.php');
+require_once('includes/config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,11 +15,10 @@ require_once('config.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
     <script src="js/tableHTMLExport.js"></script>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/styles1.css">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function(){
@@ -61,35 +60,42 @@ require_once('config.php');
     </script>
     <title>Join / Leave</title>
 </head>
-<body class="sb-nav-fixed">
-<?php include 'nav1.php' ?>
-<div id="layoutSidenav">
-<?php include 'side-nav.php' ?>
-<div id="layoutSidenav_content">
-    <div class="container-fluid p-5">
-        <h1>Join / Leave</h1>
-        <div class="row mt-5">
-            <button class="btn btn-info m-3 w-25 export-btn1">Export to Excel</button>	
-            <button class="btn btn-danger m-3 w-25" id="browserPrint">Print PDF</button>	
-            <div class="col-md-12">
-                <table class="table table-responsive text-nowrap table-bordered w-100 text-center" id="table1">
-                    <thead class="font-weight-bolder">
-                        <th>Sr.</th>
-                        <th>First Name</th>
-                        <th>Middle Name</th>
-                        <th>Last Name</th>
-                        <th>D.O.B</th> 
-                        <th>Designation</th>
-                        <th>Gender</th>
-                        <th>Department</th>
-                        <th>Martial Status</th>
-                        <th>Status</th>
-                        <th>Joining Date</th>
-                        <th>Spouse Name</th>
-                        <th>Basic Salary</th>
-                        <th></th>
+<body class="h-screen overflow-hidden">
+<?php include 'includes/nav1.php' ?>
+<div class="flex h-[calc(100vh-4rem)]">
+<?php include 'includes/side-nav.php' ?>
+<div class="flex-1 bg-gray-100 overflow-y-auto">
+    <div class="max-w-6xl mx-auto p-4 md:p-6 bg-white rounded-lg shadow-lg mt-4 md:mt-8 mb-8">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold mb-2 text-gray-800">Join / Leave</h1>
+            <p class="text-gray-600">View employees who joined or left the organization</p>
+        </div>
+        <div class="flex flex-col md:flex-row md:space-x-4 mb-6">
+            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-4 md:mb-0 export-btn1">Export to Excel</button>
+            <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-4 md:mb-0" id="browserPrint">Print PDF</button>
+        </div>
+        <div>
+            <div class="overflow-x-auto mb-8">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden text-center" id="table1">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-2 px-4 font-semibold">Sr.</th>
+                            <th class="py-2 px-4 font-semibold">First Name</th>
+                            <th class="py-2 px-4 font-semibold">Middle Name</th>
+                            <th class="py-2 px-4 font-semibold">Last Name</th>
+                            <th class="py-2 px-4 font-semibold">D.O.B</th>
+                            <th class="py-2 px-4 font-semibold">Designation</th>
+                            <th class="py-2 px-4 font-semibold">Gender</th>
+                            <th class="py-2 px-4 font-semibold">Department</th>
+                            <th class="py-2 px-4 font-semibold">Martial Status</th>
+                            <th class="py-2 px-4 font-semibold">Status</th>
+                            <th class="py-2 px-4 font-semibold">Joining Date</th>
+                            <th class="py-2 px-4 font-semibold">Spouse Name</th>
+                            <th class="py-2 px-4 font-semibold">Basic Salary</th>
+                            <th></th>
+                        </tr>
                     </thead>
-                    <tbody class="">
+                    <tbody>
                         <?php
 
                             if (isset($_GET['joinleave'])) {
@@ -223,6 +229,7 @@ require_once('config.php');
                             }
         ?>
         </div>
+    </div>
     </div>
     </div>
     <script>

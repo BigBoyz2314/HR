@@ -1,17 +1,23 @@
 <?php
-// Initialize the session
+// Initialize session and auth check
 session_start();
-
-// Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
-if ($_SESSION['role'] != '1') {
-    header("location: index.php");
-    exit;
-}
-require_once('config.php');
+
+require_once('includes/config.php');
+date_default_timezone_set('Asia/Karachi');
+
+// Default to current month/year if not provided
+$month = isset($_GET['month']) ? intval($_GET['month']) : intval(date('m'));
+$year = isset($_GET['year']) ? intval($_GET['year']) : intval(date('Y'));
+
+// Validate month & year
+if ($month < 1 || $month > 12) $month = intval(date('m'));
+if ($year < 2000 || $year > 2100) $year = intval(date('Y'));
+
+$month_name = date('F', mktime(0, 0, 0, $month, 10));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,214 +25,416 @@ require_once('config.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
-    <link rel="stylesheet" href="css/styles.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <link rel="stylesheet" href="css/styles1.css">
+    <title>Salary Statement - <?php echo $month_name . ' ' . $year; ?> - Footprint HR</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function(){
-            
-            function printData() {
-                $("#table").removeClass();
-                var divToPrint = document.getElementById("table");
-                newWin= window.open("");
-                newWin.document.write('<!DOCTYPE html><html><head>  <title>Print Preview</title>  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >  <style>    table {        font-size: small;    }   form { display: none;   }  @page { size: landscape; }  </style></head><body><div class="table table-bordered w-100 text-center">');
-                newWin.document.write(divToPrint.outerHTML);
-                newWin.document.write('</body></html>');
-                newWin.document.close();
-                newWin.print();
-                newWin.close();
-                window.location.reload();
-            }
-            document.querySelector('#browserPrint').addEventListener('click', printData);
-
-            $(".export-btn").click(function(){  
-                $("#table").tableHTMLExport({
-                type:'csv',
-                filename:'employee-log.csv',
-                });
-            });
-
-            $("#search").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $("#table tbody tr").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-
-            setTimeout(function() {
-            $(".alert-dismissible").alert('close');
-            }, 3000);
-        });
-
-    </script>
-    <link rel="stylesheet" href="css/styles.css">
-    <title>View Salary</title>
-</head>
-<body>
-<?php include 'nav1.php' ?>
-<div id="layoutSidenav">
-<?php include 'side-nav.php' ?>
-<div id="layoutSidenav_content">
-    <div class="container-fluid p-4">
-    <?php 
-        if (isset($_GET['action'])) {
-        if (($_GET['action']) == 'paid') {
-            echo '<div class="alert alert-success alert-dismissible fade show position-fixed paid" role="alert">
-                    <strong>Salary Paid!</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>';
-            } 
+    <!-- Alpine.js -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; color: black !important; font-size: 10pt; }
+            .print-only { display: block !important; }
+            table { width: 100% !important; border-collapse: collapse !important; }
+            th, td { border: 1px solid #cbd5e1 !important; padding: 4px 6px !important; }
+            .custom-scrollbar { overflow: visible !important; }
+            .action-col { display: none !important; }
         }
-    ?>
-        <h1>View Salary</h1>
-        <h4 id="month">Month: <?php echo $_GET["month"]; ?></h4>
-        <h4 id="year">Year: <?php echo $_GET["year"]; ?></h4>
+        .print-only { display: none; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased h-screen flex flex-col overflow-hidden" 
+      x-data="{ 
+          sidebarCollapsed: localStorage.getItem('hr_sidebar_collapsed') === 'true',
+          adjModal: false,
+          adjEmp: '',
+          adjSalID: 0,
+          adjEmpID: 0,
+          adjArrears: 0,
+          adjOt1: 0,
+          adjOt2: 0,
+          adjAllowance: 0,
+          adjLoans: 0,
+          adjAdvance: 0
+      }">
+    
+    <!-- Top Navigation -->
+    <?php include 'includes/nav1.php' ?>
 
-        <div class="row mt-5">
-            <button class="btn btn-info m-3 w-25 export-btn">Export to Excel</button>
-            <button class="btn btn-danger m-3 w-25" id="browserPrint">Print PDF</button>
-                <input type="text" name="searc" id="searc" class="form-control w-25 ms-auto" placeholder="Search...">	
-            <div class="col-md-12 table-container">
-                <table class="table table-responsive table-bordered w-100 text-center" id="table">
-                    <thead class="font-weight-bolder">
-                        <th>Sr.</th>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Department</th>
-                        <th>Days Payable</th>
-                        <th>Basic Salary</th>
-                        <th>Allowances</th>
-                        <th>Deduction</th>
-                        <th>Absent Deduc.</th>
-                        <th>Gross Salary</th>
-                        <th>Payable</th>
-                        <th>Paid</th>
-                        <th>Remaining</th>
-                        <th>Edit</th>
-                    </thead>
-                    <tbody>
-                        <?php
+    <!-- Main Container -->
+    <div class="flex flex-1 h-[calc(100vh-2.75rem)] overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <?php include 'includes/side-nav.php' ?>
 
-                            if (isset($_GET['year'])) {
-                                $year = $_GET['year'];
-                                $month = $_GET['month'];
-                                
+        <!-- Content Area -->
+        <main class="flex-1 bg-slate-50 p-6 md:p-8 overflow-y-auto">
+            
+            <!-- Printable Only Header -->
+            <div class="print-only mb-4 text-center border-b pb-2">
+                <h1 class="text-xl font-bold">FOOTPRINT HR - SALARY STATEMENT (<?php echo strtoupper($month_name . ' ' . $year); ?>)</h1>
+                <p class="text-xs">Generated on: <?php echo date('d-M-Y h:i A'); ?></p>
+            </div>
+
+            <!-- Page Header -->
+            <div class="no-print flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 mb-6">
+                <div>
+                    <div class="flex items-center space-x-2 text-teal-600 text-xs font-bold uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span>Payroll Statement &bull; <?php echo $month_name . ' ' . $year; ?></span>
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">Salary Sheet</h1>
+                    <p class="text-sm text-slate-500 mt-1">Detailed monthly breakdown of basic pay, overtime, allowances, loan/advance deductions, and payouts.</p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3">
+                    <?php if ($_SESSION['role'] == '1'): ?>
+                        <a href="includes/gen-salary.php?month=<?php echo $month; ?>&year=<?php echo $year; ?>" class="px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow-lg shadow-teal-600/30 transition flex items-center space-x-2">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                            <span>Re-Generate Salary</span>
+                        </a>
+                    <?php endif; ?>
+                    <button onclick="window.print()" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition border border-slate-200 flex items-center space-x-1.5">
+                        <i class="fa-solid fa-print text-slate-500"></i>
+                        <span>Print</span>
+                    </button>
+                    <button onclick="exportTableToCSV('table', 'salary_sheet_<?php echo $month . '_' . $year; ?>.csv')" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition border border-slate-200 flex items-center space-x-1.5">
+                        <i class="fa-solid fa-download text-slate-500"></i>
+                        <span>Export CSV</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Status Alert Notifications -->
+            <?php if (isset($_GET['action']) || isset($_GET['msg'])): ?>
+                <div class="no-print bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl flex items-center justify-between shadow-sm mb-6">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
+                        <span class="text-sm font-semibold">
+                            <?php 
+                            if (isset($_GET['action']) && $_GET['action'] == 'generated') {
+                                echo "Salary statement for $month_name $year generated successfully!";
+                            } elseif (isset($_GET['action']) && $_GET['action'] == 'updated') {
+                                echo "Monthly salary adjustments saved successfully!";
+                            } else {
+                                echo htmlspecialchars($_GET['msg'] ?? 'Operation completed successfully.');
+                            }
+                            ?>
+                        </span>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-emerald-600 hover:text-emerald-800"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            <?php endif; ?>
+
+            <!-- Filter Controls -->
+            <div class="no-print bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 mb-6">
+                <form method="get" action="view-salary.php" class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Select Month</label>
+                            <select name="month" class="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-slate-50 focus:bg-white transition">
+                                <?php for($m=1; $m<=12; $m++): ?>
+                                    <option value="<?php echo $m; ?>" <?php echo $m == $month ? 'selected' : ''; ?>>
+                                        <?php echo date('F', mktime(0, 0, 0, $m, 10)); ?>
+                                    </option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Select Year</label>
+                            <select name="year" class="px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-slate-50 focus:bg-white transition">
+                                <?php for($y=2024; $y<=2030; $y++): ?>
+                                    <option value="<?php echo $y; ?>" <?php echo $y == $year ? 'selected' : ''; ?>>
+                                        <?php echo $y; ?>
+                                    </option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+
+                        <div class="pt-4">
+                            <button type="submit" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow transition">
+                                Filter Statement
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-xs font-semibold text-slate-500">
+                        Payroll Month: <strong class="text-slate-800"><?php echo $month_name . ' ' . $year; ?></strong>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Data Table Wrapper -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden p-6 space-y-4">
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table id="table" class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900 text-white text-[11px] font-bold uppercase tracking-wider">
+                                <th class="py-3.5 px-3 rounded-l-xl sticky left-0 z-20 bg-slate-900 shadow-[2px_0_5px_rgba(0,0,0,0.15)]">Code</th>
+                                <th class="py-3.5 px-3">Employee Name</th>
+                                <th class="py-3.5 px-3 text-right">Gross Salary</th>
+                                <th class="py-3.5 px-3 text-center">Attendance Days</th>
+                                <th class="py-3.5 px-3 text-right">Salary for Month</th>
+                                <th class="py-3.5 px-3 text-right">Arrears</th>
+                                <th class="py-3.5 px-3 text-right">O.T 1 TO 15</th>
+                                <th class="py-3.5 px-3 text-right">O.T 16 TO 30</th>
+                                <th class="py-3.5 px-3 text-right">Allowance + Advance</th>
+                                <th class="py-3.5 px-3 text-right">Less Loans</th>
+                                <th class="py-3.5 px-3 text-right">Less Advance</th>
+                                <th class="py-3.5 px-3 text-right">Salary Payable</th>
+                                <th class="py-3.5 px-3 text-right">Paid</th>
+                                <th class="py-3.5 px-3 text-right">Remaining</th>
+                                <th class="py-3.5 px-3 text-center rounded-r-xl action-col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-xs text-slate-700 font-medium">
+                            <?php
+                            require_once('includes/gen-salary-helper.php');
                             
-                                $stmt = "SELECT * FROM salary1 WHERE `year` = $year AND `month` = $month";
+                            $stmt = "SELECT s.*, e.sNo, e.employee_code, e.allowance AS profile_allowance 
+                                     FROM salary1 s 
+                                     LEFT JOIN employees e ON s.employeeID = e.employeeID 
+                                     WHERE s.month = '$month' AND s.year = '$year' 
+                                     ORDER BY CAST(COALESCE(NULLIF(e.sNo, 0), NULLIF(e.employee_code, ''), s.employeeID) AS UNSIGNED) ASC, s.employeeID ASC";
+                            $result = $conn->query($stmt);
+
+                            // If no salary records generated yet for this month, auto-generate on-the-fly
+                            if (!$result || $result->num_rows == 0) {
+                                autoGenerateSalarySheet($conn, $month, $year);
                                 $result = $conn->query($stmt);
-                                $i = 1;
-
-                                if ($result->num_rows > 0) {
-                                    // output data of each row
-                                    
-                                    while($row = $result->fetch_assoc()) { 
-                                        $id = $row['id'];
-                                        $eid = $row['employeeID'];
-                                        $fname = $row['fname'];
-                                        $mname = $row['mname'];
-                                        $lname = $row['lname'];
-                                        $desig = $row['designation'];
-                                        $dept = $row['department'];
-                                        $gender = $row['gender'];
-                                        $paydays = $row['pay_days'];
-                                        $basic = $row['basic_salary'];
-                                        $allowance = $row['allowance'];
-                                        $deduction = $row['deduction'];
-                                        $gross = $row['gross_salary'];                                    
-                                        $payable = $row['payable'];                             
-                                        $absent = $row['absent'];                                 
-                                        $paid = $row['paid'];
-                                        $remaining = $row['remaining'];                                    
-
-
-                                        echo "<tr>";
-                                        echo "<td>". $i++ ."</td>";
-                                        echo "<td>$eid</td>";
-                                        echo "<td>$fname</td>";
-                                        echo "<td>$dept</td>"; 
-                                        echo "<td id='day'>$paydays</td>";
-                                        echo "<td class='text-right'>". number_format($basic) ."</td>";
-                                        echo "<td class='text-right'>". number_format($allowance) ."</td>";
-                                        echo "<td class='text-right'>". number_format($deduction) ."</td>";
-                                        echo "<td class='text-right'>". number_format($absent) ."</td>";
-                                        echo "<td id='gross' class='text-right'>". number_format($gross) ."</td>";
-                                        echo "<td id='pay' class='text-right'>". number_format($payable) ."</td>";
-                                        echo "<td class='text-right'>". number_format($paid) ."</td>";
-                                        echo "<td class='text-right'>". number_format($remaining) ."</td>";
-                                        echo '<td><form action="edit-salary.php" method="get"><input type="hidden" name="id" value="'. $eid .'"> <input class="btn btn-success" type="submit" value="Edit"></form></td>';
-                                        echo "</tr>";
-        
-                                    }
-                                $stmt1 = "SELECT SUM(basic_salary) AS `basic` FROM salary1 WHERE `year` = $year AND `month` = $month";
-                                $stmt2 = "SELECT SUM(allowance) AS `allowance` FROM salary1 WHERE `year` = $year AND `month` = $month";
-                                $stmt4 = "SELECT SUM(deduction) AS `deduction` FROM salary1 WHERE `year` = $year AND `month` = $month";
-                                $stmt6 = "SELECT SUM(absent) AS `absent` FROM salary1 WHERE `year` = $year AND `month` = $month";
-                                $stmt7 = "SELECT SUM(gross_salary) AS `gross` FROM salary1 WHERE `year` = $year AND `month` = $month";
-                                $stmt8 = "SELECT SUM(payable) AS `payable` FROM salary1 WHERE `year` = $year AND `month` = $month";
-                                $stmt9 = "SELECT SUM(paid) AS `paid` FROM salary1 WHERE `year` = $year AND `month` = $month";
-                                $stmt0 = "SELECT SUM(remaining) AS `remaining` FROM salary1 WHERE `year` = $year AND `month` = $month";
-                                $result1 = $conn->query($stmt1);
-                                $row1 = $result1->fetch_assoc();
-
-                                $result2 = $conn->query($stmt2);
-                                $row2 = $result2->fetch_assoc();
-
-                                $result4 = $conn->query($stmt4);
-                                $row4 = $result4->fetch_assoc();
-
-                                $result6 = $conn->query($stmt6);
-                                $row6 = $result6->fetch_assoc();
-
-                                $result7 = $conn->query($stmt7);
-                                $row7 = $result7->fetch_assoc();
-
-                                $result8 = $conn->query($stmt8);
-                                $row8 = $result8->fetch_assoc();
-
-                                $result9 = $conn->query($stmt9);
-                                $row9 = $result9->fetch_assoc();
-
-                                $result0 = $conn->query($stmt0);
-                                $row0 = $result0->fetch_assoc();
-
-                                echo "<tr id='total'>";
-                                    echo "<td colspan='5' class='font-weight-bold'>Total</td>";
-                                    echo "<td>". number_format($row1['basic']) ."</td>";
-                                    echo "<td>". number_format($row2['allowance']) ."</td>";
-                                    echo "<td>". number_format($row4['deduction']) ."</td>";
-                                    echo "<td>". number_format($row6['absent']) ."</td>";
-                                    echo "<td>". number_format($row7['gross']) ."</td>";
-                                    echo "<td>". number_format($row8['payable']) ."</td>";
-                                    echo "<td>". number_format($row9['paid']) ."</td>";
-                                    echo "<td>". number_format($row0['remaining']) ."</td>";
-                                echo "</tr>";
-                                }
-                                else {
-                                    echo '<div class="alert alert-danger" role="alert">
-                                    <strong>Salary Not Generated!</strong>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>';
-                                }
                             }
 
+                            $totGross = 0; $totEarned = 0; $totArrears = 0; $totOt1 = 0; $totOt2 = 0;
+                            $totAllow = 0; $totLoans = 0; $totAdv = 0; $totPayable = 0; $totPaid = 0; $totRem = 0;
+
+                            if ($result && $result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()) {
+                                    $fullName = trim($row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname']);
+                                    $displayCode = !empty($row['sNo']) ? $row['sNo'] : (!empty($row['employee_code']) ? $row['employee_code'] : sprintf('%04d', $row['employeeID']));
+                                    
+                                    $basicSalary = floatval($row['basic_salary']);
+                                    $profileAllowance = floatval($row['profile_allowance'] ?? 0);
+                                    $grossSalary = $basicSalary + $profileAllowance;
+                                    $payDays = intval($row['pay_days']);
+                                    
+                                    $earnedBasic = ($payDays / 30.0) * $basicSalary;
+                                    
+                                    $arrears = floatval($row['arrears'] ?? 0);
+                                    $ot1 = floatval($row['ot_1_15'] ?? 0);
+                                    $ot2 = floatval($row['ot_16_30'] ?? 0);
+                                    $allowanceAdv = floatval($row['allowance'] ?? 0);
+                                    $lessLoans = floatval($row['less_loans'] ?? 0);
+                                    $lessAdvance = floatval($row['less_advance'] ?? 0);
+                                    
+                                    $payable = floatval($row['payable']);
+                                    $paid = floatval($row['paid']);
+                                    $remaining = floatval($row['remaining']);
+                                    $empId = $row['employeeID'];
+                                    $salID = $row['id'];
+
+                                    $totGross += $grossSalary;
+                                    $totEarned += $earnedBasic;
+                                    $totArrears += $arrears;
+                                    $totOt1 += $ot1;
+                                    $totOt2 += $ot2;
+                                    $totAllow += $allowanceAdv;
+                                    $totLoans += $lessLoans;
+                                    $totAdv += $lessAdvance;
+                                    $totPayable += $payable;
+                                    $totPaid += $paid;
+                                    $totRem += $remaining;
+                                    ?>
+                                    <tr class="group hover:bg-slate-50/80 transition">
+                                        <td class="py-3 px-3 font-mono font-bold text-slate-900 sticky left-0 z-10 bg-white group-hover:bg-slate-50 shadow-[2px_0_5px_rgba(0,0,0,0.05)] whitespace-nowrap"><?php echo htmlspecialchars($displayCode); ?></td>
+                                        <td class="py-3 px-3 font-bold text-slate-900 whitespace-nowrap">
+                                            <a href="employee-ledger.php?id=<?php echo $empId; ?>" class="hover:text-indigo-600 hover:underline transition-colors" title="Click to view Employee Ledger"><?php echo htmlspecialchars($fullName); ?></a>
+                                        </td>
+                                        <td class="py-3 px-3 text-right font-mono font-bold text-slate-900 whitespace-nowrap"><?php echo number_format($grossSalary); ?></td>
+                                        <td class="py-3 px-3 text-center font-bold text-slate-800 whitespace-nowrap"><?php echo $payDays; ?></td>
+                                        <td class="py-3 px-3 text-right font-mono text-slate-700 whitespace-nowrap"><?php echo number_format($earnedBasic); ?></td>
+                                        <td class="py-3 px-3 text-right font-mono text-slate-600 whitespace-nowrap"><?php echo $arrears > 0 ? number_format($arrears) : '-'; ?></td>
+                                        <td class="py-3 px-3 text-right font-mono text-slate-600 whitespace-nowrap"><?php echo $ot1 > 0 ? number_format($ot1) : '-'; ?></td>
+                                        <td class="py-3 px-3 text-right font-mono text-slate-600 whitespace-nowrap"><?php echo $ot2 > 0 ? number_format($ot2) : '-'; ?></td>
+                                        <td class="py-3 px-3 text-right font-mono text-emerald-600 font-bold whitespace-nowrap"><?php echo $allowanceAdv > 0 ? number_format($allowanceAdv) : '-'; ?></td>
+                                        <td class="py-3 px-3 text-right font-mono text-rose-600 whitespace-nowrap"><?php echo $lessLoans > 0 ? '-' . number_format($lessLoans) : '-'; ?></td>
+                                        <td class="py-3 px-3 text-right font-mono text-rose-600 whitespace-nowrap"><?php echo $lessAdvance > 0 ? '-' . number_format($lessAdvance) : '-'; ?></td>
+                                        <td class="py-3 px-3 text-right font-mono font-extrabold text-slate-900 whitespace-nowrap"><?php echo number_format($payable); ?></td>
+                                        <td class="py-3 px-3 text-right font-mono text-emerald-700 font-bold whitespace-nowrap"><?php echo number_format($paid); ?></td>
+                                        <td class="py-3 px-3 text-right font-mono font-bold whitespace-nowrap <?php echo $remaining > 0 ? 'text-rose-600' : ($remaining < 0 ? 'text-indigo-600' : 'text-slate-400'); ?>">
+                                            <?php echo number_format($remaining); ?>
+                                        </td>
+                                        <td class="py-3 px-3 text-center whitespace-nowrap action-col">
+                                            <div class="inline-flex items-center space-x-1.5">
+                                                <?php if ($_SESSION['role'] == '1'): ?>
+                                                    <!-- Edit Monthly Adjustments Modal Trigger -->
+                                                    <button type="button" 
+                                                            @click="
+                                                                adjModal = true; 
+                                                                adjEmp = '<?php echo addslashes($fullName); ?> (Code: <?php echo $displayCode; ?>)';
+                                                                adjSalID = <?php echo $salID; ?>;
+                                                                adjEmpID = <?php echo $empId; ?>;
+                                                                adjArrears = <?php echo $arrears; ?>;
+                                                                adjOt1 = <?php echo $ot1; ?>;
+                                                                adjOt2 = <?php echo $ot2; ?>;
+                                                                adjAllowance = <?php echo $allowanceAdv; ?>;
+                                                                adjLoans = <?php echo $lessLoans; ?>;
+                                                                adjAdvance = <?php echo $lessAdvance; ?>;
+                                                            " 
+                                                            title="Edit Monthly Adjustments (Overtime, Arrears, Loans, Advances)" 
+                                                            class="p-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200 transition">
+                                                        <i class="fa-solid fa-sliders text-xs"></i>
+                                                    </button>
+
+                                                    <!-- Payment Form (Allows custom payment amount including overpayments) -->
+                                                    <form action="includes/pay-salary.php" method="post" class="inline-flex items-center space-x-1">
+                                                        <input type="hidden" name="id" value="<?php echo $empId; ?>">
+                                                        <input type="hidden" name="month" value="<?php echo $month; ?>">
+                                                        <input type="hidden" name="year" value="<?php echo $year; ?>">
+                                                        <input type="number" step="0.01" min="1" name="pay" value="<?php echo max(0, $remaining); ?>" class="w-20 px-1.5 py-1 border border-slate-300 rounded-lg text-xs font-mono text-right" required placeholder="Amount">
+                                                        <button type="submit" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shadow transition">Pay</button>
+                                                    </form>
+                                                <?php endif; ?>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                            } else {
+                                echo '<tr><td colspan="15" class="py-8 text-center text-slate-400 font-medium">No salary records generated for ' . $month_name . ' ' . $year . '. Click "Re-Generate Salary" to process.</td></tr>';
+                            }
                             ?>
-                    </tbody>
-            </table>
+                        </tbody>
+                        <?php if ($result && $result->num_rows > 0): ?>
+                            <tfoot>
+                                <tr class="bg-slate-100 font-bold text-xs text-slate-900 border-t-2 border-slate-300">
+                                    <td colspan="2" class="py-3 px-3">Total (<?php echo $result->num_rows; ?> Staff)</td>
+                                    <td class="py-3 px-3 text-right font-mono"><?php echo number_format($totGross); ?></td>
+                                    <td class="py-3 px-3 text-center">-</td>
+                                    <td class="py-3 px-3 text-right font-mono"><?php echo number_format($totEarned); ?></td>
+                                    <td class="py-3 px-3 text-right font-mono"><?php echo number_format($totArrears); ?></td>
+                                    <td class="py-3 px-3 text-right font-mono"><?php echo number_format($totOt1); ?></td>
+                                    <td class="py-3 px-3 text-right font-mono"><?php echo number_format($totOt2); ?></td>
+                                    <td class="py-3 px-3 text-right font-mono text-emerald-700"><?php echo number_format($totAllow); ?></td>
+                                    <td class="py-3 px-3 text-right font-mono text-rose-600"><?php echo number_format($totLoans); ?></td>
+                                    <td class="py-3 px-3 text-right font-mono text-rose-600"><?php echo number_format($totAdv); ?></td>
+                                    <td class="py-3 px-3 text-right font-mono font-extrabold text-slate-900"><?php echo number_format($totPayable); ?></td>
+                                    <td class="py-3 px-3 text-right font-mono text-emerald-700"><?php echo number_format($totPaid); ?></td>
+                                    <td class="py-3 px-3 text-right font-mono text-rose-600"><?php echo number_format($totRem); ?></td>
+                                    <td class="py-3 px-3 action-col"></td>
+                                </tr>
+                            </tfoot>
+                        <?php endif; ?>
+                    </table>
+                </div>
             </div>
+
+            <!-- Edit Monthly Adjustments Modal -->
+            <div x-show="adjModal" 
+                 x-cloak
+                 class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+                <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 border border-slate-200" @click.away="adjModal = false">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div class="flex items-center space-x-2 text-indigo-600 font-bold text-sm">
+                            <i class="fa-solid fa-sliders"></i>
+                            <span>Edit Monthly Adjustments</span>
+                        </div>
+                        <button type="button" @click="adjModal = false" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <p class="text-xs text-slate-500">Updating adjustments for <strong class="text-slate-800" x-text="adjEmp"></strong> for <strong><?php echo $month_name . ' ' . $year; ?></strong>.</p>
+
+                    <form action="includes/save-salary-adjustments.php" method="post" class="space-y-4">
+                        <input type="hidden" name="salID" :value="adjSalID">
+                        <input type="hidden" name="empID" :value="adjEmpID">
+                        <input type="hidden" name="month" value="<?php echo $month; ?>">
+                        <input type="hidden" name="year" value="<?php echo $year; ?>">
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Arrears Payable</label>
+                                <input type="number" step="0.01" min="0" name="arrears" :value="adjArrears" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Allowance + Advance</label>
+                                <input type="number" step="0.01" min="0" name="allowance" :value="adjAllowance" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-semibold text-emerald-600">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">O.T 1 TO 15</label>
+                                <input type="number" step="0.01" min="0" name="ot_1_15" :value="adjOt1" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">O.T 16 TO 30</label>
+                                <input type="number" step="0.01" min="0" name="ot_16_30" :value="adjOt2" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-semibold">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 bg-rose-50/50 p-3 rounded-xl border border-rose-100">
+                            <div>
+                                <label class="block text-[11px] font-bold text-rose-800 uppercase tracking-wider mb-1">Less Loans (Deduction)</label>
+                                <input type="number" step="0.01" min="0" name="less_loans" :value="adjLoans" class="w-full px-3 py-2 rounded-xl border border-rose-200 text-xs font-mono font-semibold text-rose-700">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-rose-800 uppercase tracking-wider mb-1">Less Advance (Deduction)</label>
+                                <input type="number" step="0.01" min="0" name="less_advance" :value="adjAdvance" class="w-full px-3 py-2 rounded-xl border border-rose-200 text-xs font-mono font-semibold text-rose-700">
+                            </div>
+                        </div>
+
+                        <div class="pt-2 flex items-center justify-end space-x-3">
+                            <button type="button" @click="adjModal = false" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200">Cancel</button>
+                            <button type="submit" class="px-5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-xs font-bold shadow-md transition">Save Adjustments</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+
+        </main>
     </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>   
+
+    <!-- Table to CSV Export Script -->
+    <script>
+        function exportTableToCSV(tableId, filename) {
+            var csv = [];
+            var rows = document.querySelectorAll("#" + tableId + " tr");
+            
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].style.display === "none") continue;
+                
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+                var colCount = cols.length;
+                
+                for (var j = 0; j < colCount; j++) {
+                    var headerText = (rows[0].querySelectorAll("th")[j] ? rows[0].querySelectorAll("th")[j].textContent : "").trim().toLowerCase();
+                    if (headerText.includes("action")) continue;
+
+                    var text = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, " ").replace(/\s+/g, " ").trim();
+                    
+                    // Clean PKR, #, +, - prefixes for pure data CSV exports
+                    if (rows[i].parentElement.tagName.toLowerCase() === 'tbody' || rows[i].parentElement.tagName.toLowerCase() === 'tfoot') {
+                        text = text.replace(/^#/, '');
+                        text = text.replace(/^PKR\s*/i, '');
+                        text = text.replace(/^[+\-]\s*PKR\s*/i, '');
+                        text = text.replace(/^[+\-]/, '');
+                    }
+
+                    text = '"' + text.replace(/"/g, '""') + '"';
+                    row.push(text);
+                }
+                if (row.length > 0) csv.push(row.join(","));
+            }
+
+            var csvFile = new Blob(["\uFEFF" + csv.join("\n")], { type: "text/csv;charset=utf-8;" });
+            var downloadLink = document.createElement("a");
+            downloadLink.download = filename;
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+    </script>
 </body>
 </html>

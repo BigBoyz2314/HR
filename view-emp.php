@@ -7,7 +7,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
-    require_once('config.php');
+    require_once('includes/config.php');
 
     $id = $_GET['id'];
     $stmt = "SELECT * FROM employees WHERE employeeID = '$id'";
@@ -72,282 +72,276 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" >
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/styles1.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <title>View Employee</title>
 </head>
-<body class="sb-nav-fixed">
-<?php include 'nav1.php' ?>
-<div id="layoutSidenav">
-<?php include 'side-nav.php' ?>
-<div id="layoutSidenav_content">
-    <div class="container-fluid p-5">
-        <div class="row justify-content-between">
-            <div class="col-md-3">
-                <h1>View Employee</h1>
-            </div>
-            <div class="col-md-3 text-center">
-                    <h5>Created</h5>
-                    <input value="<?php echo $created ?>" disabled type="text" name="created" id="created" class="form-control font-weight-bold bg-info text-white text-center">
-                </div>
-                <div class="col-md-3 text-center">
-                    <h5>Updated</h5>
-                    <input value="<?php echo $updated ?>" disabled type="text" name="created" id="created" class="form-control font-weight-bold bg-info text-white text-center">
-                </div>    
-                <div class="col-md-2 text-center">
-                    <h5>Employee ID</h5>
-                    <input value="<?php echo $eid ?>" disabled type="text" name="eid" id="eid" class="form-control font-weight-bold bg-info text-white text-center">
-                </div>    
+<body class="h-screen overflow-hidden">
+<?php include 'includes/nav1.php' ?>
+<div class="flex h-[calc(100vh-4rem)]">
+<?php include 'includes/side-nav.php' ?>
+<div class="flex-1 bg-gray-100 overflow-y-auto">
+    <div class="max-w-5xl mx-auto p-4 md:p-6 bg-white rounded-lg shadow-lg mt-4 md:mt-8 mb-8">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold mb-2 text-gray-800">View Employee Details</h1>
+            <p class="text-gray-600">View complete employee information</p>
         </div>
-        <form action="" method="post">
-            <div class="personal-info border rounded p-2 mt-4">
-                <h3>Personal Information</h3>
-                <div class="row">
-                    <div class="col-md-2 pt-4">
-                        <h5>First Name</h5>
-                        <input value="<?php echo $fname?>" disabled type="text" name="fName" id="fName" class="form-control">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
+            <div class="mt-4 md:mt-0">
+                <label class="block text-gray-700 font-semibold mb-1">Created</label>
+                <input value="<?php echo $created ?>" disabled type="text" class="w-40 rounded bg-blue-500 text-white text-center font-bold">
+            </div>
+            <div class="mt-4 md:mt-0">
+                <label class="block text-gray-700 font-semibold mb-1">Updated</label>
+                <input value="<?php echo $updated ?>" disabled type="text" class="w-40 rounded bg-blue-500 text-white text-center font-bold">
+            </div>
+            <div class="mt-4 md:mt-0">
+                <label class="block text-gray-700 font-semibold mb-1">Employee ID</label>
+                <input value="<?php echo $eid ?>" disabled type="text" class="w-32 rounded bg-blue-500 text-white text-center font-bold">
+            </div>
+        </div>
+        <form action="" method="post" class="space-y-8">
+            <div class="border rounded p-4">
+                <h3 class="text-lg font-semibold mb-4">Personal Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">First Name</label>
+                        <input value="<?php echo $fname?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Middle Name</h5>
-                        <input value="<?php echo $mname?>" disabled type="text" name="mName" id="mName" class="form-control">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Middle Name</label>
+                        <input value="<?php echo $mname?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Last Name</h5>
-                        <input value="<?php echo $lname?>" disabled type="text" name="lName" id="lName" class="form-control">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Last Name</label>
+                        <input value="<?php echo $lname?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Gender</h5>
-                        <input value="<?php echo $gender?>" disabled type="text" name="lName" id="lName" class="form-control">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Gender</label>
+                        <input value="<?php echo $gender?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Date of Birth</h5>
-                        <input value="<?php echo $dob?>" disabled type="text" name="dob" id="dob" class="form-control">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Date of Birth</label>
+                        <input value="<?php echo $dob?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Martital Status</h5>
-                        <input value="<?php echo $mstatus?>" disabled name="mStatus" id="mStatus" class="form-control">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2 pt-4">
-                        <h5>Children</h5>
-                        <input value="<?php echo $children?>" disabled type="number" min="0" name="children" id="children" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Spouse Name</h5>
-                        <input value="<?php echo $spouse?>" disabled type="text" name="spouseName" id="spouseName" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>CNIC</h5>
-                        <input value="<?php echo $cnic?>" disabled type="number" name="cnic" id="cnic" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Passport</h5>
-                        <input value="<?php echo $passport?>" disabled type="text" name="passport" id="passport" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Disabled</h5>
-                        <input value="<?php echo $disability?>" disabled type="text" name="passport" id="passport" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4 ">
-                        <h5>Photo</h5>
-                        <div class="text-center">
-                            <img src="<?php echo "uploads/".$photo ?>" alt="" width="50px" height="50px">
-                        </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Martital Status</label>
+                        <input value="<?php echo $mstatus?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-4 pt-4">
-                        <h5>Primary Address</h5>
-                        <input value="<?php echo $paddress?>" disabled type="text" name="pAddress" id="pAddress" class="form-control">
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-6 mt-4">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Children</label>
+                        <input value="<?php echo $children?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
-                    <div class="col-md-4 pt-4">
-                        <h5>Secondary Address</h5>
-                        <input value="<?php echo $saddress?>" disabled type="text" name="sAddress" id="sAddress" class="form-control">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Spouse Name</label>
+                        <input value="<?php echo $spouse?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
-                    <div class="col-md-4 pt-3">
-                        <h5 class="d-inline-block">Current Address</h5>
-                        <input value="<?php echo $caddress?>" disabled type="text" name="cAddress" id="cAddress" class="form-control">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">CNIC</label>
+                        <input value="<?php echo $cnic?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Passport</label>
+                        <input value="<?php echo $passport?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Disabled</label>
+                        <input value="<?php echo $disability?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                        <label class="block text-gray-700 font-semibold mb-2">Photo</label>
+                        <img src="<?php echo "uploads/".$photo ?>" alt="" width="50px" height="50px" class="rounded-full object-cover">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-4 pt-4">
-                        <h5>Contact 1 #</h5>
-                        <input value="<?php echo $pnumber?>" disabled type="number" name="pNumber" id="pNumber" class="form-control">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Primary Address</label>
+                        <input value="<?php echo $paddress?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
-                    <div class="col-md-4 pt-4">
-                        <h5>Contact 2 #</h5>
-                        <input value="<?php echo $snumber?>" disabled type="number" name="sNumber" id="sNumber" class="form-control">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Secondary Address</label>
+                        <input value="<?php echo $saddress?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Current Address</label>
+                        <input value="<?php echo $caddress?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Contact 1 #</label>
+                        <input value="<?php echo $pnumber?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Contact 2 #</label>
+                        <input value="<?php echo $snumber?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
                 </div>
             </div>
-            <div class="emergency-info border rounded p-2 mt-4">
-                <h3>Emergency Information</h3>
-                <div class="row">
-                    <div class="col-md-2 pt-4">
-                        <h5>First Name</h5>
-                        <input type="text" value="<?php echo $efname?>" name="efName" id="efName" class="form-control" disabled>
+            <div class="border rounded p-4">
+                <h3 class="text-lg font-semibold mb-4">Emergency Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">First Name</label>
+                        <input type="text" value="<?php echo $efname?>" class="w-full rounded border border-gray-300 bg-gray-100" disabled>
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Middle Name</h5>
-                        <input type="text" value="<?php echo $emname?>" name="emName" id="emName" class="form-control" disabled>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Middle Name</label>
+                        <input type="text" value="<?php echo $emname?>" class="w-full rounded border border-gray-300 bg-gray-100" disabled>
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Last Name</h5>
-                        <input type="text" value="<?php echo $elname?>" name="elName" id="elName" class="form-control" disabled>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Last Name</label>
+                        <input type="text" value="<?php echo $elname?>" class="w-full rounded border border-gray-300 bg-gray-100" disabled>
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Gender</h5>
-                        <input type="text" value="<?php echo $egender?>" name="egender" id="egender" class="form-control" disabled>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Gender</label>
+                        <input type="text" value="<?php echo $egender?>" class="w-full rounded border border-gray-300 bg-gray-100" disabled>
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Date of Birth</h5>
-                        <input type="date" value="<?php echo $edob?>" name="edob" id="edob" class="form-control" disabled>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Date of Birth</label>
+                        <input type="date" value="<?php echo $edob?>" class="w-full rounded border border-gray-300 bg-gray-100" disabled>
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Employee</h5>
-                        <input type="text" value="<?php echo $emp?>" name="e_emp" id="e_emp" class="form-control" disabled>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2 pt-4">
-                        <h5>CNIC</h5>
-                        <input type="number" value="<?php echo $ecnic?>" name="ecnic" id="ecnic" class="form-control" disabled>
-                    </div>
-                    <div class="col-md-4 pt-4">
-                        <h5>Emergency Address</h5>
-                        <input type="text" value="<?php echo $eaddress?>" name="eAddress" id="eAddress" class="form-control" disabled>
-                    </div>
-                    <div class="col-md-4 pt-4">
-                        <h5>Emergency Contact</h5>
-                        <input type="number" value="<?php echo $econtact?>" name="eNumber" id="eNumber" class="form-control" disabled>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Employee</label>
+                        <input type="text" value="<?php echo $emp?>" class="w-full rounded border border-gray-300 bg-gray-100" disabled>
                     </div>
                 </div>
-            </div>
-            <div class="salary-information border rounded p-2 mt-4">
-                <h3>Salary Information</h3>
-                <div class="row">
-                    <div class="col-md-2 pt-4">
-                        <h5>Bank Name</h5>
-                        <input value="<?php echo $bank?>" disabled type="text" name="bank" id="bank" class="form-control">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">CNIC</label>
+                        <input type="number" value="<?php echo $ecnic?>" class="w-full rounded border border-gray-300 bg-gray-100" disabled>
                     </div>
-                    <div class="col-md-4 pt-4">
-                        <h5>Bank Account no.</h5>
-                        <input value="<?php echo $bankacc?>" disabled type="number" name="bankAcc" id="bankAcc" class="form-control">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Emergency Address</label>
+                        <input type="text" value="<?php echo $eaddress?>" class="w-full rounded border border-gray-300 bg-gray-100" disabled>
                     </div>
-                    <div class="col-md-4 pt-4">
-                        <h5>IBAN</h5>
-                        <input value="<?php echo $iban?>" disabled type="text" name="iban" id="iban" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Basic Salary</h5>
-                        <input value="<?php echo $basic?>" disabled type="number" min="0" name="basicSalary" id="basicSalary" class="form-control">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Emergency Contact</label>
+                        <input type="number" value="<?php echo $econtact?>" class="w-full rounded border border-gray-300 bg-gray-100" disabled>
                     </div>
                 </div>
             </div>
-            <div class="official-information border rounded p-2 mt-4">
-                <h3>Official Information</h3>
-                <div class="row">
-                    <div class="col-md-2 pt-4">
-                        <h5>Designation</h5>
-                        <input value="<?php echo $desig?>" disabled type="text" name="designation" id="designation" class="form-control">
+            <div class="border rounded p-4">
+                <h3 class="text-lg font-semibold mb-4">Salary Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Bank Name</label>
+                        <input value="<?php echo $bank?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Department</h5>
-                        <input value="<?php echo $dept?>" disabled type="text" name="department" id="department" class="form-control">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Bank Account no.</label>
+                        <input value="<?php echo $bankacc?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Join Date</h5>
-                        <input value="<?php echo $joindate?>" disabled type="text" name="joinDate" id="joinDate" class="form-control">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">IBAN</label>
+                        <input value="<?php echo $iban?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Leave Date</h5>
-                        <input value="<?php echo $leavedate?>" disabled type="text" name="leaveDate" id="leaveDate" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Shift</h5>
-                        <input value="<?php echo $shift?>" disabled name="shift" id="shift" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Status</h5>
-                        <input value="<?php echo $status?>" disabled name="status" id="status" class="form-control">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2 pt-4">
-                        <h5>Line Manager</h5>
-                        <input value="<?php echo $manager?>" disabled type="text" name="manager" id="manager" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Warnings</h5>
-                        <input value="<?php echo $warnings?>" disabled type="number" min="0" name="warnings" id="warnings" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Leaves</h5>
-                        <input value="<?php echo $leaves?>" disabled type="number" min="0" name="leaves" id="leaves" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Allowed Leaves</h5>
-                        <input value="<?php echo $allowleave?>" disabled type="number" min="0" name="allowLeaves" id="allowLeaves" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Absents</h5>
-                        <input value="<?php echo $absents?>" disabled type="number" min="0" name="absents" id="absents" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Presents</h5>
-                        <input value="<?php echo $presents?>" disabled type="number" min="0" name="presents" id="presents" class="form-control">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2 pt-4">
-                        <h5>Days Workings</h5>
-                        <input value="<?php echo $daysworking?>" disabled type="number" min="0" name="daysWorking" id="daysWorking" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Loan</h5>
-                        <input value="<?php echo $loan?>" disabled name="loan" id="loan" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Loan Amount</h5>
-                        <input value="<?php echo $loanamount?>" disabled type="number" min="0" name="loanAmount" id="loanAmount" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Hours</h5>
-                        <input value="<?php echo $daysworking?>" disabled type="number" min="0" name="workingHours" id="workingHours" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>Start Time</h5>
-                        <input value="<?php echo $starttime?>" disabled type="text" name="startTime" id="startTime" class="form-control">
-                    </div>
-                    <div class="col-md-2 pt-4">
-                        <h5>End Time</h5>
-                        <input value="<?php echo $endtime?>" disabled type="text" name="endTime" id="endTime" class="form-control">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Basic Salary</label>
+                        <input value="<?php echo $basic?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
                     </div>
                 </div>
             </div>
-            </form>
-            <div class="row justify-content-center">
+            <div class="border rounded p-4">
+                <h3 class="text-lg font-semibold mb-4">Official Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Designation</label>
+                        <input value="<?php echo $desig?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Department</label>
+                        <input value="<?php echo $dept?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Join Date</label>
+                        <input value="<?php echo $joindate?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Leave Date</label>
+                        <input value="<?php echo $leavedate?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Shift</label>
+                        <input value="<?php echo $shift?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Status</label>
+                        <input value="<?php echo $status?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-6 mt-4">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Line Manager</label>
+                        <input value="<?php echo $manager?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Warnings</label>
+                        <input value="<?php echo $warnings?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Leaves</label>
+                        <input value="<?php echo $leaves?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Allowed Leaves</label>
+                        <input value="<?php echo $allowleave?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Absents</label>
+                        <input value="<?php echo $absents?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Presents</label>
+                        <input value="<?php echo $presents?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-6 mt-4">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Days Workings</label>
+                        <input value="<?php echo $daysworking?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Loan</label>
+                        <input value="<?php echo $loan?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Loan Amount</label>
+                        <input value="<?php echo $loanamount?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Hours</label>
+                        <input value="<?php echo $daysworking?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Start Time</label>
+                        <input value="<?php echo $starttime?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">End Time</label>
+                        <input value="<?php echo $endtime?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="flex justify-center mt-8">
         <?php
-        
         if ($_SESSION['role'] == '1') {
-            echo '<form action="edit-employee.php" method="get" class="mt-4">
-                    <input type="hidden" name="empID" id="empID" value="'. $id .'">
-                    <input type="submit" value="Edit" class="btn btn-warning">
-                </form>';
+            echo '<form action="edit-employee.php" method="get" class="mt-4">'
+                .'<input type="hidden" name="empID" id="empID" value="'. $id .'">'
+                .'<input type="submit" value="Edit" class="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-8 rounded">'
+                .'</form>';
         }
-
         ?>
         </div>
     </div>
 </div>
     
-    <script></script></script>
-    
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
 </body>

@@ -1,0 +1,122 @@
+Sr. No.,Employee No.,Name,Dept,Monthly Salary,Additions
+1,7001,Fazal Khalik,Production,51000,5000
+2,7002,Javed Iqbal,,51000,5000
+3,7003,M. Wali,,35000,0
+4,8003,M. Javed,,36000,0
+5,8004,M. Ijaz,,36000,0
+6,8006,Abdul Rashid,,36000,0
+7,8007,Mehmood Maseh,,40000,0
+8,8008,Khawaja Imran,,40000,0
+9,8009,M. Asif Bhatti,,12000,0
+10,8010,Usama Rizwan,,15000,0
+11,8011,Shahzad Khan Universal,,10000,0
+12,8012,Zeshan Ali,,7000,0
+13,9002,M. Ashiq,,70000,0
+14,9003,Waqas Ali Raza,,39500,0
+15,9004,Zeshan Ali,,42000,0
+16,9005,Molla Ditta,,38500,0
+17,9007,Abdul Razak,,38000,0
+18,9008,M. Rafique,,65000,0
+19,9008,M. Rafique,,65000,0
+20,9009,Ali Asghar,,50000,0
+21,9011,Amir Khan,,34000,0
+22,9012,Zain Latif,,34000,0
+23,9013,Qasim Ali Neik,,33000,0
+24,9014,Sakhawat Ali,,33000,0
+25,9015,M. Shakeel,,33000,0
+26,9017,Tanveer Ahmad,,33000,0
+27,9018,Samran Ali,,33000,0
+28,9019,Waqas Ahmad,,33000,0
+29,9020,Ali Sher,,33000,0
+30,9021,Qasim Nazir,,33000,0
+31,9022,Ali Hassan,,33000,0
+32,9023,M. Saeed,,61000,0
+33,9025,Jahngeer,,33000,0
+34,9026,Abdul Wahid,,33000,0
+35,9028,Sufyan Ali,,33000,0
+36,9032,Munawar Jameel,,33000,0
+37,9033,Yaseen,,33000,0
+38,9036,Ali Rehan,,33000,0
+39,9037,M. Sadique,,33000,0
+40,9040,Asif Khan,,33000,0
+41,9041,Shehroz Amjad,,33000,0
+42,9042,Mehdi Hassan,,33000,0
+43,9043,M. Shahbaz,,33000,0
+44,9044,Munir Hussain,,33000,0
+45,9045,Aftab Ali,,33000,0
+46,9051,Iftikhar Ali,,74000,0
+47,9052,Ali Ahmad,,40000,0
+48,9053,Yaseen Shah,,38000,0
+49,9054,Abid Ali,,38000,0
+50,9055,M. Ali,,36000,0
+51,9057,Zahid Boota,,38000,0
+52,9058,Ali Sher,,38000,0
+53,9059,M. Munir,,38000,0
+54,9060,Abbas,,38000,0
+55,9061,Sadik Khan,,38000,0
+56,9062,Asif Ali,,37000,0
+57,9063,Umar Iftikhar,,35000,0
+58,9064,Abdul Qadeer,,39000,0
+59,9065,M. Ali H2,,33000,0
+60,9067,Ali Raza,,35000,0
+61,9070,Riasat Ali,,33000,0
+62,9072,Zafar Iqbal,,53000,0
+63,9073,Mustafa Khan,,38000,0
+64,9074,Zulfqar Ali,,36000,0
+65,9075,Irshad Hussain,,36000,0
+66,9076,Waheed Anwar,,38000,0
+67,9077,Jameel Ahmad,,34000,0
+68,9077,Jameel Ahmad,,34000,0
+69,9078,Asghar,,33000,0
+70,9079,Abid Hussain,,35000,0
+71,9080,Rafaqat Ali,,36000,0
+72,9082,Ali Rehman,,35000,0
+73,9083,Khuram Shahzad,,33000,0
+74,9084,Orangzaib,,33000,0
+75,9085,M. Arslan,,33000,0
+76,9086,Akbar Ali,,33000,0
+77,9087,Ghulam Ghous,,34000,0
+78,9088,Akhtar Ali,,33000,0
+79,9089,Sajjad Ahmad,,43000,0
+80,9093,Habib Anwar,,33000,0
+81,9094,Musawar Ali,,33000,0
+82,9095,Riasat Ali,,33000,0
+83,9097,Ali Abbas,,33000,0
+84,9104,Lashkar Ali,,33000,0
+85,9108,M. Naveed,,34000,0
+86,9110,M. Anwar,,33000,0
+87,9111,Javaid Ali,,33000,0
+88,9118,M. Adil,,33000,0
+89,9120,Qayyum Hussain,,33000,0
+90,9121,Zia Ur Rehman,,33000,0
+91,9122,M. Ilyas,,36000,0
+92,9124,Rafaqat Ali,,33000,0
+93,9126,Shahzad Irfan,,33000,0
+94,9132,Abdul Hasnain,,33000,0
+95,9133,Azam Ali,,33000,0
+96,9134,Zubair Qayyum,,33000,0
+97,9137,Nazim Hussain,,33000,0
+98,9138,M. Rizwan,,33000,0
+99,9140,Hammad Khalil,,33000,0
+100,9141,Shoaib Ali,,33000,0
+101,9143,M. Usman,,33000,0
+102,9145,Bilal Hussain,,33000,0
+103,9147,M. Aqeel,,33000,0
+104,9153,Faisal,,33000,0
+105,9159,Abdul Qadir,,33000,0
+106,9160,Usman Ali,,33000,0
+107,9161,Samraiz,,33000,0
+108,9166,M. Shahid,,33000,0
+109,9167,M. Azeem,,33000,0
+110,9169,Falak Sher,,33000,0
+111,9171,Ali Raza Gill,,33000,0
+112,9172,WARIS ALI,Production,32000,0
+113,9177,Adbul Rahman,General Staff,32000,0
+114,9178,M. Saleem,General Staff,32000,0
+115,9179,HAROON ALI,Production,33000,0
+116,9180,M. IRFAN,Production,35000,0
+117,9186,M. Adrees,Production,35000,0
+118,9187,M SHAHBAZ,Production,38000,0
+119,9188,M. AYOUB,Production,32000,0
+120,9189,ABDUL QADAR,Production,32000,0
+,,,,,0
