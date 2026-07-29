@@ -430,16 +430,6 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                                     echo "<td class='py-3 px-3 font-extrabold text-center border-b border-r border-slate-400 bg-indigo-100 text-indigo-950 font-mono text-sm'>$total_present</td>";
                                     echo "<td class='py-3 px-3 font-extrabold text-center border-b border-slate-400 bg-rose-100 text-rose-950 font-mono text-sm'>$total_absent</td>";
                                     echo "</tr>";
-                                    
-                                    $current_day = clone $first_day;
-                                    while ($current_day <= $last_day) {
-                                        echo "<td class='py-2 px-1 border border-slate-400'></td>";
-                                        $current_day->modify('+1 day');
-                                    }
-                                    
-                                    echo "<td class='py-3 px-3 font-extrabold text-center border border-slate-400 bg-indigo-100 text-indigo-950 font-mono text-sm'>$total_present</td>";
-                                    echo "<td class='py-3 px-3 font-extrabold text-center border border-slate-400 bg-rose-100 text-rose-950 font-mono text-sm'>$total_absent</td>";
-                                    echo "</tr>";
                                 } else {
                                     echo "<tr><td colspan='" . ($days_in_month + 4) . "' class='py-8 text-center text-slate-500'><i class='fa-solid fa-inbox text-3xl mb-2 block text-slate-300'></i>No employees found</td></tr>";
                                 }
