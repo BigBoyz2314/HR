@@ -322,7 +322,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                  x-show="adjModal" 
                  class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4"
                  style="display: none !important;">
-                <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 border border-slate-200" @click.away="adjModal = false">
+                <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 border border-slate-200 max-h-[90vh] overflow-y-auto my-auto" @click.away="adjModal = false">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div class="flex items-center space-x-2 text-indigo-600 font-bold text-sm">
                             <i class="fa-solid fa-sliders"></i>
@@ -399,7 +399,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
          style="display: none !important;">
         
         <div @click.away="genModal = false" 
-             class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8">
+             class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8 max-h-[90vh] overflow-y-auto my-auto">
             
             <!-- Modal Header -->
             <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">

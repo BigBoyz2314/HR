@@ -294,8 +294,8 @@ if ($empID > 0) {
 
     <!-- Modal for Advance / Salary Payment -->
     <?php if ($selectedEmp): ?>
-        <div x-cloak x-show="showPayModal" style="display: none !important;" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-            <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-md w-full p-6 space-y-4" @click.away="showPayModal = false">
+        <div x-cloak x-show="showPayModal" style="display: none !important;" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
+            <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-md w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto my-auto" @click.away="showPayModal = false">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <h3 class="text-lg font-extrabold text-slate-900 flex items-center">
                         <i class="fa-solid fa-hand-holding-dollar text-emerald-600 mr-2"></i>
