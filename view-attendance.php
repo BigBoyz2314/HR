@@ -1,17 +1,12 @@
 <?php
-// Initialize session and authentication check
-session_start();
+require_once('includes/config.php');
+init_hr_session();
 
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
-if ($_SESSION['role'] != '1') {
-    header("location: index.php");
-    exit;
-}
 
-require_once('includes/config.php');
 
 // Validate and sanitize GET parameters
 $year = isset($_GET["year"]) ? intval($_GET["year"]) : date('Y');
@@ -53,7 +48,7 @@ $last_day = new DateTime("$year-$month-$days_in_month");
         <!-- Content Area -->
         <main class="flex-1 bg-slate-50 p-6 md:p-8 overflow-y-auto">
             
-            <div class="max-w-7xl mx-auto space-y-6">
+            <div class="mx-auto space-y-6">
                 
                 <!-- Page Header Section -->
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
@@ -145,6 +140,10 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                         <div class="flex items-center gap-1.5">
                             <span class="w-5 h-5 bg-red-200 border border-red-300 rounded flex items-center justify-center text-[10px] font-bold text-red-900">A</span>
                             <span>Absent</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-5 h-5 bg-rose-200 border border-rose-400 rounded flex items-center justify-center text-[9px] font-bold text-rose-950">A(M)</span>
+                            <span class="font-bold text-slate-800">Absent (Manual)</span>
                         </div>
                         <div class="flex items-center gap-1.5">
                             <span class="w-5 h-5 bg-red-300 border border-red-400 rounded flex items-center justify-center text-[10px] font-bold text-red-900">A*</span>
@@ -301,7 +300,9 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                                             if (isset($employee_attendance[$day_number])) {
                                                 $attRecord = $employee_attendance[$day_number];
                                                 $upBy = strtolower(trim($attRecord['updated_by'] ?? ''));
-                                                if (!empty($upBy) && $upBy !== 'csv_import') {
+                                                if ($upBy === 'manual_absent') {
+                                                    $day_status[$day_number] = 'absent_manual';
+                                                } elseif (!empty($upBy) && $upBy !== 'csv_import') {
                                                     $day_status[$day_number] = 'present_manual';
                                                 } else {
                                                     $day_status[$day_number] = 'present';
@@ -399,6 +400,9 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                                                 $present_count++;
                                             } elseif ($status === 'absent_sandwich') {
                                                 echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-red-300 text-red-900 font-extrabold text-sm' title='Absent (Sandwich)'>A*</td>";
+                                                $absent_count++;
+                                            } elseif ($status === 'absent_manual') {
+                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-rose-200 text-rose-950 font-extrabold text-sm' title='Absent (Manual)'>A(M)</td>";
                                                 $absent_count++;
                                             } else { // 'absent'
                                                 echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-red-200 text-red-900 font-extrabold text-sm' title='Absent'>A</td>";

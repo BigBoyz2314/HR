@@ -1,13 +1,12 @@
 <?php
-// Initialize the session
-session_start();
+require_once('includes/config.php');
+init_hr_session();
 
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
-    require_once('includes/config.php');
+
 
     $id = $_GET['id'];
     $stmt = "SELECT * FROM employees WHERE employeeID = '$id'";
@@ -232,7 +231,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 $wHours = !empty($row['working_hours']) ? floatval($row['working_hours']) : 8.00;
                 $dWork = !empty($row['days_working']) ? intval($row['days_working']) : 30;
                 $calcOtRate = ($dWork * $wHours > 0) ? round($basic / ($dWork * $wHours), 2) : 0.00;
-                $finalOtRateDisplay = ($otRateVal > 0) ? "PKR " . number_format($otRateVal, 2) . " / hr (Custom)" : "PKR " . number_format($calcOtRate, 2) . " / hr (Calculated Default)";
+                $finalOtRateDisplay = ($otRateVal > 0) ? "PKR " . number_format(round($otRateVal)) . " / hr (Custom)" : "PKR " . number_format(round($calcOtRate)) . " / hr (Calculated Default)";
                 ?>
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
                     <div>
@@ -249,7 +248,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                     <div>
                         <label class="block text-gray-700 font-semibold mb-2">Basic Salary</label>
-                        <input value="PKR <?php echo number_format($basic, 2)?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100 font-bold">
+                        <input value="PKR <?php echo number_format(round($basic))?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100 font-bold">
                     </div>
                     <div>
                         <label class="block text-gray-700 font-semibold mb-2">Overtime Hourly Rate</label>

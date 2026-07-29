@@ -19,9 +19,13 @@
     scrollbar-width: thin;
     scrollbar-color: #334155 #0f172a;
   }
+  /* Alpine.js Cloak to prevent FOUC / flash of modals on page load */
+  [x-cloak] {
+    display: none !important;
+  }
 </style>
 
-<header class="h-11 bg-white border-b border-slate-200/80 px-4 flex items-center justify-between shrink-0 shadow-sm z-20">
+<header class="h-12 bg-white border-b border-slate-200/80 px-4 flex items-center justify-between shrink-0 shadow-sm z-20">
     <div class="flex items-center space-x-3">
         <!-- Sidebar Toggle Button -->
         <button @click="sidebarCollapsed = !sidebarCollapsed; localStorage.setItem('hr_sidebar_collapsed', sidebarCollapsed)" 
@@ -30,12 +34,11 @@
             <i class="fa-solid fa-bars text-xs"></i>
         </button>
 
-        <!-- System breadcrumbs / status -->
-        <div class="flex items-center space-x-2 text-xs font-medium text-slate-500">
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
-                Footprint HR
-            </span>
+        <!-- System logo / status -->
+        <div class="flex items-center space-x-3 text-xs font-medium text-slate-500">
+            <a href="index.php" class="inline-flex items-center group">
+                <img src="images/zazsoft.png" alt="Zazsoft" class="h-8 max-h-8 w-auto object-contain">
+            </a>
             <span class="text-slate-300 hidden sm:inline">/</span>
             <span class="text-slate-600 font-bold uppercase tracking-wider text-[10px] hidden sm:inline"><?php echo date('M Y'); ?></span>
         </div>

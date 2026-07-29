@@ -1,10 +1,17 @@
 <?php
-session_start();
+require_once('includes/config.php');
+init_hr_session();
+
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
-require_once('includes/config.php');
+
+// Generate Next Employee ID / sNo suggestion
+$max_res = $conn->query("SELECT MAX(sNo) as max_sno, MAX(employeeID) as max_id FROM employees");
+$max_row = $max_res ? $max_res->fetch_assoc() : [];
+$next_eid = max(intval($max_row['max_sno'] ?? 0), intval($max_row['max_id'] ?? 0)) + 1;
+
 
 // Handle combined filter parameters
 $filterEmpId = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -171,7 +178,7 @@ if (count($whereClauses) > 0) {
         });
     </script>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans antialiased h-screen flex flex-col overflow-hidden" x-data="{ sidebarCollapsed: localStorage.getItem('hr_sidebar_collapsed') === 'true' }">
+<body class="bg-slate-100 text-slate-800 font-sans antialiased h-screen flex flex-col overflow-hidden" x-data="{ sidebarCollapsed: localStorage.getItem('hr_sidebar_collapsed') === 'true', showAddModal: <?php echo (isset($_GET['action']) && $_GET['action'] == 'add') ? 'true' : 'false'; ?>, showEditModal: false, editEmp: {} }">
     
     <!-- Top Header Navigation -->
     <?php include 'includes/nav1.php' ?>
@@ -203,10 +210,10 @@ if (count($whereClauses) > 0) {
 
                 <div class="flex flex-wrap items-center gap-3">
                     <?php if ($_SESSION['role'] == '1'): ?>
-                        <a href="employees.php" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition flex items-center space-x-2">
+                        <button type="button" @click="showAddModal = true" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition flex items-center space-x-2 cursor-pointer">
                             <i class="fa-solid fa-user-plus"></i>
-                            <span>Add Employee</span>
-                        </a>
+                            <span>+ Add Employee</span>
+                        </button>
                         <a href="upload-employees.php" class="px-3.5 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs border border-emerald-200 transition flex items-center space-x-2">
                             <i class="fa-solid fa-file-csv"></i>
                             <span>Import CSV</span>
@@ -360,11 +367,12 @@ if (count($whereClauses) > 0) {
                                         </td>
                                         <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-700 font-semibold text-[11px]"><?php echo htmlspecialchars($row['department'] ?: 'General'); ?></span></td>
                                         <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 font-semibold text-[11px]"><?php echo htmlspecialchars($row['designation'] ?: 'Staff'); ?></span></td>
-                                        <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 font-bold text-[11px] border border-indigo-100"><i class="fa-solid fa-clock text-[9px] mr-1 text-indigo-500"></i><?php echo htmlspecialchars($row['shift'] ?: 'General Shift'); ?></span></td>
-                                        <td class="py-3 px-4 text-right font-bold font-mono <?php echo $allowanceVal > 0 ? 'text-emerald-600' : 'text-slate-400'; ?>"><?php echo $allowanceVal > 0 ? '+' . number_format($allowanceVal) : '0'; ?></td>
+                                        <td class="py-3 px-4 whitespace-nowrap"><span class="px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 font-bold text-[11px] border border-indigo-100 whitespace-nowrap"><i class="fa-solid fa-clock text-[9px] mr-1 text-indigo-500"></i><?php echo htmlspecialchars($row['shift'] ?: 'General Shift'); ?></span></td>
+                                        <td class="py-3 px-4 text-right font-bold font-mono text-slate-900"><?php echo number_format($row['basic_salary']); ?></td>
+                                        <td class="py-3 px-4 text-right font-bold font-mono <?php echo $allowanceVal > 0 ? 'text-emerald-600' : 'text-slate-400'; ?>"><?php echo $allowanceVal > 0 ? '+' . number_format($allowanceVal) : '-'; ?></td>
                                         <td class="py-3 px-4 font-mono text-slate-600"><?php echo htmlspecialchars($row['cnic'] ?: '-'); ?></td>
                                         <td class="py-3 px-4 font-mono text-slate-600"><?php echo htmlspecialchars($row['primary_number'] ?: '-'); ?></td>
-                                        <td class="py-3 px-4 text-slate-500"><?php echo htmlspecialchars($row['join_date'] ?: '-'); ?></td>
+                                        <td class="py-3 px-4 text-slate-500 whitespace-nowrap"><?php echo htmlspecialchars($row['join_date'] ?: '-'); ?></td>
                                         <td class="py-3 px-4">
                                             <?php if (($row['status'] ?? 'Active') == 'Active'): ?>
                                                 <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase">Active</span>
@@ -374,10 +382,30 @@ if (count($whereClauses) > 0) {
                                         </td>
                                         <?php if ($_SESSION['role'] == '1'): ?>
                                             <td class="py-3 px-4 text-center action-col">
-                                                <a href="includes/edit-emp.php?id=<?php echo $row['employeeID']; ?>" class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-bold text-xs transition border border-indigo-200">
+                                                <button type="button" 
+                                                        @click="editEmp = { 
+                                                            id: '<?php echo $row['employeeID']; ?>', 
+                                                            sNo: '<?php echo htmlspecialchars($displayCode, ENT_QUOTES); ?>', 
+                                                            fname: '<?php echo htmlspecialchars($row['fname'], ENT_QUOTES); ?>', 
+                                                            mname: '<?php echo htmlspecialchars($row['mname'] ?? '', ENT_QUOTES); ?>', 
+                                                            lname: '<?php echo htmlspecialchars($row['lname'] ?? '', ENT_QUOTES); ?>', 
+                                                            deptID: '<?php echo $row['departmentID']; ?>', 
+                                                            deptName: '<?php echo htmlspecialchars($row['department'] ?? '', ENT_QUOTES); ?>', 
+                                                            desigID: '<?php echo $row['designationID']; ?>', 
+                                                            desigName: '<?php echo htmlspecialchars($row['designation'] ?? '', ENT_QUOTES); ?>', 
+                                                            basic: '<?php echo $row['basic_salary']; ?>', 
+                                                            allowance: '<?php echo $row['allowance']; ?>', 
+                                                            shift_id: '<?php echo $row['shift_id']; ?>', 
+                                                            ot_rate: '<?php echo $row['overtime_rate']; ?>', 
+                                                            status: '<?php echo $row['status'] ?? 'Active'; ?>', 
+                                                            joinDate: '<?php echo $row['join_date']; ?>', 
+                                                            phone: '<?php echo htmlspecialchars($row['primary_number'] ?? '', ENT_QUOTES); ?>', 
+                                                            cnic: '<?php echo htmlspecialchars($row['cnic'] ?? '', ENT_QUOTES); ?>' 
+                                                        }; showEditModal = true" 
+                                                        class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-bold text-xs transition border border-indigo-200 cursor-pointer">
                                                     <i class="fa-solid fa-pen-to-square text-[10px]"></i>
                                                     <span>Edit</span>
-                                                </a>
+                                                </button>
                                             </td>
                                         <?php endif; ?>
                                     </tr>
@@ -394,6 +422,387 @@ if (count($whereClauses) > 0) {
             </div>
 
         </main>
+    </div>
+
+    <!-- Add Employee Modal Dialog -->
+    <div x-cloak
+         x-show="showAddModal" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4"
+         style="display: none !important;">
+        
+        <div @click.away="showAddModal = false" 
+             class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8 max-h-[90vh] flex flex-col">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 flex items-center justify-center text-sm font-bold">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold">Register New Employee</h2>
+                        <p class="text-xs text-slate-400">Fill in required details to add a new staff member</p>
+                    </div>
+                </div>
+                <button type="button" @click="showAddModal = false" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Modal Form Body -->
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 custom-scrollbar" x-data="{ showAdvancedModal: false }">
+                <form action="includes/add-employee.php" method="post" enctype="multipart/form-data" class="space-y-6">
+                    
+                    <!-- Code & Required Basic Info -->
+                    <div class="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 space-y-4">
+                        <div class="flex items-center justify-between border-b border-indigo-100 pb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-indigo-900 flex items-center">
+                                <i class="fa-solid fa-id-card text-indigo-600 mr-2"></i>
+                                Core Employee Details
+                            </span>
+                            <span class="text-[10px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full font-bold">Required: Name, Basic Salary, Join Date</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Employee Code / sNo</label>
+                                <input type="number" name="e_emp" value="<?php echo $next_eid; ?>" placeholder="Code" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 font-mono font-bold text-sm bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">First Name *</label>
+                                <input type="text" name="fName" required placeholder="John" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Basic Salary (PKR) *</label>
+                                <input type="number" step="0.01" min="0" name="basicSalary" required placeholder="50000" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 text-sm font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Joining Date *</label>
+                                <input type="date" name="joinDate" value="<?php echo date('Y-m-d'); ?>" required class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 pt-1">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Middle Name</label>
+                                <input type="text" name="mName" placeholder="Middle" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Last Name</label>
+                                <input type="text" name="lName" placeholder="Doe" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Allowance (PKR)</label>
+                                <input type="number" step="0.01" min="0" name="allowence" placeholder="0.00" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm text-emerald-700 font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Gender</label>
+                                <select name="gender" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Department, Designation & Shift -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Department</label>
+                            <select name="department" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white">
+                                <option value="0">General Department</option>
+                                <?php
+                                $dRes = $conn->query("SELECT departmentID, name FROM department ORDER BY name ASC");
+                                if ($dRes && $dRes->num_rows > 0) {
+                                    while($dRow = $dRes->fetch_assoc()) {
+                                        echo '<option value="' . $dRow['departmentID'] . '">' . htmlspecialchars($dRow['name']) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Designation</label>
+                            <select name="designation" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white">
+                                <option value="0">Staff Designation</option>
+                                <?php
+                                $dsRes = $conn->query("SELECT designationID, name FROM designation ORDER BY name ASC");
+                                if ($dsRes && $dsRes->num_rows > 0) {
+                                    while($dsRow = $dsRes->fetch_assoc()) {
+                                        echo '<option value="' . $dsRow['designationID'] . '">' . htmlspecialchars($dsRow['name']) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Assigned Shift</label>
+                            <select name="shift_id" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white font-semibold">
+                                <option value="0">Default Shift (09:00 AM - 05:00 PM | 8.0 hrs)</option>
+                                <?php
+                                $sRes = $conn->query("SELECT id, shift_name, start_time, end_time, working_hours FROM shifts ORDER BY shift_name ASC");
+                                if ($sRes && $sRes->num_rows > 0) {
+                                    while($sRow = $sRes->fetch_assoc()) {
+                                        $tIn = date('h:i A', strtotime($sRow['start_time']));
+                                        $tOut = date('h:i A', strtotime($sRow['end_time']));
+                                        $hrs = number_format($sRow['working_hours'], 1);
+                                        echo '<option value="' . $sRow['id'] . '">' . htmlspecialchars($sRow['shift_name']) . ' (' . $tIn . ' - ' . $tOut . ' | ' . $hrs . ' hrs)</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Overtime Rate -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Overtime Hourly Rate (PKR) <span class="text-slate-400 font-normal">(Optional)</span></label>
+                        <input type="number" step="0.01" min="0" name="overtime_rate" placeholder="Default: Basic Salary ÷ (30 Days × Shift Hrs)" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                    </div>
+
+                    <!-- Collapsible Contact & Advanced Options -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden">
+                        <button type="button" @click="showAdvancedModal = !showAdvancedModal" class="w-full px-4 py-3 bg-slate-50 flex items-center justify-between text-left hover:bg-slate-100 transition">
+                            <span class="text-xs font-bold text-slate-700 flex items-center space-x-2">
+                                <i class="fa-solid fa-sliders text-indigo-600"></i>
+                                <span>Optional Secondary Details (Contact, Bank, Emergency, Photo)</span>
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': showAdvancedModal }"></i>
+                        </button>
+                        
+                        <div x-show="showAdvancedModal" x-collapse class="p-4 space-y-4 border-t border-slate-200 bg-white">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Phone Number</label>
+                                    <input type="text" name="pNumber" placeholder="03001234567" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">CNIC / Govt ID</label>
+                                    <input type="text" name="cnic" placeholder="42101-1234567-1" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Date of Birth</label>
+                                    <input type="date" name="dob" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Bank Name</label>
+                                    <input type="text" name="bank" placeholder="Bank Name" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Account Number</label>
+                                    <input type="text" name="bankAcc" placeholder="Account Number" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Emergency Contact</label>
+                                    <input type="text" name="efName" placeholder="Contact Name" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Photo Upload</label>
+                                <input type="file" name="photo" accept="image/*" class="w-full text-xs text-slate-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Actions -->
+                    <div class="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
+                        <button type="button" @click="showAddModal = false" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition">Cancel</button>
+                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-600/25 transition flex items-center space-x-2">
+                            <i class="fa-solid fa-user-check"></i>
+                            <span>Save & Register Employee</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Edit Employee Modal Dialog -->
+    <div x-cloak
+         x-show="showEditModal" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4"
+         style="display: none !important;">
+        
+        <div @click.away="showEditModal = false" 
+             class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8 max-h-[90vh] flex flex-col">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-amber-600/30 text-amber-300 border border-amber-500/30 flex items-center justify-center text-sm font-bold">
+                        <i class="fa-solid fa-user-pen"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold">Edit Employee Details</h2>
+                        <p class="text-xs text-slate-400">Update staff information for <strong class="text-amber-400" x-text="editEmp.fname + ' ' + editEmp.lname"></strong></p>
+                    </div>
+                </div>
+                <button type="button" @click="showEditModal = false" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Modal Form Body -->
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 custom-scrollbar">
+                <form action="includes/edit-emp.php" method="post" class="space-y-6">
+                    <input type="hidden" name="empID" :value="editEmp.id">
+                    <input type="hidden" name="oldDept" :value="editEmp.deptName">
+                    <input type="hidden" name="oldDeptID" :value="editEmp.deptID">
+                    <input type="hidden" name="oldDesig" :value="editEmp.desigName">
+                    <input type="hidden" name="oldDesigID" :value="editEmp.desigID">
+
+                    <!-- Core Employee Info -->
+                    <div class="p-4 bg-amber-50/40 rounded-2xl border border-amber-100 space-y-4">
+                        <div class="flex items-center justify-between border-b border-amber-100 pb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-900 flex items-center">
+                                <i class="fa-solid fa-id-card text-amber-600 mr-2"></i>
+                                Basic Details & Profile
+                            </span>
+                            <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">Employee ID: #<span x-text="editEmp.sNo"></span></span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Employee Code / Serial #</label>
+                                <input type="text" name="e_emp" :value="editEmp.sNo" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">First Name *</label>
+                                <input type="text" name="fName" :value="editEmp.fname" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Middle Name</label>
+                                <input type="text" name="mName" :value="editEmp.mname" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Last Name</label>
+                                <input type="text" name="lName" :value="editEmp.lname" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Department</label>
+                                <select name="dept" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold bg-white">
+                                    <option value="0">Keep Current (<span x-text="editEmp.deptName"></span>)</option>
+                                    <?php
+                                    $dResModal = $conn->query("SELECT departmentID, name FROM department ORDER BY name ASC");
+                                    if ($dResModal && $dResModal->num_rows > 0) {
+                                        while($dRow = $dResModal->fetch_assoc()) {
+                                            echo '<option value="' . $dRow['departmentID'] . '">' . htmlspecialchars($dRow['name']) . '</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Designation</label>
+                                <select name="desig" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold bg-white">
+                                    <option value="0">Keep Current (<span x-text="editEmp.desigName"></span>)</option>
+                                    <?php
+                                    $dsResModal = $conn->query("SELECT designationID, name FROM designation ORDER BY name ASC");
+                                    if ($dsResModal && $dsResModal->num_rows > 0) {
+                                        while($dsRow = $dsResModal->fetch_assoc()) {
+                                            echo '<option value="' . $dsRow['designationID'] . '">' . htmlspecialchars($dsRow['name']) . '</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Work Shift</label>
+                                <select name="shift_id" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold bg-white">
+                                    <option value="0" :selected="editEmp.shift_id == 0">Default Shift (09:00 AM - 05:00 PM | 8.0 hrs)</option>
+                                    <?php
+                                    $shResModal = $conn->query("SELECT id, shift_name, start_time, end_time, working_hours FROM shifts ORDER BY shift_name ASC");
+                                    if ($shResModal && $shResModal->num_rows > 0) {
+                                        while($shRow = $shResModal->fetch_assoc()) {
+                                            $tIn = date('h:i A', strtotime($shRow['start_time']));
+                                            $tOut = date('h:i A', strtotime($shRow['end_time']));
+                                            $hrs = number_format($shRow['working_hours'], 1);
+                                            $label = htmlspecialchars($shRow['shift_name']) . " ($tIn - $tOut | {$hrs} hrs)";
+                                            echo '<option value="' . $shRow['id'] . '" :selected="editEmp.shift_id == ' . $shRow['id'] . '">' . $label . '</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financial & Employment Details -->
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
+                        <div class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center border-b border-slate-200 pb-2">
+                            <i class="fa-solid fa-money-bill-wave text-emerald-600 mr-2"></i>
+                            Salary & Employment Configuration
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Basic Salary (PKR) *</label>
+                                <input type="number" step="0.01" name="basicSalary" :value="editEmp.basic" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Monthly Allowance (PKR)</label>
+                                <input type="number" step="0.01" name="allowance" :value="editEmp.allowance" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Overtime Rate (PKR/hr)</label>
+                                <input type="number" step="0.01" name="overtime_rate" :value="editEmp.ot_rate" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Joining Date *</label>
+                                <input type="date" name="joinDate" :value="editEmp.joinDate" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Account Status *</label>
+                                <select name="status" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold bg-white">
+                                    <option value="Active" :selected="editEmp.status == 'Active'">Active</option>
+                                    <option value="Inactive" :selected="editEmp.status == 'Inactive'">Inactive</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Phone Number</label>
+                                <input type="text" name="pNumber" :value="editEmp.phone" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">CNIC / Govt ID</label>
+                                <input type="text" name="cnic" :value="editEmp.cnic" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Actions -->
+                    <div class="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
+                        <button type="button" @click="showEditModal = false" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition">Cancel</button>
+                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md transition flex items-center space-x-2">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Update Employee</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
     </div>
 
 </body>

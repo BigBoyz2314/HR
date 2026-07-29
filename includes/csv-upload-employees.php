@@ -1,12 +1,12 @@
 <?php
-// Initialize session and auth check
-session_start();
+require_once('config.php');
+init_hr_session();
+
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION['role'] != '1') {
     header("Location: ../login.php");
     exit;
 }
 
-require_once('config.php');
 date_default_timezone_set('Asia/Karachi');
 
 // Helper to insert array into MySQL safely with dynamic table schema filtering

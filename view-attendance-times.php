@@ -1,17 +1,12 @@
 <?php
-// Initialize session and authentication check
-session_start();
+require_once('includes/config.php');
+init_hr_session();
 
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
-if ($_SESSION['role'] != '1') {
-    header("location: index.php");
-    exit;
-}
 
-require_once('includes/config.php');
 
 // Validate and sanitize GET parameters
 $year = isset($_GET["year"]) ? intval($_GET["year"]) : date('Y');
@@ -53,7 +48,7 @@ $last_day = new DateTime("$year-$month-$days_in_month");
         <!-- Content Area -->
         <main class="flex-1 bg-slate-50 p-6 md:p-8 overflow-y-auto">
             
-            <div class="max-w-7xl mx-auto space-y-6">
+            <div class="mx-auto space-y-6">
                 
                 <!-- Page Header Section -->
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
@@ -191,7 +186,7 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                                         $current_day->modify('+1 day');
                                     }
                                     ?>
-                                    <th class="py-3.5 px-3 font-extrabold text-center whitespace-nowrap bg-indigo-950 text-indigo-200 text-sm border-b-2 border-slate-700 sticky top-0 z-30 select-none">Total Hours</th>
+                                    <th class="py-3.5 px-3 font-extrabold text-center whitespace-nowrap bg-indigo-950 text-indigo-200 text-sm border-b-2 border-slate-700 sticky top-0 z-30 select-none">Hours (Present / Shift)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -246,20 +241,29 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                                 }
                                 $leaves_stmt->close();
 
-                                // Fetch all employees with join_date, leave_date, and status
-                                $sql = "SELECT `sNo`, `fname`, `mname`, `lname`, `join_date`, `leave_date`, `status` FROM `employees` ORDER BY `sNo` ASC";
-                                $result = $conn->query($sql);
+                                 // Fetch all employees with join_date, leave_date, status, and shift working hours
+                                 $sql = "SELECT e.`sNo`, e.`fname`, e.`mname`, e.`lname`, e.`join_date`, e.`leave_date`, e.`status`, e.`working_hours` AS emp_working_hours, s.`working_hours` AS shift_working_hours 
+                                         FROM `employees` e 
+                                         LEFT JOIN `shifts` s ON e.`shift_id` = s.`id` 
+                                         ORDER BY CAST(COALESCE(NULLIF(e.`sNo`, 0), NULLIF(e.`employee_code`, ''), e.`employeeID`) AS UNSIGNED) ASC, e.`employeeID` ASC";
+                                 $result = $conn->query($sql);
 
-                                if ($result && $result->num_rows > 0) {
-                                    $row_index = 0;
-                                    while ($row = $result->fetch_assoc()) {
-                                        $employee_id = $row['sNo'];
-                                        $fname = $row['fname'];
-                                        $mname = $row['mname'];
-                                        $lname = $row['lname'];
-                                        $join_date = $row['join_date'];
-                                        $leave_date = $row['leave_date'];
-                                        $emp_status = $row['status'];
+                                 if ($result && $result->num_rows > 0) {
+                                     $row_index = 0;
+                                     while ($row = $result->fetch_assoc()) {
+                                         $employee_id = $row['sNo'];
+                                         $fname = $row['fname'];
+                                         $mname = $row['mname'];
+                                         $lname = $row['lname'];
+                                         $join_date = $row['join_date'];
+                                         $leave_date = $row['leave_date'];
+                                         $emp_status = $row['status'];
+
+                                         $daily_shift_hrs = !empty($row['emp_working_hours']) && floatval($row['emp_working_hours']) > 0 
+                                             ? floatval($row['emp_working_hours']) 
+                                             : (!empty($row['shift_working_hours']) && floatval($row['shift_working_hours']) > 0 
+                                                 ? floatval($row['shift_working_hours']) 
+                                                 : 8.0);
 
                                         $row_bg_sticky = ($row_index % 2 == 0) ? 'bg-white' : 'bg-slate-100';
                                         $row_class = ($row_index % 2 == 0) ? 'bg-white' : 'bg-slate-50/60';
@@ -423,12 +427,26 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                                             $current_day->modify('+1 day');
                                         }
 
-                                        // Total hours column
-                                        $emp_hrs = floor($total_emp_seconds / 3600);
-                                        $emp_mins = floor(($total_emp_seconds % 3600) / 60);
-                                        $emp_total_formatted = sprintf('%dh %02dm', $emp_hrs, $emp_mins);
+                                         // Total working shift hours for the full month (all non-Sunday days)
+                                         $month_working_days = 0;
+                                         $cDay = clone $first_day;
+                                         while ($cDay <= $last_day) {
+                                             if ($cDay->format('D') !== 'Sun') {
+                                                 $month_working_days++;
+                                             }
+                                             $cDay->modify('+1 day');
+                                         }
+                                         $total_shift_hours = round($month_working_days * $daily_shift_hrs, 1);
+                                         $shift_formatted = (floor($total_shift_hours) == $total_shift_hours) ? intval($total_shift_hours) . 'h' : $total_shift_hours . 'h';
 
-                                        echo "<td class='py-3 px-3 font-extrabold text-center border-b border-slate-400 bg-indigo-50/80 text-indigo-900 font-mono text-sm whitespace-nowrap'>$emp_total_formatted</td>";
+                                         // Present hours calculation
+                                         $emp_hrs = floor($total_emp_seconds / 3600);
+                                         $emp_mins = floor(($total_emp_seconds % 3600) / 60);
+                                         $present_formatted = sprintf('%dh %02dm', $emp_hrs, $emp_mins);
+                                         
+                                         $emp_total_formatted = "$present_formatted / $shift_formatted";
+
+                                         echo "<td class='py-3 px-3 font-extrabold text-center border-b border-slate-400 bg-indigo-50/80 text-indigo-900 font-mono text-xs md:text-sm whitespace-nowrap' title='Present Working Hours / Total Shift Expected Hours'>$emp_total_formatted</td>";
                                         echo "</tr>";
 
                                         $row_index++;

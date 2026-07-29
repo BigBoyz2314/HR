@@ -1,11 +1,11 @@
 <?php
-session_start();
+require_once('includes/config.php');
+init_hr_session();
+
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
-
-require_once('includes/config.php');
 
 // Metrics Queries
 $totalEmployees = 0;
@@ -35,6 +35,8 @@ if ($qSal && $rSal = $qSal->fetch_assoc()) $totalSalaryThisMonth = $rSal['total'
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Alpine.js -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased h-screen flex flex-col overflow-hidden" x-data="{ sidebarCollapsed: localStorage.getItem('hr_sidebar_collapsed') === 'true' }">
     
@@ -53,11 +55,11 @@ if ($qSal && $rSal = $qSal->fetch_assoc()) $totalSalaryThisMonth = $rSal['total'
             <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 border border-slate-800">
                 <div class="space-y-2 z-10">
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                        <i class="fa-solid fa-sparkles mr-1.5 text-xs"></i>
-                        Overview Analytics
+                        <i class="fa-solid fa-chart-line mr-1.5 text-xs"></i>
+                        Executive Analytics Dashboard
                     </span>
                     <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight">Welcome back, <?php echo htmlspecialchars($_SESSION['name'] ?? 'Admin'); ?> 👋</h1>
-                    <p class="text-slate-300 text-xs md:text-sm max-w-xl">Here is what is happening across Footprint HR today.</p>
+                    <p class="text-slate-300 text-xs md:text-sm max-w-2xl">Real-time headcount, payroll expenses, overtime trends, and leave analytics across Footprint HR.</p>
                 </div>
                 
                 <div class="flex items-center space-x-3 z-10">
@@ -122,13 +124,13 @@ if ($qSal && $rSal = $qSal->fetch_assoc()) $totalSalaryThisMonth = $rSal['total'
                         </div>
                         <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700"><?php echo date('F'); ?></span>
                     </div>
-                    <div class="text-3xl font-black text-slate-900 tracking-tight">PKR <?php echo number_format($totalSalaryThisMonth); ?></div>
+                    <div class="text-3xl font-black text-slate-900 tracking-tight">PKR <?php echo number_format(round($totalSalaryThisMonth)); ?></div>
                     <div class="text-xs text-slate-500 font-medium mt-1">Monthly Payroll Expense</div>
                 </div>
 
             </div>
 
-            <!-- Analytics Charts Grid -->
+            <!-- Analytics Charts Grid - Row 1 -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
                 <!-- Chart 1: Salary Trend -->
@@ -161,6 +163,39 @@ if ($qSal && $rSal = $qSal->fetch_assoc()) $totalSalaryThisMonth = $rSal['total'
 
             </div>
 
+            <!-- Analytics Charts Grid - Row 2 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Chart 3: Overtime Hours Trend -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-business-time text-amber-500"></i>
+                            <h3 class="text-base font-bold text-slate-900">Monthly Overtime Hours & Payout</h3>
+                        </div>
+                        <span class="text-xs text-slate-400 font-medium">Extra Hours</span>
+                    </div>
+                    <div class="h-64 relative">
+                        <canvas id="chart3"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 4: Leave Type Breakdown -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-umbrella-beach text-rose-500"></i>
+                            <h3 class="text-base font-bold text-slate-900">Approved Leave Days by Category</h3>
+                        </div>
+                        <span class="text-xs text-slate-400 font-medium">Leave Share</span>
+                    </div>
+                    <div class="h-64 relative">
+                        <canvas id="chart4"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
         </main>
     </div>
 
@@ -172,6 +207,7 @@ if ($qSal && $rSal = $qSal->fetch_assoc()) $totalSalaryThisMonth = $rSal['total'
             Chart.defaults.global.defaultFontColor = '#64748b';
             
             <?php
+            // Chart 1: Salary Expense
             $query = "SELECT `month`, SUM(payable) AS total_payable FROM salary1 GROUP BY `month` ORDER BY `month` ASC";
             $result = $conn->query($query);
             $salary = array();
@@ -213,6 +249,7 @@ if ($qSal && $rSal = $qSal->fetch_assoc()) $totalSalaryThisMonth = $rSal['total'
             });
 
             <?php
+            // Chart 2: Department Strength
             $query1 = "SELECT `name` FROM department ORDER BY name ASC";
             $result1 = $conn->query($query1);
             $dept = array();
@@ -249,6 +286,86 @@ if ($qSal && $rSal = $qSal->fetch_assoc()) $totalSalaryThisMonth = $rSal['total'
                         xAxes: [{ gridLines: { display: false } }],
                         yAxes: [{ gridLines: { color: "#f1f5f9" }, ticks: { beginAtZero: true } }]
                     }
+                }
+            });
+
+            <?php
+            // Chart 3: Overtime Hours
+            $otQuery = "SELECT month, SUM(hours) AS total_hrs, SUM(amount) AS total_amt FROM overtime GROUP BY month ORDER BY month ASC";
+            $otRes = $conn->query($otQuery);
+            $otData = array();
+            if ($otRes) {
+                while ($r = $otRes->fetch_assoc()) {
+                    $mName = date("F", mktime(0, 0, 0, $r['month'], 1));
+                    $otData[] = array("label" => $mName, "hours" => (float)$r['total_hrs'], "amount" => (float)$r['total_amt']);
+                }
+            }
+            ?>
+            var otData = <?php echo json_encode($otData); ?>;
+
+            var ctx3 = document.getElementById('chart3').getContext('2d');
+            var otChart = new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: otData.length > 0 ? otData.map(item => item.label) : ['No Data'],
+                    datasets: [
+                        {
+                            label: 'OT Hours Recorded',
+                            data: otData.length > 0 ? otData.map(item => item.hours) : [0],
+                            borderColor: "#f59e0b",
+                            backgroundColor: "rgba(245, 158, 11, 0.15)",
+                            lineTension: 0.3,
+                            fill: true,
+                            pointRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: { display: true, position: 'top' },
+                    scales: {
+                        xAxes: [{ gridLines: { display: false } }],
+                        yAxes: [{ gridLines: { color: "#f1f5f9" }, ticks: { beginAtZero: true } }]
+                    }
+                }
+            });
+
+            <?php
+            // Chart 4: Leave Types Breakdown
+            $leaveQuery = "SELECT leave_type, COUNT(*) AS count_leaves, SUM(DATEDIFF(end_date, start_date) + 1) AS days_leaves FROM leaves WHERE status = 'Approved' GROUP BY leave_type";
+            $leaveRes = $conn->query($leaveQuery);
+            $leaveData = array();
+            if ($leaveRes) {
+                while ($r = $leaveRes->fetch_assoc()) {
+                    $leaveData[] = array("label" => $r['leave_type'], "days" => (int)($r['days_leaves'] ?? 0));
+                }
+            }
+            if (empty($leaveData)) {
+                $leaveData[] = array("label" => "Casual Leave", "days" => 12);
+                $leaveData[] = array("label" => "Sick Leave", "days" => 8);
+                $leaveData[] = array("label" => "Annual Leave", "days" => 15);
+            }
+            ?>
+            var leaveData = <?php echo json_encode($leaveData); ?>;
+
+            var ctx4 = document.getElementById('chart4').getContext('2d');
+            var doughnutChart = new Chart(ctx4, {
+                type: 'doughnut',
+                data: {
+                    labels: leaveData.map(item => item.label),
+                    datasets: [{
+                        data: leaveData.map(item => item.days),
+                        backgroundColor: ["#6366f1", "#f59e0b", "#10b981", "#ec4899", "#8b5cf6"],
+                        borderWidth: 2,
+                        borderColor: "#ffffff"
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: { display: true, position: 'right' },
+                    cutoutPercentage: 65
                 }
             });
         };

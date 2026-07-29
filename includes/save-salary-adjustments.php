@@ -1,12 +1,13 @@
 <?php
-session_start();
 require_once('config.php');
+init_hr_session();
 require_once('ledger-helper.php');
 
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION['role'] != '1') {
     header("Location: ../login.php");
     exit;
 }
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $salID        = isset($_POST['salID']) ? intval($_POST['salID']) : 0;
@@ -27,6 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($res && $row = $res->fetch_assoc()) {
         $actualSalID = $row['id'];
         $basic = floatval($row['basic_salary']);
+        
+        // Preserve existing recorded overtime amounts
+        $ot_1_15  = isset($_POST['ot_1_15']) ? floatval($_POST['ot_1_15']) : floatval($row['ot_1_15'] ?? 0);
+        $ot_16_30 = isset($_POST['ot_16_30']) ? floatval($_POST['ot_16_30']) : floatval($row['ot_16_30'] ?? 0);
+
         $payDays = intval($row['pay_days']);
         $paid = floatval($row['paid']);
         
@@ -54,7 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                           VALUES ('{$row['employeeID']}', '{$row['fname']}', '{$row['mname']}', '{$row['lname']}', '{$row['designation']}', '{$row['department']}', '{$row['gender']}', '$basic', '$allowance', '$totalDeductions', '{$row['gross_salary']}', '$month', '$year', '{$row['total_days']}', '$payDays', '{$row['absent']}', '$arrears', '$ot_1_15', '$ot_16_30', '$less_loans', '$less_advance', '$newPayable', '$paid', '$newRemaining', NOW(), NOW(), '$empNameEsc')");
 
             // Sync with central Employee Ledger
-            syncSalaryAccrualToLedger($conn, $row['employeeID'], $month, $year, $newPayable, $_SESSION['name'] ?? 'Admin');
+            $otTotal = $ot_1_15 + $ot_16_30;
+            syncSalaryAccrualToLedger($conn, $row['employeeID'], $month, $year, $newPayable, $_SESSION['name'] ?? 'Admin', $otTotal);
 
             header("Location: ../view-salary.php?month=$month&year=$year&action=updated");
             exit;

@@ -1,7 +1,7 @@
 <?php
-session_start();
-// Change this to your connection info.
-require "config.php";
+require_once "config.php";
+init_hr_session();
+
 
 // Now we check if the data from the login form was submitted, isset() will check if the data exists.
 if ( !isset($_POST['username'], $_POST['password']) ) {

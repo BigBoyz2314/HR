@@ -1,10 +1,11 @@
 <?php
-session_start();
+require_once('includes/config.php');
+init_hr_session();
+
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("Location: login.php");
     exit;
 }
-require_once('includes/config.php');
 
 date_default_timezone_set('Asia/Karachi');
 
@@ -341,7 +342,7 @@ $empsList = $conn->query("SELECT employeeID, sNo, employee_code, fname, mname, l
     </div>
 
     <!-- Add / Edit Leave Modal -->
-    <div x-show="leaveModal" class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" x-cloak>
+    <div x-cloak x-show="leaveModal" style="display: none !important;" class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
         <div class="bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-lg overflow-hidden transform transition-all" @click.away="leaveModal = false">
             <div class="p-6 bg-slate-900 text-white flex items-center justify-between">
                 <div class="flex items-center space-x-2">

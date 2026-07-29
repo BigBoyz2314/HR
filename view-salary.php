@@ -1,13 +1,14 @@
 <?php
-// Initialize session and auth check
-session_start();
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+require_once('includes/config.php');
+init_hr_session();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
 
-require_once('includes/config.php');
 date_default_timezone_set('Asia/Karachi');
+
 
 // Default to current month/year if not provided
 $month = isset($_GET['month']) ? intval($_GET['month']) : intval(date('m'));
@@ -47,6 +48,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
 <body class="bg-slate-100 text-slate-800 font-sans antialiased h-screen flex flex-col overflow-hidden" 
       x-data="{ 
           sidebarCollapsed: localStorage.getItem('hr_sidebar_collapsed') === 'true',
+          genModal: <?php echo (isset($_GET['action']) && $_GET['action'] == 'gen_modal') ? 'true' : 'false'; ?>,
           adjModal: false,
           adjEmp: '',
           adjSalID: 0,
@@ -89,10 +91,10 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
 
                 <div class="flex flex-wrap items-center gap-3">
                     <?php if ($_SESSION['role'] == '1'): ?>
-                        <a href="includes/gen-salary.php?month=<?php echo $month; ?>&year=<?php echo $year; ?>" class="px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow-lg shadow-teal-600/30 transition flex items-center space-x-2">
-                            <i class="fa-solid fa-arrows-rotate"></i>
-                            <span>Re-Generate Salary</span>
-                        </a>
+                        <button type="button" @click="genModal = true" class="px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow-lg shadow-teal-600/30 transition flex items-center space-x-2 cursor-pointer">
+                            <i class="fa-solid fa-calculator"></i>
+                            <span>Generate Payroll</span>
+                        </button>
                     <?php endif; ?>
                     <button onclick="window.print()" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition border border-slate-200 flex items-center space-x-1.5">
                         <i class="fa-solid fa-print text-slate-500"></i>
@@ -316,9 +318,10 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
             </div>
 
             <!-- Edit Monthly Adjustments Modal -->
-            <div x-show="adjModal" 
-                 x-cloak
-                 class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div x-cloak
+                 x-show="adjModal" 
+                 class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4"
+                 style="display: none !important;">
                 <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 border border-slate-200" @click.away="adjModal = false">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div class="flex items-center space-x-2 text-indigo-600 font-bold text-sm">
@@ -347,16 +350,19 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">O.T 1 TO 15</label>
-                                <input type="number" step="0.01" min="0" name="ot_1_15" :value="adjOt1" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-semibold">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">O.T 16 TO 30</label>
-                                <input type="number" step="0.01" min="0" name="ot_16_30" :value="adjOt2" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-semibold">
-                            </div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 flex items-center">
+                                <span>Overtime</span>
+                                <span class="ml-auto text-[9px] text-slate-400 font-semibold">(Auto Computed)</span>
+                            </label>
+                            <input type="text" readonly :value="'PKR ' + (parseFloat(adjOt1) || 0).toFixed(2)" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono font-bold text-slate-600 bg-slate-100 cursor-not-allowed select-none">
+                            <input type="hidden" name="ot_1_15" :value="adjOt1">
+                            <input type="hidden" name="ot_16_30" value="0">
                         </div>
+                        <p class="text-[10px] text-slate-400 font-medium italic -mt-2">
+                            <i class="fa-solid fa-circle-info text-slate-400 mr-1"></i>
+                            Overtime is managed automatically via Overtime Records and cannot be edited here.
+                        </p>
 
                         <div class="grid grid-cols-2 gap-4 bg-rose-50/50 p-3 rounded-xl border border-rose-100">
                             <div>
@@ -378,6 +384,87 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
             </div>
 
         </main>
+    </div>
+
+    <!-- Generate Payroll Modal Dialog -->
+    <div x-cloak
+         x-show="genModal" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4"
+         style="display: none !important;">
+        
+        <div @click.away="genModal = false" 
+             class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-teal-600/30 text-teal-300 border border-teal-500/30 flex items-center justify-center text-sm font-bold">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-bold">Generate Monthly Payroll</h2>
+                        <p class="text-xs text-slate-400">Calculate salary sheets for active staff</p>
+                    </div>
+                </div>
+                <button type="button" @click="genModal = false" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Modal Form Body -->
+            <form action="includes/generate-salary-new.php" method="get" class="p-6 space-y-5">
+                <div class="bg-teal-50/60 border border-teal-100 rounded-2xl p-4 space-y-3">
+                    <div class="flex items-start space-x-2 text-xs text-teal-900 leading-relaxed font-medium">
+                        <i class="fa-solid fa-circle-info text-teal-600 mt-0.5 text-sm shrink-0"></i>
+                        <span>Select month and year. Generating payroll will process attendance, basic pay, fixed allowances, and logged overtime, while retaining custom manual adjustments.</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Month *</label>
+                        <select name="month" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 text-sm bg-white font-semibold">
+                            <?php
+                            $currM = $month;
+                            for ($i = 1; $i <= 12; $i++) {
+                                $sel = ($i == $currM) ? 'selected' : '';
+                                echo '<option value="' . $i . '" ' . $sel . '>' . date("F", mktime(0, 0, 0, $i, 1)) . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Year *</label>
+                        <select name="year" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 text-sm bg-white font-semibold">
+                            <?php
+                            $currY = $year;
+                            for ($y = date('Y') - 1; $y <= date('Y') + 2; $y++) {
+                                $sel = ($y == $currY) ? 'selected' : '';
+                                echo '<option value="' . $y . '" ' . $sel . '>' . $y . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Modal Actions -->
+                <div class="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
+                    <button type="button" @click="genModal = false" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition">Cancel</button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-xs shadow-md shadow-teal-600/25 transition flex items-center space-x-2">
+                        <i class="fa-solid fa-gears"></i>
+                        <span>Run Payroll Generation</span>
+                    </button>
+                </div>
+            </form>
+
+        </div>
     </div>
 
     <!-- Table to CSV Export Script -->

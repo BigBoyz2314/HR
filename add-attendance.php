@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once('includes/config.php');
+init_hr_session();
+
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
@@ -8,7 +10,6 @@ if ($_SESSION['role'] != '1') {
     header("location: index.php");
     exit;
 }
-require_once('includes/config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">

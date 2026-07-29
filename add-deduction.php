@@ -1,10 +1,12 @@
 <?php
-session_start();
+require_once('includes/config.php');
+init_hr_session();
+
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
-require_once('includes/config.php');
+
 
 $eid = isset($_GET['emp']) ? intval($_GET['emp']) : 0;
 $month = isset($_GET['month']) ? intval($_GET['month']) : date('n');

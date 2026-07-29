@@ -39,7 +39,9 @@ function autoGenerateSalarySheet($conn, $month, $year, $updatedBy = 'System') {
     }
     $attendance_stmt->close();
 
-    $stmt = "SELECT `employeeID`, `sNo`, `fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance` AS profile_allowance FROM employees WHERE status = 'Active'";
+    $hasMonthAttendance = count($attendance_data) > 0;
+
+    $stmt = "SELECT `employeeID`, `sNo`, `fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance` AS profile_allowance, `join_date`, `leave_date` FROM employees WHERE status = 'Active'";
     $result = $conn->query($stmt);
 
     if ($result && $result->num_rows > 0) {
@@ -53,31 +55,40 @@ function autoGenerateSalarySheet($conn, $month, $year, $updatedBy = 'System') {
             $gender = $row['gender'];
             $basic = floatval($row['basic_salary']);
             $profileAllowance = floatval($row['profile_allowance'] ?? 0);
+            $joinDateStr = $row['join_date'] ?? '';
+            $leaveDateStr = $row['leave_date'] ?? '';
+
             $empAttendance = isset($attendance_data[$id]) ? $attendance_data[$id] : [];
 
             $absent_days = 0;
-            for ($day_num = 1; $day_num <= $maxDayRecorded; $day_num++) {
-                $dateStr = sprintf('%04d-%02d-%02d', $year, $month, $day_num);
-                $dayOfWeek = date('D', strtotime($dateStr));
-                $isOff = ($dayOfWeek === 'Sun' || in_array($day_num, $holidays));
+            if ($hasMonthAttendance) {
+                for ($day_num = 1; $day_num <= $maxDayRecorded; $day_num++) {
+                    $curDayStr = sprintf('%04d-%02d-%02d', $year, $month, $day_num);
+                    if (!empty($joinDateStr) && $curDayStr < $joinDateStr) continue;
+                    if (!empty($leaveDateStr) && $leaveDateStr != '0000-00-00' && $curDayStr > $leaveDateStr) continue;
 
-                if ($isOff) {
-                    $prevWorkDay = $day_num - 1;
-                    while ($prevWorkDay >= 1 && (date('D', strtotime(sprintf('%04d-%02d-%02d', $year, $month, $prevWorkDay))) === 'Sun' || in_array($prevWorkDay, $holidays))) {
-                        $prevWorkDay--;
-                    }
-                    $nextWorkDay = $day_num + 1;
-                    while ($nextWorkDay <= $maxDayRecorded && (date('D', strtotime(sprintf('%04d-%02d-%02d', $year, $month, $nextWorkDay))) === 'Sun' || in_array($nextWorkDay, $holidays))) {
-                        $nextWorkDay++;
-                    }
-                    $prevPresent = ($prevWorkDay >= 1) ? in_array($prevWorkDay, $empAttendance) : true;
-                    $nextPresent = ($nextWorkDay <= $maxDayRecorded) ? in_array($nextWorkDay, $empAttendance) : true;
-                    if (!$prevPresent && !$nextPresent) {
-                        $absent_days++;
-                    }
-                } else {
-                    if (!in_array($day_num, $empAttendance)) {
-                        $absent_days++;
+                    $dateStr = sprintf('%04d-%02d-%02d', $year, $month, $day_num);
+                    $dayOfWeek = date('D', strtotime($dateStr));
+                    $isOff = ($dayOfWeek === 'Sun' || in_array($day_num, $holidays));
+
+                    if ($isOff) {
+                        $prevWorkDay = $day_num - 1;
+                        while ($prevWorkDay >= 1 && (date('D', strtotime(sprintf('%04d-%02d-%02d', $year, $month, $prevWorkDay))) === 'Sun' || in_array($prevWorkDay, $holidays))) {
+                            $prevWorkDay--;
+                        }
+                        $nextWorkDay = $day_num + 1;
+                        while ($nextWorkDay <= $maxDayRecorded && (date('D', strtotime(sprintf('%04d-%02d-%02d', $year, $month, $nextWorkDay))) === 'Sun' || in_array($nextWorkDay, $holidays))) {
+                            $nextWorkDay++;
+                        }
+                        $prevPresent = ($prevWorkDay >= 1) ? in_array($prevWorkDay, $empAttendance) : true;
+                        $nextPresent = ($nextWorkDay <= $maxDayRecorded) ? in_array($nextWorkDay, $empAttendance) : true;
+                        if (!$prevPresent && !$nextPresent) {
+                            $absent_days++;
+                        }
+                    } else {
+                        if (!in_array($day_num, $empAttendance)) {
+                            $absent_days++;
+                        }
                     }
                 }
             }
@@ -99,7 +110,7 @@ function autoGenerateSalarySheet($conn, $month, $year, $updatedBy = 'System') {
             $allowance = $profileAllowance;
 
             // Fetch recorded overtime amount for this employee/month/year
-            $otRes = $conn->query("SELECT amount FROM overtime WHERE employeeID = '$id' AND month = '$month' AND year = '$year' LIMIT 1");
+            $otRes = $conn->query("SELECT SUM(amount) AS amount FROM overtime WHERE employeeID = '$id' AND month = '$month' AND year = '$year'");
             if ($otRes && $otRow = $otRes->fetch_assoc()) {
                 $ot1 = floatval($otRow['amount']);
             }
@@ -107,8 +118,9 @@ function autoGenerateSalarySheet($conn, $month, $year, $updatedBy = 'System') {
             if ($existingRes && $exRow = $existingRes->fetch_assoc()) {
                 $arrears = floatval($exRow['arrears'] ?? 0);
                 if ($ot1 == 0) {
-                    $ot1 = floatval($exRow['ot_1_15'] ?? 0) + floatval($exRow['ot_16_30'] ?? 0);
+                    $ot1 = floatval($exRow['ot_1_15'] ?? 0);
                 }
+                $ot2 = floatval($exRow['ot_16_30'] ?? 0);
                 $allowance = floatval($exRow['allowance'] ?? $profileAllowance);
                 $lessLoans = floatval($exRow['less_loans'] ?? 0);
                 $lessAdv = floatval($exRow['less_advance'] ?? 0);
@@ -128,7 +140,7 @@ function autoGenerateSalarySheet($conn, $month, $year, $updatedBy = 'System') {
 
             if ($existingRes && $existingRes->num_rows > 0) {
                 $conn->query("UPDATE salary1 SET 
-                    fname = '$fnameEsc', lname = '$lnameEsc', basic_salary = '$basic', allowance = '$allowance', 
+                    fname = '$fnameEsc', mname = '$mnameEsc', lname = '$lnameEsc', basic_salary = '$basic', allowance = '$allowance', 
                     deduction = '$totalDeductions', gross_salary = '$gross', total_days = '$maxDayRecorded', 
                     pay_days = '$dayspayable', absent = '$absent_amount', arrears = '$arrears', 
                     ot_1_15 = '$ot1', ot_16_30 = '$ot2', less_loans = '$lessLoans', less_advance = '$lessAdv', 
@@ -140,7 +152,10 @@ function autoGenerateSalarySheet($conn, $month, $year, $updatedBy = 'System') {
             }
 
             // Sync with central Employee Ledger
-            syncSalaryAccrualToLedger($conn, $id, $month, $year, $pay, $updatedBy);
+            if (function_exists('syncSalaryAccrualToLedger')) {
+                $otTotal = $ot1 + $ot2;
+                syncSalaryAccrualToLedger($conn, $id, $month, $year, $pay, $updatedBy, $otTotal);
+            }
         }
     }
 }

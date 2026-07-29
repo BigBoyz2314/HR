@@ -1,17 +1,11 @@
 <?php
-// Initialize the session
-session_start();
+require_once('config.php');
+init_hr_session();
 
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION['role'] != '1') {
     header("Location: ../login.php");
     exit;
 }
-if ($_SESSION['role'] != '1') {
-    header("Location: ../index.php");
-    exit;
-}
-require_once('config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">

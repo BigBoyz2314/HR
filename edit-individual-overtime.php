@@ -1,10 +1,12 @@
 <?php
-session_start();
+require_once('includes/config.php');
+init_hr_session();
+
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("Location: login.php");
     exit;
 }
-require_once('includes/config.php');
+
 require_once('includes/gen-salary-helper.php');
 
 date_default_timezone_set('Asia/Karachi');

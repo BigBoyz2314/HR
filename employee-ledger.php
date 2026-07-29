@@ -1,10 +1,11 @@
 <?php
-session_start();
+require_once('includes/config.php');
+init_hr_session();
+
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
-require_once('includes/config.php');
 
 $empID = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -173,7 +174,7 @@ if ($empID > 0) {
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-between">
                         <div>
                             <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Salary Accrued</span>
-                            <h3 class="text-xl font-extrabold text-slate-900 mt-1">PKR <?php echo number_format($totalCredit, 2); ?></h3>
+                            <h3 class="text-xl font-extrabold text-slate-900 mt-1">PKR <?php echo number_format(round($totalCredit)); ?></h3>
                         </div>
                         <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm">
                             <i class="fa-solid fa-file-invoice"></i>
@@ -184,7 +185,7 @@ if ($empID > 0) {
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-between">
                         <div>
                             <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Paid / Advances</span>
-                            <h3 class="text-xl font-extrabold text-emerald-600 mt-1">PKR <?php echo number_format($totalDebit, 2); ?></h3>
+                            <h3 class="text-xl font-extrabold text-emerald-600 mt-1">PKR <?php echo number_format(round($totalDebit)); ?></h3>
                         </div>
                         <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm">
                             <i class="fa-solid fa-hand-holding-dollar"></i>
@@ -196,7 +197,7 @@ if ($empID > 0) {
                         <div>
                             <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Net Balance</span>
                             <h3 class="text-xl font-extrabold mt-1 <?php echo $runningBalance > 0 ? 'text-amber-600' : ($runningBalance < 0 ? 'text-rose-600' : 'text-emerald-600'); ?>">
-                                PKR <?php echo number_format(abs($runningBalance), 2); ?>
+                                PKR <?php echo number_format(round(abs($runningBalance))); ?>
                             </h3>
                             <span class="text-[10px] font-semibold text-slate-500">
                                 <?php echo $runningBalance > 0 ? '(Payable to Employee)' : ($runningBalance < 0 ? '(Advance Overpaid)' : '(Settled)'); ?>
@@ -240,7 +241,7 @@ if ($empID > 0) {
                                 foreach ($ledgerEntries as $entry) {
                                     $dateStr = date('d-M-Y h:i A', strtotime($entry['trans_date']));
                                     $periodStr = ($entry['month'] > 0) ? date('M Y', mktime(0,0,0,$entry['month'],1, $entry['year'])) : '-';
-                                    $isDebit = floatval($entry['debit']) > 0;
+                                    $isDisbursement = ($entry['type'] === 'Salary Payment' || $entry['type'] === 'Advance Payment');
                                     ?>
                                     <tr class="hover:bg-slate-50/80 transition">
                                         <td class="py-3.5 px-4 text-slate-600 font-mono"><?php echo $dateStr; ?></td>
@@ -250,22 +251,24 @@ if ($empID > 0) {
                                                 <span class="px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 font-bold text-[10px] uppercase">Advance Salary</span>
                                             <?php elseif ($entry['type'] == 'Salary Payment'): ?>
                                                 <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px] uppercase">Salary Paid</span>
+                                            <?php elseif (strpos($entry['type'], 'Overtime') !== false): ?>
+                                                <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-[10px] uppercase">Overtime Accrued</span>
                                             <?php else: ?>
                                                 <span class="px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 font-bold text-[10px] uppercase">Salary Accrued</span>
                                             <?php endif; ?>
                                         </td>
                                         <td class="py-3.5 px-4 text-slate-600"><?php echo htmlspecialchars($entry['description'] ?: '-'); ?></td>
                                         <td class="py-3.5 px-4 text-right font-mono font-bold text-emerald-600">
-                                            <?php echo floatval($entry['debit']) > 0 ? 'PKR ' . number_format($entry['debit'], 2) : '-'; ?>
+                                            <?php echo floatval($entry['debit']) > 0 ? 'PKR ' . number_format(round($entry['debit'])) : '-'; ?>
                                         </td>
                                         <td class="py-3.5 px-4 text-right font-mono font-bold text-blue-600">
-                                            <?php echo floatval($entry['credit']) > 0 ? 'PKR ' . number_format($entry['credit'], 2) : '-'; ?>
+                                            <?php echo floatval($entry['credit']) > 0 ? 'PKR ' . number_format(round($entry['credit'])) : '-'; ?>
                                         </td>
                                         <td class="py-3.5 px-4 text-right font-mono font-bold text-slate-900">
-                                            PKR <?php echo number_format($entry['calculated_balance'], 2); ?>
+                                            PKR <?php echo number_format(round($entry['calculated_balance'])); ?>
                                         </td>
                                         <td class="py-3.5 px-4 text-center">
-                                            <?php if ($isDebit): ?>
+                                            <?php if ($isDisbursement): ?>
                                                 <a href="print-voucher.php?id=<?php echo $entry['id']; ?>" target="_blank" class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-[11px] border border-indigo-200 transition">
                                                     <i class="fa-solid fa-receipt text-[10px]"></i>
                                                     <span>Print Voucher</span>
@@ -291,7 +294,7 @@ if ($empID > 0) {
 
     <!-- Modal for Advance / Salary Payment -->
     <?php if ($selectedEmp): ?>
-        <div x-show="showPayModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4" x-cloak>
+        <div x-cloak x-show="showPayModal" style="display: none !important;" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
             <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-md w-full p-6 space-y-4" @click.away="showPayModal = false">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <h3 class="text-lg font-extrabold text-slate-900 flex items-center">
@@ -304,9 +307,23 @@ if ($empID > 0) {
                 <form action="includes/pay-advance.php" method="post" class="space-y-4">
                     <input type="hidden" name="employeeID" value="<?php echo $empID; ?>">
 
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Employee</label>
-                        <input type="text" disabled value="<?php echo htmlspecialchars(trim($selectedEmp['fname'].' '.$selectedEmp['lname'])); ?>" class="w-full px-3 py-2 rounded-xl bg-slate-100 font-bold text-slate-800 text-xs border border-slate-200">
+                    <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Employee</label>
+                            <div class="text-xs font-extrabold text-slate-900 truncate">
+                                <?php echo htmlspecialchars(trim($selectedEmp['fname'].' '.$selectedEmp['lname'])); ?>
+                            </div>
+                            <span class="text-[10px] font-semibold text-slate-500">#<?php echo htmlspecialchars($selectedEmp['employee_code'] ?: sprintf('%04d', $selectedEmp['employeeID'])); ?></span>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Current Net Balance</label>
+                            <div class="text-xs font-extrabold font-mono <?php echo $runningBalance > 0 ? 'text-amber-600' : ($runningBalance < 0 ? 'text-rose-600' : 'text-emerald-600'); ?>">
+                                PKR <?php echo number_format(abs($runningBalance), 2); ?>
+                            </div>
+                            <span class="text-[10px] font-bold <?php echo $runningBalance > 0 ? 'text-amber-600' : ($runningBalance < 0 ? 'text-rose-600' : 'text-emerald-600'); ?>">
+                                <?php echo $runningBalance > 0 ? '(Payable to Employee)' : ($runningBalance < 0 ? '(Advance Overpaid)' : '(Settled)'); ?>
+                            </span>
+                        </div>
                     </div>
 
                     <div>

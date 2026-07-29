@@ -1,10 +1,12 @@
 <?php
-session_start();
+require_once('includes/config.php');
+init_hr_session();
+
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
-require_once('includes/config.php');
+
 
 $msg = '';
 $msg_type = '';
@@ -51,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['role']) && $_SESSIO
             $working_hours = round(($t_end - $t_start) / 3600, 2);
 
             $stmt = $conn->prepare("UPDATE shifts SET shift_name = ?, start_time = ?, end_time = ?, working_hours = ? WHERE id = ?");
-            $stmt->bind_param("ssddi", $shift_name, $start_time, $end_time, $working_hours, $shift_id);
+            $stmt->bind_param("sssdi", $shift_name, $start_time, $end_time, $working_hours, $shift_id);
             if ($stmt->execute()) {
                 // Update employees using this shift_id
                 $conn->query("UPDATE employees SET shift = '$shift_name', start_time = '$start_time', end_time = '$end_time', working_hours = '$working_hours' WHERE shift_id = $shift_id");
@@ -178,7 +180,7 @@ $shifts_res = $conn->query("SELECT * FROM shifts ORDER BY id ASC");
                                             </td>
                                             <?php if ($_SESSION['role'] == '1'): ?>
                                             <td class="py-3.5 px-4 text-right space-x-2">
-                                                <button @click="modalOpen = true; editMode = true; editId = <?php echo $s['id']; ?>; shiftName = '<?php echo addslashes($s['shift_name']); ?>'; startTime = '<?php echo $s['start_time']; ?>'; endTime = '<?php echo $s['end_time']; ?>';" class="p-2 rounded-lg text-indigo-600 hover:bg-indigo-50 transition" title="Edit Shift">
+                                                <button @click="modalOpen = true; editMode = true; editId = <?php echo $s['id']; ?>; shiftName = '<?php echo addslashes($s['shift_name']); ?>'; startTime = '<?php echo date('H:i', strtotime($s['start_time'])); ?>'; endTime = '<?php echo date('H:i', strtotime($s['end_time'])); ?>';" class="p-2 rounded-lg text-indigo-600 hover:bg-indigo-50 transition" title="Edit Shift">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </button>
                                                 <form action="shifts.php" method="post" class="inline" onsubmit="return confirm('Are you sure you want to delete this shift?');">
@@ -207,7 +209,7 @@ $shifts_res = $conn->query("SELECT * FROM shifts ORDER BY id ASC");
     </div>
 
     <!-- Shift Modal (Create / Edit) -->
-    <div x-show="modalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div x-cloak x-show="modalOpen" style="display: none !important;" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div @click.away="modalOpen = false" class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-5 border border-slate-200">
             <div class="flex items-center justify-between border-b pb-3">
                 <h3 class="text-lg font-extrabold text-slate-900" x-text="editMode ? 'Edit Work Shift' : 'Add New Work Shift'"></h3>

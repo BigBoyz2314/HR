@@ -1,10 +1,12 @@
 <?php
-session_start();
+require_once('includes/config.php');
+init_hr_session();
+
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION['role'] != '1') {
     header("location: login.php");
     exit;
 }
-require_once('includes/config.php');
+
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $stmt = "SELECT * FROM department WHERE departmentID = '$id'";

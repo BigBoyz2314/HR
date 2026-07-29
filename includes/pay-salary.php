@@ -1,11 +1,12 @@
 <?php
 require_once('config.php');
-session_start();
+init_hr_session();
 
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION['role'] != '1') {
     header("Location: ../login.php");
     exit;
 }
+
 
 $userName = $_SESSION['name'] ?? 'Admin';
 

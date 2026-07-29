@@ -1,10 +1,12 @@
 <?php
-session_start();
+require_once('includes/config.php');
+init_hr_session();
+
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION['role'] != '1') {
     header("location: login.php");
     exit;
 }
-require_once('includes/config.php');
+
 
 $empID = isset($_GET['id']) ? intval($_GET['id']) : (isset($_GET['empID']) ? intval($_GET['empID']) : 0);
 $stmt = "SELECT * FROM employees WHERE employeeID = '$empID'";

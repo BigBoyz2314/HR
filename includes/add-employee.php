@@ -1,11 +1,12 @@
 <?php
 require_once('config.php');
-session_start();
+init_hr_session();
 
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION['role'] != '1') {
     header("Location: ../login.php");
     exit;
 }
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Required Core Fields
@@ -187,10 +188,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'e_emp'           => $emp
     ];
 
-    if ($empIdVal > 0) {
-        $empData['employeeID'] = $empIdVal;
-    }
-
     function insertEmpFormArray($conn, $data, $table = 'employees') {
         $keys = [];
         $vals = [];
@@ -210,23 +207,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (insertEmpFormArray($conn, $empData, 'employees')) {
         $last_id = intval($conn->insert_id);
+        $finalCode = $empIdVal > 0 ? $empIdVal : $last_id;
         
-        // If sNo was NULL, update sNo to match generated employeeID/code
-        $conn->query("UPDATE `employees` SET `sNo` = '$last_id' WHERE `employeeID` = '$last_id' AND (`sNo` IS NULL OR `sNo` = 0)");
+        // If sNo was NULL, update sNo to match generated employeeID
+        $conn->query("UPDATE `employees` SET `sNo` = '$finalCode' WHERE `employeeID` = '$last_id' AND (`sNo` IS NULL OR `sNo` = 0)");
 
         $logData = $empData;
         $logData['employeeID'] = $last_id;
-        $logData['sNo'] = $last_id;
-        insertEmpFormArray($conn, $logData, 'employees_log');
+        $logData['sNo'] = $finalCode;
+        @insertEmpFormArray($conn, $logData, 'employees_log');
             
         if ($department > 0) {
             $sql2 = "UPDATE department SET current_Strength = current_Strength + 1 WHERE departmentID = $department";
             mysqli_query($conn, $sql2);
         }
 
-        header('Location: ../view-employees.php?status=success&msg=' . urlencode("Employee $fname added successfully with ID/Code: $last_id."));
+        header('Location: ../view-employees.php?status=success&msg=' . urlencode("Employee $fname added successfully with ID/Code: $finalCode."));
         exit;
     } else {
-        echo "ERROR: Unable to save record. " . $conn->error;
+        header('Location: ../view-employees.php?action=add&status=error&msg=' . urlencode("Unable to save record: " . $conn->error));
+        exit;
     }
-}
+}
