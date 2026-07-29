@@ -11,6 +11,7 @@ $filterEmpId = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $filterDept  = isset($_GET['dept']) ? trim($_GET['dept']) : '';
 $filterMonth = isset($_GET['month']) ? intval($_GET['month']) : 0;
 $filterStatus= isset($_GET['status']) ? trim($_GET['status']) : '';
+$filterShift = isset($_GET['shift']) ? trim($_GET['shift']) : '';
 
 // Build dynamic WHERE clause
 $whereClauses = [];
@@ -20,6 +21,10 @@ if ($filterEmpId > 0) {
 if (!empty($filterDept)) {
     $deptEsc = $conn->real_escape_string($filterDept);
     $whereClauses[] = "department = '$deptEsc'";
+}
+if (!empty($filterShift)) {
+    $shiftEsc = $conn->real_escape_string($filterShift);
+    $whereClauses[] = "(shift = '$shiftEsc' OR shift_id = '$shiftEsc')";
 }
 if ($filterMonth > 0 && $filterMonth <= 12) {
     $whereClauses[] = "(join_month = '$filterMonth' OR MONTH(join_date) = $filterMonth)";
@@ -231,7 +236,7 @@ if (count($whereClauses) > 0) {
 
             <!-- Filter Controls Panel -->
             <div class="no-print filter-panel bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80">
-                <form action="view-employees.php" method="get" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                <form action="view-employees.php" method="get" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
                     
                     <!-- Search Input -->
                     <div class="lg:col-span-2">
@@ -253,6 +258,23 @@ if (count($whereClauses) > 0) {
                                 while($dRow = $dRes->fetch_assoc()) {
                                     $sel = ($filterDept === $dRow['name']) ? 'selected' : '';
                                     echo '<option value="' . htmlspecialchars($dRow['name']) . '" ' . $sel . '>' . htmlspecialchars($dRow['name']) . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <!-- Shift Filter -->
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Work Shift</label>
+                        <select name="shift" class="searchable-select w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 text-xs transition bg-white">
+                            <option value="">All Shifts</option>
+                            <?php
+                            $sFilterRes = $conn->query("SELECT id, shift_name FROM shifts ORDER BY shift_name ASC");
+                            if ($sFilterRes && $sFilterRes->num_rows > 0) {
+                                while($sF = $sFilterRes->fetch_assoc()) {
+                                    $sel = ($filterShift === $sF['shift_name'] || $filterShift == $sF['id']) ? 'selected' : '';
+                                    echo '<option value="' . htmlspecialchars($sF['shift_name']) . '" ' . $sel . '>' . htmlspecialchars($sF['shift_name']) . '</option>';
                                 }
                             }
                             ?>
@@ -281,7 +303,7 @@ if (count($whereClauses) > 0) {
                             <option value="Inactive" <?php echo $filterStatus === 'Inactive' ? 'selected' : ''; ?>>Inactive</option>
                         </select>
                         <button type="submit" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow transition shrink-0">Filter</button>
-                        <?php if (!empty($filterDept) || $filterMonth > 0 || !empty($filterStatus) || $filterEmpId > 0): ?>
+                        <?php if (!empty($filterDept) || !empty($filterShift) || $filterMonth > 0 || !empty($filterStatus) || $filterEmpId > 0): ?>
                             <a href="view-employees.php" title="Reset Filters" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition border border-slate-200 shrink-0">
                                 <i class="fa-solid fa-rotate-left"></i>
                             </a>
@@ -303,6 +325,7 @@ if (count($whereClauses) > 0) {
                                 <th class="py-3.5 px-4">Employee Name</th>
                                 <th class="py-3.5 px-4">Department</th>
                                 <th class="py-3.5 px-4">Designation</th>
+                                <th class="py-3.5 px-4">Shift</th>
                                 <th class="py-3.5 px-4 text-right">Basic Salary</th>
                                 <th class="py-3.5 px-4 text-right">Addition</th>
                                 <th class="py-3.5 px-4">CNIC</th>
@@ -337,7 +360,7 @@ if (count($whereClauses) > 0) {
                                         </td>
                                         <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-700 font-semibold text-[11px]"><?php echo htmlspecialchars($row['department'] ?: 'General'); ?></span></td>
                                         <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 font-semibold text-[11px]"><?php echo htmlspecialchars($row['designation'] ?: 'Staff'); ?></span></td>
-                                        <td class="py-3 px-4 text-right font-bold text-slate-900 font-mono"><?php echo number_format($row['basic_salary']); ?></td>
+                                        <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 font-bold text-[11px] border border-indigo-100"><i class="fa-solid fa-clock text-[9px] mr-1 text-indigo-500"></i><?php echo htmlspecialchars($row['shift'] ?: 'General Shift'); ?></span></td>
                                         <td class="py-3 px-4 text-right font-bold font-mono <?php echo $allowanceVal > 0 ? 'text-emerald-600' : 'text-slate-400'; ?>"><?php echo $allowanceVal > 0 ? '+' . number_format($allowanceVal) : '0'; ?></td>
                                         <td class="py-3 px-4 font-mono text-slate-600"><?php echo htmlspecialchars($row['cnic'] ?: '-'); ?></td>
                                         <td class="py-3 px-4 font-mono text-slate-600"><?php echo htmlspecialchars($row['primary_number'] ?: '-'); ?></td>
@@ -361,7 +384,7 @@ if (count($whereClauses) > 0) {
                                     <?php
                                 }
                             } else {
-                                echo '<tr><td colspan="10" class="py-8 text-center text-slate-400 font-medium">No matching employee records found.</td></tr>';
+                                echo '<tr><td colspan="11" class="py-8 text-center text-slate-400 font-medium">No matching employee records found.</td></tr>';
                             }
                             ?>
                         </tbody>

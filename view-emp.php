@@ -227,7 +227,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </div>
             <div class="border rounded p-4">
                 <h3 class="text-lg font-semibold mb-4">Salary Information</h3>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <?php
+                $otRateVal = isset($row['overtime_rate']) ? floatval($row['overtime_rate']) : 0.00;
+                $wHours = !empty($row['working_hours']) ? floatval($row['working_hours']) : 8.00;
+                $dWork = !empty($row['days_working']) ? intval($row['days_working']) : 30;
+                $calcOtRate = ($dWork * $wHours > 0) ? round($basic / ($dWork * $wHours), 2) : 0.00;
+                $finalOtRateDisplay = ($otRateVal > 0) ? "PKR " . number_format($otRateVal, 2) . " / hr (Custom)" : "PKR " . number_format($calcOtRate, 2) . " / hr (Calculated Default)";
+                ?>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
                     <div>
                         <label class="block text-gray-700 font-semibold mb-2">Bank Name</label>
                         <input value="<?php echo $bank?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100">
@@ -242,7 +249,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                     <div>
                         <label class="block text-gray-700 font-semibold mb-2">Basic Salary</label>
-                        <input value="<?php echo $basic?>" disabled type="number" class="w-full rounded border border-gray-300 bg-gray-100">
+                        <input value="PKR <?php echo number_format($basic, 2)?>" disabled type="text" class="w-full rounded border border-gray-300 bg-gray-100 font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Overtime Hourly Rate</label>
+                        <input value="<?php echo $finalOtRateDisplay; ?>" disabled type="text" class="w-full rounded border border-gray-300 bg-indigo-50 text-indigo-900 font-bold">
                     </div>
                 </div>
             </div>

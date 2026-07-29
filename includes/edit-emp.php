@@ -32,11 +32,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newDesig    = isset($_REQUEST["desig"]) ? intval($_REQUEST["desig"]) : 0;
     $newbasic    = isset($_REQUEST["basicSalary"]) ? floatval($_REQUEST["basicSalary"]) : 0.0;
     $newallow    = isset($_REQUEST["allowance"]) ? floatval($_REQUEST["allowance"]) : 0.0;
+    $shift_id    = isset($_REQUEST["shift_id"]) ? intval($_REQUEST["shift_id"]) : 0;
+    $ot_rate     = isset($_REQUEST["overtime_rate"]) && $_REQUEST["overtime_rate"] !== '' ? floatval($_REQUEST["overtime_rate"]) : 0.0;
 
     $status      = isset($_REQUEST["status"]) ? trim($_REQUEST["status"]) : 'Active';
     $joinDate    = isset($_REQUEST["joinDate"]) && !empty($_REQUEST["joinDate"]) ? trim($_REQUEST["joinDate"]) : date('Y-m-d');
     $phone       = isset($_REQUEST["pNumber"]) ? trim($_REQUEST["pNumber"]) : '';
     $cnic        = isset($_REQUEST["cnic"]) ? trim($_REQUEST["cnic"]) : '';
+
+    $shift_name_val = 'General Shift';
+    $start_time_val = '09:00:00';
+    $end_time_val   = '17:00:00';
+    $work_hours_val = 8.00;
+
+    if ($shift_id > 0) {
+        $sQuery = $conn->query("SELECT shift_name, start_time, end_time, working_hours FROM shifts WHERE id = $shift_id");
+        if ($sQuery && $sQuery->num_rows > 0) {
+            $sData = $sQuery->fetch_assoc();
+            $shift_name_val = $sData['shift_name'];
+            $start_time_val = $sData['start_time'];
+            $end_time_val   = $sData['end_time'];
+            $work_hours_val = $sData['working_hours'];
+        }
+    }
 
     $DesigName = $oldDesig;
     $DesigID = $oldDesigID;
@@ -70,6 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cnicEsc  = $conn->real_escape_string($cnic);
     $deptEsc  = $conn->real_escape_string($DeptName);
     $desigEsc = $conn->real_escape_string($DesigName);
+    $shiftEsc = $conn->real_escape_string($shift_name_val);
     $moj      = date('m', strtotime($joinDate));
 
     $sql = "UPDATE employees SET 
@@ -81,6 +100,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 lname = '$lnameEsc',
                 basic_salary = '$newbasic', 
                 allowance = '$newallow',
+                shift_id = '$shift_id',
+                shift = '$shiftEsc',
+                start_time = '$start_time_val',
+                end_time = '$end_time_val',
+                working_hours = '$work_hours_val',
+                overtime_rate = '$ot_rate',
                 join_date = '$joinDate',
                 join_month = '$moj',
                 status = '$status',

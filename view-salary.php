@@ -177,8 +177,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                 <th class="py-3.5 px-3 text-center">Attendance Days</th>
                                 <th class="py-3.5 px-3 text-right">Salary for Month</th>
                                 <th class="py-3.5 px-3 text-right">Arrears</th>
-                                <th class="py-3.5 px-3 text-right">O.T 1 TO 15</th>
-                                <th class="py-3.5 px-3 text-right">O.T 16 TO 30</th>
+                                <th class="py-3.5 px-3 text-right">Overtime</th>
                                 <th class="py-3.5 px-3 text-right">Allowance + Advance</th>
                                 <th class="py-3.5 px-3 text-right">Less Loans</th>
                                 <th class="py-3.5 px-3 text-right">Less Advance</th>
@@ -221,8 +220,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                     $earnedBasic = ($payDays / 30.0) * $basicSalary;
                                     
                                     $arrears = floatval($row['arrears'] ?? 0);
-                                    $ot1 = floatval($row['ot_1_15'] ?? 0);
-                                    $ot2 = floatval($row['ot_16_30'] ?? 0);
+                                    $totalOt = floatval($row['ot_1_15'] ?? 0) + floatval($row['ot_16_30'] ?? 0);
                                     $allowanceAdv = floatval($row['allowance'] ?? 0);
                                     $lessLoans = floatval($row['less_loans'] ?? 0);
                                     $lessAdvance = floatval($row['less_advance'] ?? 0);
@@ -236,8 +234,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                     $totGross += $grossSalary;
                                     $totEarned += $earnedBasic;
                                     $totArrears += $arrears;
-                                    $totOt1 += $ot1;
-                                    $totOt2 += $ot2;
+                                    $totOt1 += $totalOt;
                                     $totAllow += $allowanceAdv;
                                     $totLoans += $lessLoans;
                                     $totAdv += $lessAdvance;
@@ -254,8 +251,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                         <td class="py-3 px-3 text-center font-bold text-slate-800 whitespace-nowrap"><?php echo $payDays; ?></td>
                                         <td class="py-3 px-3 text-right font-mono text-slate-700 whitespace-nowrap"><?php echo number_format($earnedBasic); ?></td>
                                         <td class="py-3 px-3 text-right font-mono text-slate-600 whitespace-nowrap"><?php echo $arrears > 0 ? number_format($arrears) : '-'; ?></td>
-                                        <td class="py-3 px-3 text-right font-mono text-slate-600 whitespace-nowrap"><?php echo $ot1 > 0 ? number_format($ot1) : '-'; ?></td>
-                                        <td class="py-3 px-3 text-right font-mono text-slate-600 whitespace-nowrap"><?php echo $ot2 > 0 ? number_format($ot2) : '-'; ?></td>
+                                        <td class="py-3 px-3 text-right font-mono text-amber-700 font-bold whitespace-nowrap"><?php echo $totalOt > 0 ? number_format($totalOt) : '-'; ?></td>
                                         <td class="py-3 px-3 text-right font-mono text-emerald-600 font-bold whitespace-nowrap"><?php echo $allowanceAdv > 0 ? number_format($allowanceAdv) : '-'; ?></td>
                                         <td class="py-3 px-3 text-right font-mono text-rose-600 whitespace-nowrap"><?php echo $lessLoans > 0 ? '-' . number_format($lessLoans) : '-'; ?></td>
                                         <td class="py-3 px-3 text-right font-mono text-rose-600 whitespace-nowrap"><?php echo $lessAdvance > 0 ? '-' . number_format($lessAdvance) : '-'; ?></td>
@@ -275,8 +271,8 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                                                 adjSalID = <?php echo $salID; ?>;
                                                                 adjEmpID = <?php echo $empId; ?>;
                                                                 adjArrears = <?php echo $arrears; ?>;
-                                                                adjOt1 = <?php echo $ot1; ?>;
-                                                                adjOt2 = <?php echo $ot2; ?>;
+                                                                adjOt1 = <?php echo $totalOt; ?>;
+                                                                adjOt2 = 0;
                                                                 adjAllowance = <?php echo $allowanceAdv; ?>;
                                                                 adjLoans = <?php echo $lessLoans; ?>;
                                                                 adjAdvance = <?php echo $lessAdvance; ?>;
@@ -285,15 +281,6 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                                             class="p-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200 transition">
                                                         <i class="fa-solid fa-sliders text-xs"></i>
                                                     </button>
-
-                                                    <!-- Payment Form (Allows custom payment amount including overpayments) -->
-                                                    <form action="includes/pay-salary.php" method="post" class="inline-flex items-center space-x-1">
-                                                        <input type="hidden" name="id" value="<?php echo $empId; ?>">
-                                                        <input type="hidden" name="month" value="<?php echo $month; ?>">
-                                                        <input type="hidden" name="year" value="<?php echo $year; ?>">
-                                                        <input type="number" step="0.01" min="1" name="pay" value="<?php echo max(0, $remaining); ?>" class="w-20 px-1.5 py-1 border border-slate-300 rounded-lg text-xs font-mono text-right" required placeholder="Amount">
-                                                        <button type="submit" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shadow transition">Pay</button>
-                                                    </form>
                                                 <?php endif; ?>
                                             </div>
                                         </td>
@@ -301,7 +288,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                     <?php
                                 }
                             } else {
-                                echo '<tr><td colspan="15" class="py-8 text-center text-slate-400 font-medium">No salary records generated for ' . $month_name . ' ' . $year . '. Click "Re-Generate Salary" to process.</td></tr>';
+                                echo '<tr><td colspan="14" class="py-8 text-center text-slate-400 font-medium">No salary records generated for ' . $month_name . ' ' . $year . '. Click "Re-Generate Salary" to process.</td></tr>';
                             }
                             ?>
                         </tbody>
@@ -313,8 +300,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                     <td class="py-3 px-3 text-center">-</td>
                                     <td class="py-3 px-3 text-right font-mono"><?php echo number_format($totEarned); ?></td>
                                     <td class="py-3 px-3 text-right font-mono"><?php echo number_format($totArrears); ?></td>
-                                    <td class="py-3 px-3 text-right font-mono"><?php echo number_format($totOt1); ?></td>
-                                    <td class="py-3 px-3 text-right font-mono"><?php echo number_format($totOt2); ?></td>
+                                    <td class="py-3 px-3 text-right font-mono text-amber-700"><?php echo number_format($totOt1); ?></td>
                                     <td class="py-3 px-3 text-right font-mono text-emerald-700"><?php echo number_format($totAllow); ?></td>
                                     <td class="py-3 px-3 text-right font-mono text-rose-600"><?php echo number_format($totLoans); ?></td>
                                     <td class="py-3 px-3 text-right font-mono text-rose-600"><?php echo number_format($totAdv); ?></td>

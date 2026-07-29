@@ -97,15 +97,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["fileToUpload"])) {
                 continue;
             }
 
-            // Parse Date format (Support DD/MM/YYYY e.g. 06/07/2026 or YYYY-MM-DD or MM/DD/YYYY)
+            // Parse Date format (Support DD/MM/YYYY, DD-MM-YYYY, DD/MM/YY, DD-MM-YY, YYYY-MM-DD, etc.)
             $parsedDate = null;
-            if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $rawDate)) {
-                // DD/MM/YYYY
-                $dtObj = DateTime::createFromFormat('d/m/Y', $rawDate);
-                if ($dtObj) $parsedDate = $dtObj->format('Y-m-d');
-            } elseif (preg_match('/^\d{4}-\d{2}-\d{2}$/', $rawDate)) {
-                $parsedDate = $rawDate;
-            } else {
+            $cleanDate = trim(preg_replace('/\s+.*$/', '', $rawDate));
+
+            // 1. DD-MM-YYYY or DD/MM/YYYY (4-digit year) e.g. 06/07/2026 or 06-07-2026
+            if (preg_match('/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/', $cleanDate, $m)) {
+                $day = intval($m[1]);
+                $month = intval($m[2]);
+                $year = intval($m[3]);
+                if (checkdate($month, $day, $year)) {
+                    $parsedDate = sprintf('%04d-%02d-%02d', $year, $month, $day);
+                }
+            }
+            // 2. YYYY-MM-DD or YYYY/MM/DD (4-digit year first) e.g. 2026-07-16
+            elseif (preg_match('/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/', $cleanDate, $m)) {
+                $year = intval($m[1]);
+                $month = intval($m[2]);
+                $day = intval($m[3]);
+                if (checkdate($month, $day, $year)) {
+                    $parsedDate = sprintf('%04d-%02d-%02d', $year, $month, $day);
+                }
+            }
+            // 3. DD-MM-YY or DD/MM/YY (2-digit year) e.g. 16-07-26 or 06/07/26
+            elseif (preg_match('/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2})$/', $cleanDate, $m)) {
+                $day = intval($m[1]);
+                $month = intval($m[2]);
+                $yy = intval($m[3]);
+                $year = ($yy >= 70) ? (1900 + $yy) : (2000 + $yy);
+                if (checkdate($month, $day, $year)) {
+                    $parsedDate = sprintf('%04d-%02d-%02d', $year, $month, $day);
+                }
+            }
+
+            if (!$parsedDate) {
                 $timestamp = strtotime($rawDate);
                 if ($timestamp) {
                     $parsedDate = date('Y-m-d', $timestamp);
@@ -130,8 +155,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["fileToUpload"])) {
             if ($realEmpID <= 0) continue; // Skip if no valid employee match
 
             // Parse Time In & Time Out into MySQL TIME string (HH:MM:SS)
-            $timeInStr = !empty($rawTimeIn) ? date('H:i:s', strtotime($parsedDate . ' ' . $rawTimeIn)) : '09:00:00';
-            $timeOutStr = !empty($rawTimeOut) ? date('H:i:s', strtotime($parsedDate . ' ' . $rawTimeOut)) : '17:00:00';
+            $timeInTs = !empty($rawTimeIn) ? strtotime($parsedDate . ' ' . $rawTimeIn) : false;
+            $timeInStr = $timeInTs ? date('H:i:s', $timeInTs) : '09:00:00';
+
+            $timeOutTs = !empty($rawTimeOut) ? strtotime($parsedDate . ' ' . $rawTimeOut) : false;
+            $timeOutStr = $timeOutTs ? date('H:i:s', $timeOutTs) : '17:00:00';
 
             $deptEsc = $conn->real_escape_string($rawDept);
             $parsedDateEsc = $conn->real_escape_string($parsedDate);

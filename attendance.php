@@ -82,10 +82,16 @@ require_once('includes/config.php');
                             </div>
                         </div>
 
-                        <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm shadow-lg shadow-emerald-500/25 transition transform active:scale-[0.99] flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-table"></i>
-                            <span>View Attendance Sheet</span>
-                        </button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <button type="submit" class="py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm shadow-lg shadow-emerald-500/25 transition transform active:scale-[0.99] flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-table-cells"></i>
+                                <span>View Grid Sheet</span>
+                            </button>
+                            <button type="submit" onclick="this.form.action='view-attendance-times.php';" class="py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold text-sm shadow-lg shadow-indigo-500/25 transition transform active:scale-[0.99] flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-clock"></i>
+                                <span>View Punch In/Out Times</span>
+                            </button>
+                        </div>
 
                     </form>
                 </div>

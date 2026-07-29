@@ -93,15 +93,22 @@ function autoGenerateSalarySheet($conn, $month, $year, $updatedBy = 'System') {
                 $earned_basic = max(0, ($dayspayable / 30.0) * $basic);
             }
 
-            // Check if existing record has adjustments
+            // Check if existing record has adjustments or overtime
             $existingRes = $conn->query("SELECT * FROM salary1 WHERE employeeID = '$id' AND month = '$month' AND year = '$year' LIMIT 1");
             $arrears = 0; $ot1 = 0; $ot2 = 0; $lessLoans = 0; $lessAdv = 0; $paid = 0;
             $allowance = $profileAllowance;
 
+            // Fetch recorded overtime amount for this employee/month/year
+            $otRes = $conn->query("SELECT amount FROM overtime WHERE employeeID = '$id' AND month = '$month' AND year = '$year' LIMIT 1");
+            if ($otRes && $otRow = $otRes->fetch_assoc()) {
+                $ot1 = floatval($otRow['amount']);
+            }
+
             if ($existingRes && $exRow = $existingRes->fetch_assoc()) {
                 $arrears = floatval($exRow['arrears'] ?? 0);
-                $ot1 = floatval($exRow['ot_1_15'] ?? 0);
-                $ot2 = floatval($exRow['ot_16_30'] ?? 0);
+                if ($ot1 == 0) {
+                    $ot1 = floatval($exRow['ot_1_15'] ?? 0) + floatval($exRow['ot_16_30'] ?? 0);
+                }
                 $allowance = floatval($exRow['allowance'] ?? $profileAllowance);
                 $lessLoans = floatval($exRow['less_loans'] ?? 0);
                 $lessAdv = floatval($exRow['less_advance'] ?? 0);

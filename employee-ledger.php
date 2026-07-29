@@ -8,8 +8,8 @@ require_once('includes/config.php');
 
 $empID = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Fetch active employees list
-$empListRes = $conn->query("SELECT employeeID, fname, mname, lname, employee_code, department FROM employees ORDER BY fname ASC");
+// Fetch active employees list sorted by employee code ascending
+$empListRes = $conn->query("SELECT employeeID, sNo, fname, mname, lname, employee_code, department FROM employees ORDER BY CAST(COALESCE(NULLIF(sNo, 0), NULLIF(employee_code, ''), employeeID) AS UNSIGNED) ASC, employeeID ASC");
 
 // If no employee selected, default to first employee
 if ($empID <= 0 && $empListRes && $empListRes->num_rows > 0) {

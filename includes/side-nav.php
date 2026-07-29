@@ -3,7 +3,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 $empActive = in_array($currentPage, ['employees.php', 'view-employees.php', 'view-emp-name.php', 'view-emp-month.php', 'view-employee-log.php', 'upload-employees.php']);
 $allowDeducActive = in_array($currentPage, ['allowance.php', 'deduction.php']);
 $payrollActive = in_array($currentPage, ['gen-salary.php', 'salary.php', 'view-salary.php', 'edit-salary.php']);
-$attendanceActive = in_array($currentPage, ['attendance.php', 'add-attendance.php', 'upload-attendance.php', 'gazette.php', 'view-attendance.php']);
+$attendanceActive = in_array($currentPage, ['attendance.php', 'add-attendance.php', 'upload-attendance.php', 'gazette.php', 'view-attendance.php', 'view-attendance-times.php']);
 ?>
 
 <aside :class="sidebarCollapsed ? 'w-16' : 'w-64'" 
@@ -53,6 +53,12 @@ $attendanceActive = in_array($currentPage, ['attendance.php', 'add-attendance.ph
             <span class="flex items-center justify-between">
               <span>Import CSV</span>
               <span class="px-1 py-0.5 text-[8px] bg-emerald-500/20 text-emerald-400 rounded font-semibold">Bulk</span>
+            </span>
+          </a>
+          <a class="block px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition <?php echo $currentPage == 'shifts.php' ? 'bg-indigo-600/30 text-indigo-300 border-l-2 border-indigo-500 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>" href="shifts.php">
+            <span class="flex items-center justify-between">
+              <span>Work Shifts</span>
+              <span class="px-1 py-0.5 text-[8px] bg-indigo-500/20 text-indigo-400 rounded font-semibold">Shifts</span>
             </span>
           </a>
         <?php endif; ?>
@@ -112,15 +118,28 @@ $attendanceActive = in_array($currentPage, ['attendance.php', 'add-attendance.ph
       <div x-show="open && !sidebarCollapsed" x-collapse class="pl-8 pr-1 py-1 space-y-1">
         <?php if ($_SESSION['role'] == '1'): ?>
           <a class="block px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition <?php echo $currentPage == 'add-attendance.php' ? 'bg-indigo-600/30 text-indigo-300 border-l-2 border-indigo-500 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>" href="add-attendance.php">Manual Entry</a>
+          <a class="block px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition <?php echo $currentPage == 'add-overtime.php' ? 'bg-indigo-600/30 text-indigo-300 border-l-2 border-indigo-500 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>" href="add-overtime.php">
+            <span class="flex items-center justify-between">
+              <span>Overtime Hours</span>
+              <span class="px-1 py-0.5 text-[8px] bg-amber-500/20 text-amber-400 rounded font-semibold">OT</span>
+            </span>
+          </a>
           <a class="block px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition <?php echo $currentPage == 'upload-attendance.php' ? 'bg-indigo-600/30 text-indigo-300 border-l-2 border-indigo-500 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>" href="upload-attendance.php">
             <span class="flex items-center justify-between">
               <span>Import Machine CSV</span>
               <span class="px-1 py-0.5 text-[8px] bg-indigo-500/20 text-indigo-400 rounded font-semibold">CSV</span>
             </span>
           </a>
+          <a class="block px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition <?php echo $currentPage == 'leaves.php' ? 'bg-indigo-600/30 text-indigo-300 border-l-2 border-indigo-500 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>" href="leaves.php">
+            <span class="flex items-center justify-between">
+              <span>Leave Management</span>
+              <span class="px-1 py-0.5 text-[8px] bg-amber-500/20 text-amber-400 rounded font-semibold">Leaves</span>
+            </span>
+          </a>
           <a class="block px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition <?php echo $currentPage == 'gazette.php' ? 'bg-indigo-600/30 text-indigo-300 border-l-2 border-indigo-500 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>" href="gazette.php">Gazette Holidays</a>
         <?php endif; ?>
-        <a class="block px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition <?php echo $currentPage == 'attendance.php' ? 'bg-indigo-600/30 text-indigo-300 border-l-2 border-indigo-500 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>" href="attendance.php">View Records</a>
+        <a class="block px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition <?php echo ($currentPage == 'attendance.php' || $currentPage == 'view-attendance.php') ? 'bg-indigo-600/30 text-indigo-300 border-l-2 border-indigo-500 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>" href="attendance.php">Monthly Grid View</a>
+        <a class="block px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition <?php echo $currentPage == 'view-attendance-times.php' ? 'bg-indigo-600/30 text-indigo-300 border-l-2 border-indigo-500 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>" href="view-attendance-times.php">Punch In & Out Times</a>
       </div>
     </div>
 

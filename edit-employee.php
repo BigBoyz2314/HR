@@ -155,6 +155,52 @@ $phone = $row["primary_number"];
                             </div>
                         </div>
 
+                        <!-- Work Schedule & Overtime Settings -->
+                        <?php
+                        $shiftID = isset($row['shift_id']) ? intval($row['shift_id']) : 0;
+                        $overtimeRate = isset($row['overtime_rate']) ? floatval($row['overtime_rate']) : 0.00;
+                        $workingHours = !empty($row['working_hours']) ? floatval($row['working_hours']) : 8.00;
+                        $daysWorking = !empty($row['days_working']) ? intval($row['days_working']) : 30;
+                        $defaultOtRate = ($daysWorking * $workingHours > 0) ? round($basic / ($daysWorking * $workingHours), 2) : 0.00;
+                        ?>
+                        <div class="p-4.5 rounded-2xl bg-indigo-50/50 border border-indigo-100 space-y-4">
+                            <div class="flex items-center space-x-2 text-indigo-900 font-extrabold text-xs uppercase tracking-wider">
+                                <i class="fa-solid fa-business-time text-indigo-600"></i>
+                                <span>Work Schedule & Overtime Settings</span>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Assigned Shift</label>
+                                    <select name="shift_id" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 text-sm font-semibold bg-white">
+                                        <option value="0">Default Shift (09:00 AM - 05:00 PM, 8 hrs)</option>
+                                        <?php
+                                        $sRes = $conn->query("SELECT id, shift_name, start_time, end_time, working_hours FROM shifts ORDER BY shift_name ASC");
+                                        if ($sRes && $sRes->num_rows > 0) {
+                                            while($sRow = $sRes->fetch_assoc()) {
+                                                $sel = ($sRow['id'] == $shiftID || $sRow['shift_name'] === $row['shift']) ? 'selected' : '';
+                                                $tIn = date('h:i A', strtotime($sRow['start_time']));
+                                                $tOut = date('h:i A', strtotime($sRow['end_time']));
+                                                echo '<option value="' . $sRow['id'] . '" ' . $sel . '>' . htmlspecialchars($sRow['shift_name']) . ' (' . $tIn . ' - ' . $tOut . ', ' . $sRow['working_hours'] . ' hrs)</option>';
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Overtime Hourly Rate (PKR / hr)</label>
+                                    <div class="relative">
+                                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-xs font-bold">PKR</span>
+                                        <input type="number" step="0.01" min="0" name="overtime_rate" value="<?php echo ($overtimeRate > 0) ? htmlspecialchars($overtimeRate) : ''; ?>" placeholder="<?php echo number_format($defaultOtRate, 2); ?> (Default Formula)" class="w-full pl-11 pr-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 font-semibold text-sm">
+                                    </div>
+                                    <p class="text-[11px] text-indigo-700 font-medium mt-1">
+                                        <i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i>
+                                        Default Rate: <strong>PKR <?php echo number_format($defaultOtRate, 2); ?>/hr</strong> <em>(Salary ÷ [<?php echo $daysWorking; ?> Days × <?php echo $workingHours; ?> Shift Hours])</em>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Department & Designation -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>

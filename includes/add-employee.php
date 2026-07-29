@@ -57,10 +57,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $daysworking = isset($_REQUEST["daysWorking"]) ? intval($_REQUEST["daysWorking"]) : 30;
     $loan        = isset($_REQUEST["loan"]) ? trim($_REQUEST["loan"]) : '0';
     $loanamount  = isset($_REQUEST["loanAmount"]) ? floatval($_REQUEST["loanAmount"]) : 0.0;
-    $workinghours= isset($_REQUEST["workingHours"]) ? intval($_REQUEST["workingHours"]) : 8;
-    $starttime   = isset($_REQUEST["startTime"]) ? trim($_REQUEST["startTime"]) : '09:00:00';
-    $endtime     = isset($_REQUEST["endTime"]) ? trim($_REQUEST["endTime"]) : '17:00:00';
-    $shift       = isset($_REQUEST["shift"]) ? trim($_REQUEST["shift"]) : 'Day';
+    $shift_id    = isset($_REQUEST["shift_id"]) ? intval($_REQUEST["shift_id"]) : 0;
+    $ot_rate     = isset($_REQUEST["overtime_rate"]) && $_REQUEST["overtime_rate"] !== '' ? floatval($_REQUEST["overtime_rate"]) : 0.0;
+
+    $workinghours= 8;
+    $starttime   = '09:00:00';
+    $endtime     = '17:00:00';
+    $shift       = 'General Shift';
+
+    if ($shift_id > 0) {
+        $sQuery = $conn->query("SELECT shift_name, start_time, end_time, working_hours FROM shifts WHERE id = $shift_id");
+        if ($sQuery && $sQuery->num_rows > 0) {
+            $sData = $sQuery->fetch_assoc();
+            $shift       = $sData['shift_name'];
+            $starttime   = $sData['start_time'];
+            $endtime     = $sData['end_time'];
+            $workinghours= $sData['working_hours'];
+        }
+    }
+
     $status      = isset($_REQUEST["status"]) ? trim($_REQUEST["status"]) : 'Active';
     $egender     = isset($_REQUEST["egender"]) ? trim($_REQUEST["egender"]) : 'Male';
     $disability  = isset($_REQUEST["disability"]) ? trim($_REQUEST["disability"]) : 'No';
@@ -155,6 +170,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'start_time'      => $starttime,
         'end_time'        => $endtime,
         'shift'           => $shift,
+        'shift_id'        => $shift_id,
+        'overtime_rate'   => $ot_rate,
         'join_month'      => $moj,
         'leave_month'     => $mor,
         'disability'      => $disability,

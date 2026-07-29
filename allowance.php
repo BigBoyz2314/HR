@@ -72,12 +72,13 @@ require_once('includes/config.php');
                             <select name="emp" required class="searchable-select w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-sm transition bg-white">
                                 <option value="" disabled selected>Choose Employee...</option>
                                 <?php
-                                $stmt = "SELECT employeeID, fname, mname, lname FROM employees ORDER BY fname ASC";
+                                $stmt = "SELECT employeeID, sNo, employee_code, fname, mname, lname FROM employees ORDER BY CAST(COALESCE(NULLIF(sNo, 0), NULLIF(employee_code, ''), employeeID) AS UNSIGNED) ASC, employeeID ASC";
                                 $result = $conn->query($stmt);
                                 if ($result && $result->num_rows > 0) {
                                     while($row = $result->fetch_assoc()) {
                                         $full = trim($row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname']);
-                                        echo '<option value="' . $row['employeeID'] .'">' . htmlspecialchars($full) . '</option>';
+                                        $code = !empty($row['sNo']) ? $row['sNo'] : (!empty($row['employee_code']) ? $row['employee_code'] : sprintf('%04d', $row['employeeID']));
+                                        echo '<option value="' . $row['employeeID'] . '">#' . htmlspecialchars($code) . ' - ' . htmlspecialchars($full) . '</option>';
                                     }
                                 }
                                 ?>
