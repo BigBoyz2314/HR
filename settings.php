@@ -43,6 +43,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
               this.themeMode = mode;
               localStorage.setItem('hr_theme', mode);
               document.documentElement.setAttribute('data-theme', mode);
+              if (typeof updateThemeToggleIcons === 'function') {
+                  updateThemeToggleIcons(mode);
+              }
           },
           setCurrencyFmt(mode) {
               this.currencyFmt = mode;

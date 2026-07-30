@@ -256,9 +256,9 @@ $reportsActive = in_array($currentPage, ['reports-salary.php', 'reports-overtime
 
   <!-- User Profile Footer -->
   <div class="p-2 border-t border-slate-800 bg-slate-950/60">
-    <div class="flex items-center justify-between bg-slate-800/50 p-2 rounded-xl border border-slate-700/50">
-      <div class="flex items-center space-x-2.5 truncate">
-        <div class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-xs shrink-0 border border-indigo-500/30">
+    <div :class="sidebarCollapsed ? 'justify-center' : 'justify-between'" class="flex items-center bg-slate-800/50 p-2 rounded-xl border border-slate-700/50">
+      <div class="flex items-center space-x-2.5 truncate" :class="sidebarCollapsed ? 'justify-center' : ''">
+        <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-xs shrink-0 border border-indigo-500/30" :title="sidebarCollapsed ? '<?php echo htmlspecialchars($_SESSION['name'] ?? 'User'); ?> (<?php echo $_SESSION['role'] == '1' ? 'Admin' : 'User'; ?>)' : ''">
           <?php echo strtoupper(substr($_SESSION['name'] ?? 'U', 0, 1)); ?>
         </div>
         <div x-show="!sidebarCollapsed" class="truncate">
@@ -266,7 +266,7 @@ $reportsActive = in_array($currentPage, ['reports-salary.php', 'reports-overtime
           <div class="text-[9px] text-slate-400"><?php echo $_SESSION['role'] == '1' ? 'Admin' : 'User'; ?></div>
         </div>
       </div>
-      <div class="flex items-center space-x-1.5">
+      <div x-show="!sidebarCollapsed" class="flex items-center space-x-1.5 shrink-0">
         <a href="settings.php" title="Settings & Accessibility" class="settings-btn w-8 h-8 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center transition shrink-0 shadow-sm shadow-indigo-600/30">
           <i class="fa-solid fa-gear text-xs text-white"></i>
         </a>

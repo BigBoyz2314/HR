@@ -258,12 +258,39 @@ html[data-theme="dark"] .bg-slate-100 {
     color: #f8fafc !important;
 }
 
+html[data-theme="dark"] .bg-slate-200,
+html[data-theme="dark"] .bg-slate-300 {
+    background-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
 html[data-theme="dark"] .text-slate-900,
 html[data-theme="dark"] .text-slate-800,
 html[data-theme="dark"] .text-slate-700,
 html[data-theme="dark"] .text-slate-600,
 html[data-theme="dark"] .text-slate-500 {
     color: #cbd5e1 !important;
+}
+
+html[data-theme="dark"] .border-slate-100,
+html[data-theme="dark"] .border-slate-200,
+html[data-theme="dark"] .border-slate-200\/80,
+html[data-theme="dark"] .border-slate-200\/60,
+html[data-theme="dark"] .border-slate-300 {
+    border-color: #334155 !important;
+}
+
+html[data-theme="dark"] .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+html[data-theme="dark"] .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+    border-color: #334155 !important;
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+    border-color: #334155 !important;
 }
 
 html[data-theme="dark"] table td,

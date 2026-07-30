@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css?v=1.2">
 <style>
   /* Global Slim & Dark Scrollbar */
   ::-webkit-scrollbar {
