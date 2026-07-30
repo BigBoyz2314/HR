@@ -139,7 +139,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
             function printData() {
                 var divToPrint = document.getElementById("table");
                 var newWin = window.open("", "Print-Window");
-                newWin.document.write('<!DOCTYPE html><html><head><title>Print Preview - Employee Log</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"><style>body { padding: 20px; } table { font-size: 8px; width: 100%; border-collapse: collapse; } th, td { border: 1px solid #ddd; padding: 4px; text-align: center; } th { background-color: #4a5568; color: white; } @media print { @page { size: landscape; margin: 0.5cm; } }</style></head><body><h2 style="text-align: center; margin-bottom: 20px;">Employee Log</h2>');
+                newWin.document.write('<!DOCTYPE html><html><head><title>Print Preview - Employee Log</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"><style>body { padding: 20px; } table { font-size: 11px; width: 100%; border-collapse: collapse; } th, td { border: 1px solid #ddd; padding: 4px; text-align: center; } th { background-color: #4a5568; color: white; } @media print { @page { size: landscape; margin: 0.5cm; } }</style></head><body><h2 style="text-align: center; margin-bottom: 20px;">Employee Log</h2>');
                 newWin.document.write(divToPrint.outerHTML);
                 newWin.document.write('</body></html>');
                 newWin.document.close();

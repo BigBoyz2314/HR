@@ -6,6 +6,7 @@
     <title>Login - Footprint HR System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 font-sans antialiased relative overflow-hidden select-none">
     

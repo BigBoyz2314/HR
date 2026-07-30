@@ -1,3 +1,71 @@
+/* Global Text Size Enhancements across all pages */
+
+html {
+    font-size: 18px !important; /* Increases root font size from 16px to 18px (+12.5% scale for all rem units) */
+}
+
+body {
+    font-size: 1rem !important; /* Base text size ~18px */
+}
+
+/* Scaled up utility font size classes */
+.text-\[8px\] { font-size: 11px !important; }
+.text-\[9px\] { font-size: 12px !important; }
+.text-\[10px\] { font-size: 13px !important; }
+.text-\[11px\] { font-size: 14px !important; }
+.text-\[12px\] { font-size: 15px !important; }
+.text-xs { font-size: 0.9rem !important; }    /* ~16.2px */
+.text-sm { font-size: 1.05rem !important; }   /* ~18.9px */
+.text-base { font-size: 1.2rem !important; }   /* ~21.6px */
+.text-lg { font-size: 1.35rem !important; }  /* ~24.3px */
+.text-xl { font-size: 1.6rem !important; }   /* ~28.8px */
+.text-2xl { font-size: 1.9rem !important; }  /* ~34.2px */
+.text-3xl { font-size: 2.3rem !important; }  /* ~41.4px */
+.text-4xl { font-size: 2.75rem !important; } /* ~49.5px */
+
+/* Form controls, inputs, buttons, labels */
+input, select, textarea, button, label {
+    font-size: 1rem !important;
+}
+
+/* Tables and cells */
+table {
+    font-size: 1.05rem !important;
+}
+
+table th {
+    font-size: 0.95rem !important;
+    letter-spacing: 0.04em;
+}
+
+table td {
+    font-size: 1.05rem !important;
+}
+
+table tfoot td {
+    font-size: 1.05rem !important;
+    font-weight: 700;
+}
+
+/* Prevent time strings, badges, and mono text from wrapping */
+.font-mono, .whitespace-nowrap {
+    white-space: nowrap !important;
+}
+
+/* Dropdowns & Select controls (TomSelect, standard selects) */
+.ts-control, .ts-dropdown, .ts-dropdown .option, select, option {
+    font-size: 1rem !important;
+}
+
+/* Navigation, Sidebar, Badges & Links */
+nav, header, aside, .sidebar {
+    font-size: 1rem !important;
+}
+
+aside a, aside span, aside button, header a, header span, header button {
+    font-size: 0.95rem !important;
+}
+
 @media all and (min-width: 992px) {
     .navbar .nav-item .dropdown-menu{ display: none; }
     /* .navbar .nav-item:hover .nav-link{      } */
@@ -6,15 +74,8 @@
 }
 
 @media print {
-  
-    body {
-      visibility: hidden;
-    }
-    #table {
-      visibility: visible;
-      position: absolute;
-      left: 0;
-      top: 0;
+    .no-print {
+        display: none !important;
     }
 }
 

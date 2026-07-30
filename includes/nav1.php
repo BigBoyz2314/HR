@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="css/styles.css">
 <style>
   /* Global Slim & Dark Scrollbar */
   ::-webkit-scrollbar {
@@ -25,7 +26,7 @@
   }
 </style>
 
-<header class="h-12 bg-white border-b border-slate-200/80 px-4 flex items-center justify-between shrink-0 shadow-sm z-20">
+<header class="h-16 bg-white border-b border-slate-200/80 px-4 flex items-center justify-between shrink-0 shadow-sm z-20">
     <div class="flex items-center space-x-3">
         <!-- Sidebar Toggle Button -->
         <button @click="sidebarCollapsed = !sidebarCollapsed; localStorage.setItem('hr_sidebar_collapsed', sidebarCollapsed)" 
@@ -37,7 +38,7 @@
         <!-- System logo / status -->
         <div class="flex items-center space-x-3 text-xs font-medium text-slate-500">
             <a href="index.php" class="inline-flex items-center group">
-                <img src="images/zazsoft.png" alt="Zazsoft" class="h-8 max-h-8 w-auto object-contain">
+                <img src="images/zazsoft.png" alt="Zazsoft" class="h-16 max-h-16 w-auto object-contain">
             </a>
             <span class="text-slate-300 hidden sm:inline">/</span>
             <span class="text-slate-600 font-bold uppercase tracking-wider text-[10px] hidden sm:inline"><?php echo date('M Y'); ?></span>

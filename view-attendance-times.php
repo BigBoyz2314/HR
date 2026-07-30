@@ -387,20 +387,20 @@ $last_day = new DateTime("$year-$month-$days_in_month");
 
                                                 if ($isManual) {
                                                     $cellBg = 'bg-sky-100 border-sky-400 text-sky-950 shadow-sm';
-                                                    $inColor = 'text-sky-950 font-extrabold';
-                                                    $outColor = 'text-indigo-900 font-extrabold border-t border-sky-300';
-                                                    $manualTag = "<div class='text-[7px] font-black text-sky-700 tracking-tighter uppercase mt-0.5'>Manual</div>";
+                                                    $inColor = 'text-sky-950 font-extrabold whitespace-nowrap';
+                                                    $outColor = 'text-indigo-900 font-extrabold border-t border-sky-300 whitespace-nowrap';
+                                                    $manualTag = "<div class='text-[7px] font-black text-sky-700 tracking-tighter uppercase mt-0.5 whitespace-nowrap'>Manual</div>";
                                                 } else {
                                                     $cellBg = 'bg-emerald-50 border-emerald-300 text-emerald-950';
-                                                    $inColor = 'text-emerald-700 font-extrabold';
-                                                    $outColor = 'text-rose-600 font-extrabold border-t border-emerald-200/90';
+                                                    $inColor = 'text-emerald-700 font-extrabold whitespace-nowrap';
+                                                    $outColor = 'text-rose-600 font-extrabold border-t border-emerald-200/90 whitespace-nowrap';
                                                     $manualTag = '';
                                                 }
                                                 
                                                 $titleAttr = 'In: ' . $tInStr . ', Out: ' . $tOutStr . ($isManual ? ' (Manual Entry)' : ' (Machine CSV)');
                                                 
-                                                echo "<td class='p-1 border-b border-r border-slate-400 text-center align-middle bg-white'>";
-                                                echo "<div class='p-1 rounded-lg border text-[11px] font-mono leading-tight font-extrabold shadow-sm $cellBg' title='$titleAttr'>";
+                                                echo "<td class='p-1 border-b border-r border-slate-400 text-center align-middle bg-white whitespace-nowrap'>";
+                                                echo "<div class='p-1 rounded-lg border text-[11px] font-mono leading-tight font-extrabold shadow-sm whitespace-nowrap $cellBg' title='$titleAttr'>";
                                                 echo "<div class='$inColor'>" . $tInStr . "</div>";
                                                 echo "<div class='$outColor pt-0.5 mt-0.5'>" . $tOutStr . "</div>";
                                                 echo $manualTag;
@@ -471,7 +471,7 @@ $last_day = new DateTime("$year-$month-$days_in_month");
             function printData() {
                 var divToPrint = document.getElementById("table");
                 var newWin = window.open("", "Print-Window");
-                newWin.document.write('<!DOCTYPE html><html><head><title>Print Preview - Punch In & Out Times Sheet</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"><style>body { padding: 15px; font-family: sans-serif; } table { font-size: 7px; width: 100%; border-collapse: collapse; } th, td { border: 1px solid #cbd5e1; padding: 2px 3px; text-align: center; } th { background-color: #0f172a; color: white; } .bg-emerald-50 { background-color: #ecfdf5; } .bg-teal-50 { background-color: #f0fdf4; } .bg-red-200 { background-color: #fecdd3; } .bg-blue-200 { background-color: #bfdbfe; } .bg-yellow-200 { background-color: #fef08a; } .bg-slate-100 { background-color: #f1f5f9; } .bg-purple-100 { background-color: #f3e8ff; } @media print { @page { size: landscape; margin: 0.5cm; } }</style></head><body><h3 style="text-align: center; margin-bottom: 15px;">Punch In & Out Times Sheet - <?php echo $month_name . " " . $year; ?></h3>');
+                newWin.document.write('<!DOCTYPE html><html><head><title>Print Preview - Punch In & Out Times Sheet</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"><style>body { padding: 15px; font-family: sans-serif; } table { font-size: 10px; width: 100%; border-collapse: collapse; } th, td { border: 1px solid #cbd5e1; padding: 2px 3px; text-align: center; } th { background-color: #0f172a; color: white; } .bg-emerald-50 { background-color: #ecfdf5; } .bg-teal-50 { background-color: #f0fdf4; } .bg-red-200 { background-color: #fecdd3; } .bg-blue-200 { background-color: #bfdbfe; } .bg-yellow-200 { background-color: #fef08a; } .bg-slate-100 { background-color: #f1f5f9; } .bg-purple-100 { background-color: #f3e8ff; } @media print { @page { size: landscape; margin: 0.5cm; } }</style></head><body><h3 style="text-align: center; margin-bottom: 15px;">Punch In & Out Times Sheet - <?php echo $month_name . " " . $year; ?></h3>');
                 newWin.document.write(divToPrint.outerHTML);
                 newWin.document.write('</body></html>');
                 newWin.document.close();

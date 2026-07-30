@@ -152,8 +152,8 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
             th, td {
                 border: 1px solid #333333 !important;
                 border-radius: 0 !important;
-                padding: 6px 8px !important;
-                font-size: 9.5pt !important;
+                padding: 5px 7px !important;
+                font-size: 11pt !important;
                 background: transparent !important;
                 background-color: transparent !important;
                 color: #000000 !important;
@@ -320,7 +320,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                 </div>
 
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-xs">
+                    <table class="w-full text-left border-collapse text-sm md:text-base">
                         <thead>
                             <tr class="bg-slate-900 text-white font-bold uppercase tracking-wider">
                                 <th class="py-3 px-4 rounded-l-xl">Date & Time</th>

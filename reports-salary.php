@@ -175,7 +175,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                 border: 1px solid #333333 !important;
                 border-radius: 0 !important;
                 padding: 5px 7px !important;
-                font-size: 9pt !important;
+                font-size: 11pt !important;
                 background: transparent !important;
                 background-color: transparent !important;
                 color: #000000 !important;
@@ -323,22 +323,22 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                     <span class="text-xs font-semibold text-slate-500"><?php echo count($records); ?> Employees</span>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-xs">
-                        <thead>
+                <div class="overflow-auto max-h-[calc(100vh-250px)] custom-scrollbar">
+                    <table class="w-full text-left border-collapse text-sm md:text-base relative">
+                        <thead class="sticky top-0 z-30 bg-slate-900 shadow-md">
                             <tr class="bg-slate-900 text-white font-bold uppercase tracking-wider">
-                                <th class="py-3 px-3 rounded-l-xl">Code</th>
-                                <th class="py-3 px-3">Employee Name</th>
-                                <th class="py-3 px-3 text-right">Basic</th>
-                                <th class="py-3 px-3 text-center">Days</th>
-                                <th class="py-3 px-3 text-right">Earned Basic</th>
-                                <th class="py-3 px-3 text-right">Arrears</th>
-                                <th class="py-3 px-3 text-right">Overtime</th>
-                                <th class="py-3 px-3 text-right">Allowances</th>
-                                <th class="py-3 px-3 text-right">Deductions</th>
-                                <th class="py-3 px-3 text-right">Payable</th>
-                                <th class="py-3 px-3 text-right">Paid</th>
-                                <th class="py-3 px-3 text-right rounded-r-xl">Remaining</th>
+                                <th class="py-3 px-3 sticky top-0 left-0 z-40 bg-slate-900 w-[90px] min-w-[90px]">Code</th>
+                                <th class="py-3 px-3 sticky top-0 left-[90px] z-40 bg-slate-900 min-w-[220px] shadow-[4px_0_8px_-2px_rgba(0,0,0,0.3)]">Employee Name</th>
+                                <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Basic</th>
+                                <th class="py-3 px-3 text-center sticky top-0 z-30 bg-slate-900">Days</th>
+                                <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Earned Basic</th>
+                                <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Arrears</th>
+                                <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Overtime</th>
+                                <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Allowances</th>
+                                <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Deductions</th>
+                                <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Payable</th>
+                                <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Paid</th>
+                                <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Remaining</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-medium">
@@ -349,9 +349,9 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                                     $fullName = trim($r['fname'] . ' ' . $r['mname'] . ' ' . $r['lname']);
                                     $ot = floatval($r['ot_1_15']) + floatval($r['ot_16_30']);
                                     ?>
-                                    <tr class="hover:bg-slate-50 transition">
-                                        <td class="py-3 px-3 font-mono font-bold text-slate-900">#<?php echo htmlspecialchars($code); ?></td>
-                                        <td class="py-3 px-3 font-bold text-slate-900"><?php echo htmlspecialchars($fullName); ?></td>
+                                    <tr class="hover:bg-slate-50 transition group">
+                                        <td class="py-3 px-3 font-mono font-bold text-slate-900 sticky left-0 z-20 bg-white group-hover:bg-slate-50 w-[90px] min-w-[90px] whitespace-nowrap">#<?php echo htmlspecialchars($code); ?></td>
+                                        <td class="py-3 px-3 font-bold text-slate-900 sticky left-[90px] z-20 bg-white group-hover:bg-slate-50 min-w-[220px] shadow-[4px_0_8px_-2px_rgba(0,0,0,0.08)] whitespace-nowrap"><?php echo htmlspecialchars($fullName); ?></td>
                                         <td class="py-3 px-3 text-right font-mono"><?php echo number_format($r['basic_salary']); ?></td>
                                         <td class="py-3 px-3 text-center font-bold"><?php echo $r['pay_days']; ?></td>
                                         <td class="py-3 px-3 text-right font-mono"><?php echo number_format(($r['pay_days'] / 30.0) * $r['basic_salary']); ?></td>
