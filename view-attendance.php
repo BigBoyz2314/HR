@@ -130,43 +130,43 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                     <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Calendar Cell Legend:</h3>
                     <div class="flex flex-wrap gap-3.5 text-xs text-slate-600">
                         <div class="flex items-center gap-1.5">
-                            <span class="w-5 h-5 bg-green-100 border border-green-300 rounded flex items-center justify-center text-[10px] font-bold text-green-800">P</span>
+                            <span class="min-w-[1.4rem] px-1 h-5 bg-green-100 border border-green-300 rounded flex items-center justify-center text-[10px] font-bold text-green-800 whitespace-nowrap select-none">P</span>
                             <span>Present (Machine)</span>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <span class="w-5 h-5 bg-sky-100 border border-sky-300 rounded flex items-center justify-center text-[9px] font-bold text-sky-950">P(M)</span>
+                            <span class="min-w-[1.4rem] px-1 h-5 bg-sky-100 border border-sky-300 rounded flex items-center justify-center text-[10px] font-bold text-sky-950 whitespace-nowrap select-none">P(M)</span>
                             <span class="font-bold text-slate-800">Present (Manual)</span>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <span class="w-5 h-5 bg-red-200 border border-red-300 rounded flex items-center justify-center text-[10px] font-bold text-red-900">A</span>
+                            <span class="min-w-[1.4rem] px-1 h-5 bg-red-200 border border-red-300 rounded flex items-center justify-center text-[10px] font-bold text-red-900 whitespace-nowrap select-none">A</span>
                             <span>Absent</span>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <span class="w-5 h-5 bg-rose-200 border border-rose-400 rounded flex items-center justify-center text-[9px] font-bold text-rose-950">A(M)</span>
+                            <span class="min-w-[1.4rem] px-1 h-5 bg-rose-200 border border-rose-400 rounded flex items-center justify-center text-[10px] font-bold text-rose-950 whitespace-nowrap select-none">A(M)</span>
                             <span class="font-bold text-slate-800">Absent (Manual)</span>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <span class="w-5 h-5 bg-red-300 border border-red-400 rounded flex items-center justify-center text-[10px] font-bold text-red-900">A*</span>
+                            <span class="min-w-[1.4rem] px-1 h-5 bg-red-300 border border-red-400 rounded flex items-center justify-center text-[10px] font-bold text-red-900 whitespace-nowrap select-none">A*</span>
                             <span>Absent (Sandwich)</span>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <span class="w-5 h-5 bg-blue-200 border border-blue-300 rounded flex items-center justify-center text-[10px] font-bold text-blue-900">H</span>
+                            <span class="min-w-[1.4rem] px-1 h-5 bg-blue-200 border border-blue-300 rounded flex items-center justify-center text-[10px] font-bold text-blue-900 whitespace-nowrap select-none">H</span>
                             <span>Holiday</span>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <span class="w-5 h-5 bg-yellow-200 border border-yellow-300 rounded flex items-center justify-center text-[10px] font-bold text-yellow-900">W</span>
+                            <span class="min-w-[1.4rem] px-1 h-5 bg-yellow-200 border border-yellow-300 rounded flex items-center justify-center text-[10px] font-bold text-yellow-900 whitespace-nowrap select-none">W</span>
                             <span>Weekend</span>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <span class="w-5 h-5 bg-slate-200 border border-slate-300 rounded flex items-center justify-center text-[10px] font-bold text-slate-600">NJ</span>
+                            <span class="min-w-[1.4rem] px-1 h-5 bg-slate-200 border border-slate-300 rounded flex items-center justify-center text-[10px] font-bold text-slate-600 whitespace-nowrap select-none">NJ</span>
                             <span>Did Not Join</span>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <span class="w-5 h-5 bg-purple-200 border border-purple-300 rounded flex items-center justify-center text-[10px] font-bold text-purple-900">I</span>
+                            <span class="min-w-[1.4rem] px-1 h-5 bg-purple-200 border border-purple-300 rounded flex items-center justify-center text-[10px] font-bold text-purple-900 whitespace-nowrap select-none">I</span>
                             <span>Inactive</span>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <span class="w-5 h-5 bg-amber-200 border border-amber-300 rounded flex items-center justify-center text-[10px] font-bold text-amber-900">L</span>
+                            <span class="min-w-[1.4rem] px-1 h-5 bg-amber-200 border border-amber-300 rounded flex items-center justify-center text-[10px] font-bold text-amber-900 whitespace-nowrap select-none">L</span>
                             <span>On Leave (Approved)</span>
                         </div>
                     </div>
@@ -178,8 +178,9 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                         <table class="w-full text-center text-xs md:text-sm border-separate border-spacing-0" id="table">
                             <thead class="bg-slate-900 text-slate-100 sticky top-0 z-30 shadow-sm">
                                 <tr>
-                                    <th class="py-3.5 px-3 font-extrabold border-b-2 border-r border-slate-700 whitespace-nowrap text-sm sticky top-0 left-0 z-40 bg-slate-900 min-w-[70px] w-[70px] select-none">ID</th>
-                                    <th class="py-3.5 px-3 font-extrabold border-b-2 border-r border-slate-700 whitespace-nowrap text-left text-sm sticky top-0 left-[70px] z-40 bg-slate-900 min-w-[170px] w-[170px] select-none">Employee Name</th>
+                                    <th class="py-3.5 px-2 font-extrabold border-b-2 border-r border-slate-700 whitespace-nowrap text-sm col-sr bg-slate-900 text-center select-none">Sr.</th>
+                                    <th class="py-3.5 px-2 font-extrabold border-b-2 border-r border-slate-700 whitespace-nowrap text-sm col-id bg-slate-900 text-center select-none">ID</th>
+                                    <th class="py-3.5 px-3 font-extrabold border-b-2 border-r border-slate-700 whitespace-nowrap text-left text-sm col-name bg-slate-900 select-none shadow-[4px_0_8px_-2px_rgba(0,0,0,0.3)]">Employee Name</th>
                                     <?php
                                     $current_day = clone $first_day;
                                     while ($current_day <= $last_day) {
@@ -191,8 +192,8 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                                         $current_day->modify('+1 day');
                                     }
                                     ?>
-                                    <th class="py-3.5 px-3 font-extrabold text-center whitespace-nowrap bg-indigo-950 text-indigo-200 text-sm border-b-2 border-r border-slate-700 sticky top-0 z-30 select-none">Total Present</th>
-                                    <th class="py-3.5 px-3 font-extrabold text-center whitespace-nowrap bg-rose-950 text-rose-200 text-sm border-b-2 border-slate-700 sticky top-0 z-30 select-none">Total Absent</th>
+                                    <th class="py-3.5 px-3 font-extrabold text-center whitespace-nowrap bg-indigo-950 text-indigo-200 text-sm border-b-2 border-r border-slate-700 min-w-[115px] w-[115px] sticky top-0 z-30 select-none">Total Present</th>
+                                    <th class="py-3.5 px-3 font-extrabold text-center whitespace-nowrap bg-rose-950 text-rose-200 text-sm border-b-2 border-slate-700 min-w-[115px] w-[115px] sticky top-0 z-30 select-none">Total Absent</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -256,7 +257,9 @@ $last_day = new DateTime("$year-$month-$days_in_month");
 
                                 if ($result && $result->num_rows > 0) {
                                     $row_index = 0;
+                                    $sr_no = 0;
                                     while ($row = $result->fetch_assoc()) {
+                                        $sr_no++;
                                         $employee_id = $row['sNo'];
                                         $fname = $row['fname'];
                                         $mname = $row['mname'];
@@ -269,8 +272,9 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                                         $row_class = ($row_index % 2 == 0) ? 'bg-white' : 'bg-slate-50/60';
                                         
                                         echo "<tr class='group $row_class hover:bg-indigo-50/40 transition-colors'>";
-                                        echo "<td class='py-3 px-3 border-b border-r border-slate-400 font-mono font-bold text-indigo-600 text-sm sticky left-0 z-20 $row_bg_sticky group-hover:bg-indigo-100 transition-colors min-w-[70px] w-[70px]'>$employee_id</td>";
-                                        echo "<td class='py-3 px-3 border-b border-r border-slate-400 text-left font-bold text-slate-900 whitespace-nowrap text-xs md:text-sm sticky left-[70px] z-20 $row_bg_sticky group-hover:bg-indigo-100 transition-colors min-w-[170px] w-[170px]'>";
+                                        echo "<td class='py-3 px-2 border-b border-r border-slate-400 font-mono font-bold text-slate-500 text-sm text-center col-sr $row_bg_sticky group-hover:bg-indigo-100 transition-colors'>$sr_no</td>";
+                                        echo "<td class='py-3 px-2 border-b border-r border-slate-400 font-mono font-bold text-indigo-600 text-sm text-center col-id $row_bg_sticky group-hover:bg-indigo-100 transition-colors'>$employee_id</td>";
+                                        echo "<td class='py-3 px-3 border-b border-r border-slate-400 text-left font-bold text-slate-900 whitespace-nowrap text-xs md:text-sm col-name $row_bg_sticky group-hover:bg-indigo-100 transition-colors shadow-[4px_0_8px_-2px_rgba(0,0,0,0.08)]'>";
                                         echo "<a href='edit-individual-attendance.php?emp_id=$employee_id&month=$month&year=$year' class='hover:underline text-indigo-700 hover:text-indigo-950 transition flex items-center justify-between gap-1.5 group/link' title='Click to edit individual attendance for $fname $lname'>";
                                         echo "<span>$fname $mname $lname</span>";
                                         echo "<i class='fa-solid fa-user-pen text-xs text-indigo-400 group-hover/link:text-indigo-700 opacity-60 group-hover/link:opacity-100 transition'></i>";
@@ -377,42 +381,42 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                                             $day_number = (int)$current_day->format('j');
                                             $status = $day_status[$day_number];
                                             if ($status === 'present') {
-                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-green-100 text-green-800 font-extrabold text-sm' title='Present (Machine)'>P</td>";
+                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-green-100 text-green-800 font-extrabold text-sm whitespace-nowrap select-none' title='Present (Machine)'>P</td>";
                                                 $present_count++;
                                             } elseif ($status === 'present_manual') {
-                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-sky-100 text-sky-950 font-extrabold text-sm' title='Present (Manual Entry)'>P(M)</td>";
+                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-sky-100 text-sky-950 font-extrabold text-sm whitespace-nowrap select-none' title='Present (Manual Entry)'>P(M)</td>";
                                                 $present_count++;
                                             } elseif ($status === 'leave') {
-                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-amber-200 text-amber-900 font-extrabold text-sm' title='On Leave (Approved Paid Leave)'>L</td>";
+                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-amber-200 text-amber-900 font-extrabold text-sm whitespace-nowrap select-none' title='On Leave (Approved Paid Leave)'>L</td>";
                                                 $present_count++;
                                             } elseif ($status === 'unpaid_leave') {
-                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-amber-100 text-amber-900 font-extrabold text-sm' title='Unpaid Leave (Deducted)'>L*</td>";
+                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-amber-100 text-amber-900 font-extrabold text-sm whitespace-nowrap select-none' title='Unpaid Leave (Deducted)'>L*</td>";
                                                 $absent_count++;
                                             } elseif ($status === 'not_joined') {
-                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-slate-200 text-slate-600 font-extrabold text-sm' title='Did Not Join'>NJ</td>";
+                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-slate-200 text-slate-600 font-extrabold text-sm whitespace-nowrap select-none' title='Did Not Join'>NJ</td>";
                                             } elseif ($status === 'inactive') {
-                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-purple-200 text-purple-900 font-extrabold text-sm' title='Inactive'>I</td>";
+                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-purple-200 text-purple-900 font-extrabold text-sm whitespace-nowrap select-none' title='Inactive'>I</td>";
                                             } elseif ($status === 'holiday') {
-                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-blue-200 text-blue-900 font-extrabold text-sm' title='Holiday (Counted Present)'>H</td>";
+                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-blue-200 text-blue-900 font-extrabold text-sm whitespace-nowrap select-none' title='Holiday (Counted Present)'>H</td>";
                                                 $present_count++;
                                             } elseif ($status === 'weekend') {
-                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-yellow-200 text-yellow-900 font-extrabold text-sm' title='Weekend (Counted Present)'>W</td>";
+                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-yellow-200 text-yellow-900 font-extrabold text-sm whitespace-nowrap select-none' title='Weekend (Counted Present)'>W</td>";
                                                 $present_count++;
                                             } elseif ($status === 'absent_sandwich') {
-                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-red-300 text-red-900 font-extrabold text-sm' title='Absent (Sandwich)'>A*</td>";
+                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-red-300 text-red-900 font-extrabold text-sm whitespace-nowrap select-none' title='Absent (Sandwich)'>A*</td>";
                                                 $absent_count++;
                                             } elseif ($status === 'absent_manual') {
-                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-rose-200 text-rose-950 font-extrabold text-sm' title='Absent (Manual)'>A(M)</td>";
+                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-rose-200 text-rose-950 font-extrabold text-sm whitespace-nowrap select-none' title='Absent (Manual)'>A(M)</td>";
                                                 $absent_count++;
                                             } else { // 'absent'
-                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-red-200 text-red-900 font-extrabold text-sm' title='Absent'>A</td>";
+                                                echo "<td class='py-2 px-1 border-b border-r border-slate-400 bg-red-200 text-red-900 font-extrabold text-sm whitespace-nowrap select-none' title='Absent'>A</td>";
                                                 $absent_count++;
                                             }
                                             $current_day->modify('+1 day');
                                         }
 
-                                        echo "<td class='py-3 px-3 font-extrabold text-center border-b border-r border-slate-400 bg-indigo-50/80 text-indigo-900 font-mono text-sm whitespace-nowrap'>$present_count</td>";
-                                        echo "<td class='py-3 px-3 font-extrabold text-center border-b border-slate-400 bg-rose-50/80 text-rose-900 font-mono text-sm whitespace-nowrap'>$absent_count</td>";
+                                        echo "<td class='py-3 px-3 font-extrabold text-center border-b border-r border-slate-400 bg-indigo-50/80 text-indigo-900 font-mono text-sm whitespace-nowrap min-w-[115px] w-[115px]'>$present_count</td>";
+                                        echo "<td class='py-3 px-3 font-extrabold text-center border-b border-slate-400 bg-rose-50/80 text-rose-900 font-mono text-sm whitespace-nowrap min-w-[115px] w-[115px]'>$absent_count</td>";
                                         echo "</tr>";
                                         
                                         $total_present += $present_count;
@@ -423,7 +427,7 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                                     
                                     // Add totals row
                                     echo "<tr class='bg-slate-200 font-extrabold text-slate-900 border-t-2 border-slate-500'>";
-                                    echo "<td colspan='2' class='py-3 px-4 border-b border-r border-slate-400 text-left font-extrabold sticky left-0 z-20 bg-slate-200 min-w-[240px]'>Total Summary</td>";
+                                    echo "<td colspan='3' class='py-3 px-4 border-b border-r border-slate-400 text-left font-extrabold sticky left-0 z-20 bg-slate-200 min-w-[240px]'>Total Summary</td>";
                                     
                                     $current_day = clone $first_day;
                                     while ($current_day <= $last_day) {

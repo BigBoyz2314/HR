@@ -170,11 +170,12 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
             <!-- Data Table Wrapper -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden p-6 space-y-4">
                 <div class="overflow-auto max-h-[calc(100vh-250px)] custom-scrollbar">
-                    <table id="table" class="w-full text-left border-collapse relative">
+                    <table id="table" class="w-full text-left border-separate border-spacing-0 relative">
                         <thead class="sticky top-0 z-30 bg-slate-900 shadow-md">
                             <tr class="bg-slate-900 text-white text-xs font-bold uppercase tracking-wider">
-                                <th class="py-3.5 px-3 sticky top-0 left-0 z-40 bg-slate-900 w-[90px] min-w-[90px]">Code</th>
-                                <th class="py-3.5 px-3 sticky top-0 left-[90px] z-40 bg-slate-900 min-w-[220px] shadow-[4px_0_8px_-2px_rgba(0,0,0,0.3)]">Employee Name</th>
+                                <th class="py-3.5 px-2 col-sr text-center bg-slate-900 border-b border-r border-slate-700">Sr.</th>
+                                <th class="py-3.5 px-2 col-id text-center bg-slate-900 border-b border-r border-slate-700">Code</th>
+                                <th class="py-3.5 px-3 col-name text-left bg-slate-900 border-b border-r border-slate-700 shadow-[4px_0_8px_-2px_rgba(0,0,0,0.3)]">Employee Name</th>
                                 <th class="py-3.5 px-3 text-right sticky top-0 z-30 bg-slate-900">Gross Salary</th>
                                 <th class="py-3.5 px-3 text-center sticky top-0 z-30 bg-slate-900">Attendance Days</th>
                                 <th class="py-3.5 px-3 text-right sticky top-0 z-30 bg-slate-900">Salary for Month</th>
@@ -208,9 +209,11 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
 
                             $totGross = 0; $totEarned = 0; $totArrears = 0; $totOt1 = 0; $totOt2 = 0;
                             $totAllow = 0; $totLoans = 0; $totAdv = 0; $totPayable = 0; $totPaid = 0; $totRem = 0;
+                            $sr_no = 0;
 
                             if ($result && $result->num_rows > 0) {
                                 while($row = $result->fetch_assoc()) {
+                                    $sr_no++;
                                     $fullName = trim($row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname']);
                                     $displayCode = !empty($row['sNo']) ? $row['sNo'] : (!empty($row['employee_code']) ? $row['employee_code'] : sprintf('%04d', $row['employeeID']));
                                     
@@ -245,8 +248,9 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                     $totRem += $remaining;
                                     ?>
                                     <tr class="group hover:bg-slate-50/80 transition">
-                                        <td class="py-3 px-3 font-mono font-bold text-slate-900 sticky left-0 z-20 bg-white group-hover:bg-slate-50 w-[90px] min-w-[90px] whitespace-nowrap"><?php echo htmlspecialchars($displayCode); ?></td>
-                                        <td class="py-3 px-3 font-bold text-slate-900 sticky left-[90px] z-20 bg-white group-hover:bg-slate-50 min-w-[220px] shadow-[4px_0_8px_-2px_rgba(0,0,0,0.08)] whitespace-nowrap">
+                                        <td class="py-3 px-2 col-sr text-center font-mono font-bold text-slate-500 bg-white group-hover:bg-slate-50 border-b border-r border-slate-200 whitespace-nowrap"><?php echo $sr_no; ?></td>
+                                        <td class="py-3 px-2 col-id text-center font-mono font-bold text-slate-900 bg-white group-hover:bg-slate-50 border-b border-r border-slate-200 whitespace-nowrap"><?php echo htmlspecialchars($displayCode); ?></td>
+                                        <td class="py-3 px-3 col-name text-left font-bold text-slate-900 bg-white group-hover:bg-slate-50 border-b border-r border-slate-200 shadow-[4px_0_8px_-2px_rgba(0,0,0,0.08)] whitespace-nowrap">
                                             <a href="employee-ledger.php?id=<?php echo $empId; ?>" class="hover:text-indigo-600 hover:underline transition-colors" title="Click to view Employee Ledger"><?php echo htmlspecialchars($fullName); ?></a>
                                         </td>
                                         <td class="py-3 px-3 text-right font-mono font-bold text-slate-900 whitespace-nowrap"><?php echo number_format($grossSalary); ?></td>
@@ -297,7 +301,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                         <?php if ($result && $result->num_rows > 0): ?>
                             <tfoot class="sticky bottom-0 z-30 bg-slate-100 shadow-md">
                                 <tr class="bg-slate-100 font-bold text-sm text-slate-900 border-t-2 border-slate-300">
-                                    <td colspan="2" class="py-3 px-3 sticky left-0 z-20 bg-slate-100 shadow-[4px_0_8px_-2px_rgba(0,0,0,0.1)]">Total (<?php echo $result->num_rows; ?> Staff)</td>
+                                    <td colspan="3" class="py-3 px-3 sticky left-0 z-20 bg-slate-100 shadow-[4px_0_8px_-2px_rgba(0,0,0,0.1)]">Total (<?php echo $result->num_rows; ?> Staff)</td>
                                     <td class="py-3 px-3 text-right font-mono"><?php echo number_format($totGross); ?></td>
                                     <td class="py-3 px-3 text-center">-</td>
                                     <td class="py-3 px-3 text-right font-mono"><?php echo number_format($totEarned); ?></td>

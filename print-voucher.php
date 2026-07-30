@@ -107,6 +107,16 @@ $monthName = ($row['month'] > 0) ? date('F', mktime(0,0,0,$row['month'],1)) . ' 
 
     <!-- 80mm Thermal Receipt Voucher Card -->
     <div class="voucher-card w-[85mm] bg-white p-5 shadow-xl border border-black text-sm leading-normal space-y-4 font-mono text-black">
+        <script>
+            (function() {
+                const fontMode = localStorage.getItem('hr_receipt_font') || 'mono';
+                const card = document.querySelector('.voucher-card');
+                if (card && fontMode === 'sans') {
+                    card.classList.remove('font-mono');
+                    card.classList.add('font-sans');
+                }
+            })();
+        </script>
         
         <!-- Header -->
         <div class="text-center border-b-2 border-dashed border-black pb-3">

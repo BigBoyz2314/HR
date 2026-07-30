@@ -51,7 +51,18 @@
             <i class="fa-solid fa-clock text-indigo-600 text-[10px]"></i>
             <span id="pktClock" class="text-[11px] font-mono font-bold text-slate-700"><?php echo date('h:i:s A'); ?> PKT</span>
         </div>
+
         <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
+
+        <!-- Dark / Light Mode Top Bar Toggle Button -->
+        <button id="topBarThemeToggle" 
+                onclick="toggleTopBarTheme()" 
+                title="Toggle Light / Dark Mode" 
+                class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 text-xs font-bold transition border border-slate-200/80 focus:outline-none">
+            <i id="themeToggleIcon" class="fa-solid fa-moon text-indigo-500"></i>
+            <span id="themeToggleLabel" class="hidden md:inline">Theme</span>
+        </button>
+
         <a href="includes/logout.php" title="Sign Out" class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 text-[11px] font-semibold transition border border-slate-200/60">
             <i class="fa-solid fa-right-from-bracket text-[10px]"></i>
             <span class="hidden md:inline">Sign Out</span>
@@ -60,6 +71,43 @@
 </header>
 
 <script>
+    (function() {
+        const savedFontSize = localStorage.getItem('hr_font_size') || 'large';
+        const savedDensity = localStorage.getItem('hr_table_density') || 'comfortable';
+        const savedTheme = localStorage.getItem('hr_theme') || 'light';
+
+        document.documentElement.setAttribute('data-font-size', savedFontSize);
+        document.documentElement.setAttribute('data-table-density', savedDensity);
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+
+    function toggleTopBarTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const newTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('hr_theme', newTheme);
+        updateThemeToggleIcons(newTheme);
+    }
+
+    function updateThemeToggleIcons(theme) {
+        const icon = document.getElementById('themeToggleIcon');
+        const label = document.getElementById('themeToggleLabel');
+        if (icon) {
+            if (theme === 'dark') {
+                icon.className = 'fa-solid fa-sun text-amber-400';
+                if (label) label.innerText = 'Light Mode';
+            } else {
+                icon.className = 'fa-solid fa-moon text-indigo-500';
+                if (label) label.innerText = 'Dark Mode';
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentTheme = localStorage.getItem('hr_theme') || 'light';
+        updateThemeToggleIcons(currentTheme);
+    });
+
     function updatePKTClock() {
         const options = { timeZone: 'Asia/Karachi', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
         const pktTime = new Intl.DateTimeFormat('en-US', options).format(new Date());

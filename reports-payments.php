@@ -323,7 +323,8 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                     <table class="w-full text-left border-collapse text-sm md:text-base">
                         <thead>
                             <tr class="bg-slate-900 text-white font-bold uppercase tracking-wider">
-                                <th class="py-3 px-4 rounded-l-xl">Date & Time</th>
+                                <th class="py-3 px-3 rounded-l-xl text-center w-[50px]">Sr.</th>
+                                <th class="py-3 px-4">Date & Time</th>
                                 <th class="py-3 px-4">Voucher #</th>
                                 <th class="py-3 px-4">Code</th>
                                 <th class="py-3 px-4">Employee Name</th>
@@ -335,13 +336,14 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-medium">
                             <?php if (count($records) > 0): ?>
-                                <?php foreach ($records as $r): ?>
+                                <?php $sr_no = 0; foreach ($records as $r): $sr_no++; ?>
                                     <?php 
                                     $code = !empty($r['sNo']) ? $r['sNo'] : (!empty($r['employee_code']) ? $r['employee_code'] : $r['employeeID']);
                                     $fullName = trim($r['fname'] . ' ' . $r['mname'] . ' ' . $r['lname']);
                                     $typeBadge = ($r['type'] === 'Salary Payment') ? 'bg-emerald-100 text-emerald-800' : 'bg-purple-100 text-purple-800';
                                     ?>
                                     <tr class="hover:bg-slate-50 transition">
+                                        <td class="py-3 px-3 font-mono font-bold text-slate-500 text-center"><?php echo $sr_no; ?></td>
                                         <td class="py-3 px-4 font-mono text-slate-600"><?php echo date('d-M-Y h:i A', strtotime($r['trans_date'])); ?></td>
                                         <td class="py-3 px-4 font-mono font-bold text-slate-800">#VCH-<?php echo sprintf('%05d', $r['id']); ?></td>
                                         <td class="py-3 px-4 font-mono font-bold text-indigo-700">#<?php echo htmlspecialchars($code); ?></td>

@@ -348,7 +348,8 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
                             <tr class="bg-slate-900 text-white font-bold uppercase tracking-wider">
-                                <th class="py-3 px-4 rounded-l-xl">Code</th>
+                                <th class="py-3 px-3 rounded-l-xl text-center w-[50px]">Sr.</th>
+                                <th class="py-3 px-4">Code</th>
                                 <th class="py-3 px-4">Employee Name</th>
                                 <th class="py-3 px-4">Department / Designation</th>
                                 <th class="py-3 px-4">Leave Type</th>
@@ -361,13 +362,14 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-medium">
                             <?php if (count($records) > 0): ?>
-                                <?php foreach ($records as $r): ?>
+                                <?php $sr_no = 0; foreach ($records as $r): $sr_no++; ?>
                                     <?php 
                                     $code = !empty($r['sNo']) ? $r['sNo'] : (!empty($r['employee_code']) ? $r['employee_code'] : $r['employeeID']);
                                     $fullName = trim($r['fname'] . ' ' . $r['mname'] . ' ' . $r['lname']);
                                     $statusBadge = ($r['status'] === 'Approved') ? 'bg-emerald-100 text-emerald-800' : (($r['status'] === 'Rejected') ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800');
                                     ?>
                                     <tr class="hover:bg-slate-50 transition">
+                                        <td class="py-3 px-3 font-mono font-bold text-slate-500 text-center"><?php echo $sr_no; ?></td>
                                         <td class="py-3 px-4 font-mono font-bold text-indigo-700">#<?php echo htmlspecialchars($code); ?></td>
                                         <td class="py-3 px-4 font-bold text-slate-900"><?php echo htmlspecialchars($fullName); ?></td>
                                         <td class="py-3 px-4 text-slate-600"><?php echo htmlspecialchars($r['department'] ?: 'General'); ?> &bull; <?php echo htmlspecialchars($r['designation'] ?: 'Staff'); ?></td>

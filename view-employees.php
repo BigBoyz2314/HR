@@ -328,7 +328,8 @@ if (count($whereClauses) > 0) {
                     <table id="table" class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-slate-900 text-white text-xs font-bold uppercase tracking-wider">
-                                <th class="py-3.5 px-4 rounded-l-xl sticky left-0 z-20 bg-slate-900 shadow-[2px_0_5px_rgba(0,0,0,0.15)]">ID / Code</th>
+                                <th class="py-3.5 px-3 rounded-l-xl text-center w-[50px]">Sr.</th>
+                                <th class="py-3.5 px-4 sticky left-0 z-20 bg-slate-900 shadow-[2px_0_5px_rgba(0,0,0,0.15)]">ID / Code</th>
                                 <th class="py-3.5 px-4">Employee Name</th>
                                 <th class="py-3.5 px-4">Department</th>
                                 <th class="py-3.5 px-4">Designation</th>
@@ -349,13 +350,16 @@ if (count($whereClauses) > 0) {
                             $stmt = "SELECT * FROM employees $whereSql ORDER BY CAST(COALESCE(NULLIF(sNo, 0), NULLIF(employee_code, ''), employeeID) AS UNSIGNED) ASC, employeeID ASC";
                             $result = $conn->query($stmt);
                             if ($result && $result->num_rows > 0) {
+                                $sr_no = 0;
                                 while($row = $result->fetch_assoc()) {
+                                    $sr_no++;
                                     $fullName = trim($row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname']);
                                     $initials = strtoupper(substr($row['fname'], 0, 1) . substr($row['lname'] ?: $row['fname'], 0, 1));
                                     $displayCode = !empty($row['sNo']) ? $row['sNo'] : (!empty($row['employee_code']) ? $row['employee_code'] : sprintf('%04d', $row['employeeID']));
                                     $allowanceVal = floatval($row['allowance'] ?? 0);
                                     ?>
                                     <tr class="group hover:bg-slate-50/80 transition">
+                                        <td class="py-3 px-3 font-mono font-bold text-slate-500 text-center whitespace-nowrap"><?php echo $sr_no; ?></td>
                                         <td class="py-3 px-4 font-mono font-bold text-slate-900 sticky left-0 z-10 bg-white group-hover:bg-slate-50 shadow-[2px_0_5px_rgba(0,0,0,0.05)] whitespace-nowrap"><?php echo htmlspecialchars($displayCode); ?></td>
                                         <td class="py-3 px-4">
                                             <div class="flex items-center space-x-3">

@@ -125,16 +125,16 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                 <!-- Legend Bar -->
                 <div class="p-3.5 bg-white rounded-2xl border border-slate-200/80 shadow-sm space-y-1.5">
                     <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Calendar Cell Legend:</h3>
-                    <div class="flex flex-wrap gap-3.5 text-xs text-slate-600">
+                    <div class="flex flex-wrap gap-3.5 text-xs text-slate-700 font-semibold">
                         <div class="flex items-center gap-1.5">
-                            <div class="w-14 h-7 bg-emerald-50 border border-emerald-300 rounded flex flex-col items-center justify-center text-[9px] font-mono leading-none font-bold shadow-xs">
+                            <div class="min-w-[5.2rem] px-1 py-0.5 bg-emerald-50 border border-emerald-300 rounded flex flex-col items-center justify-center text-[10px] font-mono leading-tight font-bold shadow-xs whitespace-nowrap">
                                 <span class="text-emerald-700">08:15 AM</span>
                                 <span class="text-rose-600 border-t border-emerald-200/80 pt-0.5 mt-0.5">06:10 PM</span>
                             </div>
-                            <span class="font-medium">Machine Punch</span>
+                            <span class="font-bold text-slate-800">Machine Punch</span>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <div class="w-14 h-7 bg-sky-100 border border-sky-400 rounded flex flex-col items-center justify-center text-[9px] font-mono leading-none font-bold shadow-xs">
+                            <div class="min-w-[5.2rem] px-1 py-0.5 bg-sky-100 border border-sky-400 rounded flex flex-col items-center justify-center text-[10px] font-mono leading-tight font-bold shadow-xs whitespace-nowrap">
                                 <span class="text-sky-950">08:15 AM</span>
                                 <span class="text-indigo-900 border-t border-sky-300 pt-0.5 mt-0.5">06:10 PM</span>
                             </div>
@@ -173,8 +173,9 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                         <table class="w-full text-center text-xs md:text-sm border-separate border-spacing-0" id="table">
                             <thead class="bg-slate-900 text-slate-100 sticky top-0 z-30 shadow-sm">
                                 <tr>
-                                    <th class="py-3.5 px-3 font-extrabold border-b-2 border-r border-slate-700 whitespace-nowrap text-sm sticky top-0 left-0 z-40 bg-slate-900 min-w-[70px] w-[70px] select-none">ID</th>
-                                    <th class="py-3.5 px-3 font-extrabold border-b-2 border-r border-slate-700 whitespace-nowrap text-left text-sm sticky top-0 left-[70px] z-40 bg-slate-900 min-w-[170px] w-[170px] select-none">Employee Name</th>
+                                    <th class="py-3.5 px-2 font-extrabold border-b-2 border-r border-slate-700 whitespace-nowrap text-sm col-sr bg-slate-900 text-center select-none">Sr.</th>
+                                    <th class="py-3.5 px-2 font-extrabold border-b-2 border-r border-slate-700 whitespace-nowrap text-sm col-id bg-slate-900 text-center select-none">ID</th>
+                                    <th class="py-3.5 px-3 font-extrabold border-b-2 border-r border-slate-700 whitespace-nowrap text-left text-sm col-name bg-slate-900 select-none shadow-[4px_0_8px_-2px_rgba(0,0,0,0.3)]">Employee Name</th>
                                     <?php
                                     $current_day = clone $first_day;
                                     while ($current_day <= $last_day) {
@@ -186,7 +187,7 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                                         $current_day->modify('+1 day');
                                     }
                                     ?>
-                                    <th class="py-3.5 px-3 font-extrabold text-center whitespace-nowrap bg-indigo-950 text-indigo-200 text-sm border-b-2 border-slate-700 sticky top-0 z-30 select-none">Hours (Present / Shift)</th>
+                                    <th class="py-3.5 px-3 font-extrabold text-center whitespace-nowrap bg-indigo-950 text-indigo-200 text-sm border-b-2 border-slate-700 min-w-[160px] w-[160px] sticky top-0 z-30 select-none">Hours (Present / Shift)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -250,7 +251,9 @@ $last_day = new DateTime("$year-$month-$days_in_month");
 
                                  if ($result && $result->num_rows > 0) {
                                      $row_index = 0;
+                                     $sr_no = 0;
                                      while ($row = $result->fetch_assoc()) {
+                                         $sr_no++;
                                          $employee_id = $row['sNo'];
                                          $fname = $row['fname'];
                                          $mname = $row['mname'];
@@ -269,8 +272,9 @@ $last_day = new DateTime("$year-$month-$days_in_month");
                                         $row_class = ($row_index % 2 == 0) ? 'bg-white' : 'bg-slate-50/60';
                                         
                                         echo "<tr class='group $row_class hover:bg-indigo-50/40 transition-colors'>";
-                                        echo "<td class='py-3 px-3 border-b border-r border-slate-400 font-mono font-bold text-indigo-600 text-sm sticky left-0 z-20 $row_bg_sticky group-hover:bg-indigo-100 transition-colors min-w-[70px] w-[70px]'>$employee_id</td>";
-                                        echo "<td class='py-3 px-3 border-b border-r border-slate-400 text-left font-bold text-slate-900 whitespace-nowrap text-xs md:text-sm sticky left-[70px] z-20 $row_bg_sticky group-hover:bg-indigo-100 transition-colors min-w-[170px] w-[170px]'>";
+                                        echo "<td class='py-3 px-2 border-b border-r border-slate-400 font-mono font-bold text-slate-500 text-sm text-center col-sr $row_bg_sticky group-hover:bg-indigo-100 transition-colors'>$sr_no</td>";
+                                        echo "<td class='py-3 px-2 border-b border-r border-slate-400 font-mono font-bold text-indigo-600 text-sm text-center col-id $row_bg_sticky group-hover:bg-indigo-100 transition-colors'>$employee_id</td>";
+                                        echo "<td class='py-3 px-3 border-b border-r border-slate-400 text-left font-bold text-slate-900 whitespace-nowrap text-xs md:text-sm col-name $row_bg_sticky group-hover:bg-indigo-100 transition-colors shadow-[4px_0_8px_-2px_rgba(0,0,0,0.08)]'>";
                                         echo "<a href='edit-individual-attendance.php?emp_id=$employee_id&month=$month&year=$year' class='hover:underline text-indigo-700 hover:text-indigo-950 transition flex items-center justify-between gap-1.5 group/link' title='Click to edit individual attendance for $fname $lname'>";
                                         echo "<span>$fname $mname $lname</span>";
                                         echo "<i class='fa-solid fa-user-pen text-xs text-indigo-400 group-hover/link:text-indigo-700 opacity-60 group-hover/link:opacity-100 transition'></i>";

@@ -225,14 +225,14 @@ if ($empID > 0) {
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-slate-900 text-white text-xs font-bold uppercase tracking-wider">
-                                <th class="py-3.5 px-4 rounded-l-xl">Date & Time</th>
-                                <th class="py-3.5 px-4">Period</th>
-                                <th class="py-3.5 px-4">Transaction Type</th>
+                                <th class="py-3.5 px-4 rounded-l-xl whitespace-nowrap">Date & Time</th>
+                                <th class="py-3.5 px-4 whitespace-nowrap">Period</th>
+                                <th class="py-3.5 px-4 whitespace-nowrap">Transaction Type</th>
                                 <th class="py-3.5 px-4">Description / Notes</th>
-                                <th class="py-3.5 px-4 text-right">Debit (Paid)</th>
-                                <th class="py-3.5 px-4 text-right">Credit (Accrued)</th>
-                                <th class="py-3.5 px-4 text-right">Running Balance</th>
-                                <th class="py-3.5 px-4 text-center rounded-r-xl">Voucher</th>
+                                <th class="py-3.5 px-4 text-right whitespace-nowrap">Debit (Paid)</th>
+                                <th class="py-3.5 px-4 text-right whitespace-nowrap">Credit (Accrued)</th>
+                                <th class="py-3.5 px-4 text-right whitespace-nowrap">Running Balance</th>
+                                <th class="py-3.5 px-4 text-center rounded-r-xl whitespace-nowrap">Voucher</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 text-xs text-slate-700 font-medium">
@@ -244,17 +244,17 @@ if ($empID > 0) {
                                     $isDisbursement = ($entry['type'] === 'Salary Payment' || $entry['type'] === 'Advance Payment');
                                     ?>
                                     <tr class="hover:bg-slate-50/80 transition">
-                                        <td class="py-3.5 px-4 text-slate-600 font-mono"><?php echo $dateStr; ?></td>
-                                        <td class="py-3.5 px-4 font-bold text-slate-800"><?php echo $periodStr; ?></td>
-                                        <td class="py-3.5 px-4">
+                                        <td class="py-3.5 px-4 text-slate-600 font-mono whitespace-nowrap"><?php echo $dateStr; ?></td>
+                                        <td class="py-3.5 px-4 font-bold text-slate-800 whitespace-nowrap"><?php echo $periodStr; ?></td>
+                                        <td class="py-3.5 px-4 whitespace-nowrap">
                                             <?php if ($entry['type'] == 'Advance Payment'): ?>
-                                                <span class="px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 font-bold text-[10px] uppercase">Advance Salary</span>
+                                                <span class="px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 font-bold text-[10px] uppercase whitespace-nowrap select-none">Advance Salary</span>
                                             <?php elseif ($entry['type'] == 'Salary Payment'): ?>
-                                                <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px] uppercase">Salary Paid</span>
+                                                <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px] uppercase whitespace-nowrap select-none">Salary Paid</span>
                                             <?php elseif (strpos($entry['type'], 'Overtime') !== false): ?>
-                                                <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-[10px] uppercase">Overtime Accrued</span>
+                                                <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-[10px] uppercase whitespace-nowrap select-none">Overtime Accrued</span>
                                             <?php else: ?>
-                                                <span class="px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 font-bold text-[10px] uppercase">Salary Accrued</span>
+                                                <span class="px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 font-bold text-[10px] uppercase whitespace-nowrap select-none">Salary Accrued</span>
                                             <?php endif; ?>
                                         </td>
                                         <td class="py-3.5 px-4 text-slate-600"><?php echo htmlspecialchars($entry['description'] ?: '-'); ?></td>

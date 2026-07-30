@@ -1,36 +1,154 @@
 /* Global Text Size Enhancements across all pages */
 
-html {
-    font-size: 18px !important; /* Increases root font size from 16px to 18px (+12.5% scale for all rem units) */
+/* Accessibility Font Size Modes */
+html,
+html[data-font-size="large"] {
+    font-size: 18px !important;
+    /* Large Text (Current / Increased) */
+}
+
+html[data-font-size="normal"] {
+    font-size: 16px !important;
+    /* Normal Standard Text */
+}
+
+html[data-font-size="compact"] {
+    font-size: 14px !important;
+    /* Compact / Smaller Text */
 }
 
 body {
-    font-size: 1rem !important; /* Base text size ~18px */
+    font-size: 1rem !important;
+    /* Base text size ~18px */
 }
 
 /* Scaled up utility font size classes */
-.text-\[8px\] { font-size: 11px !important; }
-.text-\[9px\] { font-size: 12px !important; }
-.text-\[10px\] { font-size: 13px !important; }
-.text-\[11px\] { font-size: 14px !important; }
-.text-\[12px\] { font-size: 15px !important; }
-.text-xs { font-size: 0.9rem !important; }    /* ~16.2px */
-.text-sm { font-size: 1.05rem !important; }   /* ~18.9px */
-.text-base { font-size: 1.2rem !important; }   /* ~21.6px */
-.text-lg { font-size: 1.35rem !important; }  /* ~24.3px */
-.text-xl { font-size: 1.6rem !important; }   /* ~28.8px */
-.text-2xl { font-size: 1.9rem !important; }  /* ~34.2px */
-.text-3xl { font-size: 2.3rem !important; }  /* ~41.4px */
-.text-4xl { font-size: 2.75rem !important; } /* ~49.5px */
+.text-\[8px\] {
+    font-size: 11px !important;
+}
+
+.text-\[9px\] {
+    font-size: 12px !important;
+}
+
+.text-\[10px\] {
+    font-size: 13px !important;
+}
+
+.text-\[11px\] {
+    font-size: 14px !important;
+}
+
+.text-\[12px\] {
+    font-size: 15px !important;
+}
+
+.text-xs {
+    font-size: 0.9rem !important;
+}
+
+/* ~16.2px */
+.text-sm {
+    font-size: 1.05rem !important;
+}
+
+/* ~18.9px */
+.text-base {
+    font-size: 1.2rem !important;
+}
+
+/* ~21.6px */
+.text-lg {
+    font-size: 1.35rem !important;
+}
+
+/* ~24.3px */
+.text-xl {
+    font-size: 1.6rem !important;
+}
+
+/* ~28.8px */
+.text-2xl {
+    font-size: 1.9rem !important;
+}
+
+/* ~34.2px */
+.text-3xl {
+    font-size: 2.3rem !important;
+}
+
+/* ~41.4px */
+.text-4xl {
+    font-size: 2.75rem !important;
+}
+
+/* ~49.5px */
 
 /* Form controls, inputs, buttons, labels */
-input, select, textarea, button, label {
+input,
+select,
+textarea,
+button,
+label {
     font-size: 1rem !important;
 }
 
 /* Tables and cells */
 table {
     font-size: 1.05rem !important;
+}
+
+table#table,
+table.sticky-table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    table-layout: auto !important;
+}
+
+th.sticky,
+td.sticky,
+.col-sr,
+.col-id,
+.col-name {
+    position: sticky !important;
+    box-sizing: border-box !important;
+}
+
+/* Precise Sticky Column Offset & Width Math */
+.col-sr {
+    left: 0px !important;
+    width: 60px !important;
+    min-width: 60px !important;
+    max-width: 60px !important;
+    z-index: 20;
+}
+
+.col-id {
+    left: 60px !important; /* 0px + 60px */
+    width: 90px !important;
+    min-width: 90px !important;
+    max-width: 90px !important;
+    z-index: 20;
+}
+
+.col-name {
+    left: 150px !important; /* 60px + 90px */
+    width: 220px !important;
+    min-width: 220px !important;
+    max-width: 220px !important;
+    z-index: 20;
+}
+
+thead .col-sr,
+thead .col-id,
+thead .col-name {
+    z-index: 40 !important;
+}
+
+tfoot .col-sr,
+tfoot .col-id,
+tfoot .col-name {
+    z-index: 30 !important;
 }
 
 table th {
@@ -48,29 +166,50 @@ table tfoot td {
 }
 
 /* Prevent time strings, badges, and mono text from wrapping */
-.font-mono, .whitespace-nowrap {
+.font-mono,
+.whitespace-nowrap {
     white-space: nowrap !important;
 }
 
 /* Dropdowns & Select controls (TomSelect, standard selects) */
-.ts-control, .ts-dropdown, .ts-dropdown .option, select, option {
+.ts-control,
+.ts-dropdown,
+.ts-dropdown .option,
+select,
+option {
     font-size: 1rem !important;
 }
 
 /* Navigation, Sidebar, Badges & Links */
-nav, header, aside, .sidebar {
+nav,
+header,
+aside,
+.sidebar {
     font-size: 1rem !important;
 }
 
-aside a, aside span, aside button, header a, header span, header button {
+aside a,
+aside span,
+aside button,
+header a,
+header span,
+header button {
     font-size: 0.95rem !important;
 }
 
 @media all and (min-width: 992px) {
-    .navbar .nav-item .dropdown-menu{ display: none; }
+    .navbar .nav-item .dropdown-menu {
+        display: none;
+    }
+
     /* .navbar .nav-item:hover .nav-link{      } */
-    .navbar .nav-item:hover .dropdown-menu{ display: block; }
-    .navbar .nav-item .dropdown-menu{ margin-top:0px; }
+    .navbar .nav-item:hover .dropdown-menu {
+        display: block;
+    }
+
+    .navbar .nav-item .dropdown-menu {
+        margin-top: 0px;
+    }
 }
 
 @media print {
@@ -80,12 +219,244 @@ aside a, aside span, aside button, header a, header span, header button {
 }
 
 .paid {
-  z-index: 99999;
-  bottom: 0px;
-  right: 0px;
+    z-index: 99999;
+    bottom: 0px;
+    right: 0px;
 }
 
 #total {
-  border-top: 2px solid gray;
-  font-weight: 600;
+    border-top: 2px solid gray;
+    font-weight: 600;
+}
+
+/* Table Density Modes */
+html[data-table-density="compact"] table th,
+html[data-table-density="compact"] table td {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
+
+/* Dark Mode Theme */
+html[data-theme="dark"] body,
+html[data-theme="dark"] main {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+}
+
+html[data-theme="dark"] .bg-white {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+}
+
+html[data-theme="dark"] .bg-slate-50,
+html[data-theme="dark"] .bg-slate-50\/60,
+html[data-theme="dark"] .bg-slate-100 {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+}
+
+html[data-theme="dark"] .text-slate-900,
+html[data-theme="dark"] .text-slate-800,
+html[data-theme="dark"] .text-slate-700,
+html[data-theme="dark"] .text-slate-600,
+html[data-theme="dark"] .text-slate-500 {
+    color: #cbd5e1 !important;
+}
+
+html[data-theme="dark"] table td,
+html[data-theme="dark"] table th {
+    border-color: #334155 !important;
+}
+
+html[data-theme="dark"] tr:nth-child(even) td.sticky,
+html[data-theme="dark"] tr:nth-child(even) .col-sr,
+html[data-theme="dark"] tr:nth-child(even) .col-id,
+html[data-theme="dark"] tr:nth-child(even) .col-name {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+}
+
+html[data-theme="dark"] tr:nth-child(odd) td.sticky,
+html[data-theme="dark"] tr:nth-child(odd) .col-sr,
+html[data-theme="dark"] tr:nth-child(odd) .col-id,
+html[data-theme="dark"] tr:nth-child(odd) .col-name {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+}
+
+/* Dark Mode Table Row Hover - Elegant Dark Slate Fill (#334155) with High Contrast Text */
+html[data-theme="dark"] tbody tr:hover,
+html[data-theme="dark"] tbody tr:hover td,
+html[data-theme="dark"] tbody tr.group:hover td,
+html[data-theme="dark"] tbody tr:hover td.sticky,
+html[data-theme="dark"] tbody tr:hover .col-sr,
+html[data-theme="dark"] tbody tr:hover .col-id,
+html[data-theme="dark"] tbody tr:hover .col-name {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] tbody tr:hover td span,
+html[data-theme="dark"] tbody tr:hover td a,
+html[data-theme="dark"] tbody tr:hover td i {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] header {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+/* Sidebar Light & Dark Mode Styling */
+
+/* Light Mode Sidebar (Crisp, High-Contrast Text) */
+html:not([data-theme="dark"]) aside {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border-right-color: #e2e8f0 !important;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+html:not([data-theme="dark"]) aside .border-b,
+html:not([data-theme="dark"]) aside .border-t,
+html:not([data-theme="dark"]) aside .border-r {
+    border-color: #e2e8f0 !important;
+}
+
+html:not([data-theme="dark"]) aside .bg-slate-950\/40,
+html:not([data-theme="dark"]) aside .bg-slate-950\/60,
+html:not([data-theme="dark"]) aside .bg-slate-800\/50 {
+    background-color: #f8fafc !important;
+}
+
+html:not([data-theme="dark"]) aside a:not(.bg-gradient-to-r),
+html:not([data-theme="dark"]) aside button,
+html:not([data-theme="dark"]) aside a:not(.bg-gradient-to-r) span,
+html:not([data-theme="dark"]) aside button span {
+    color: #1e293b !important;
+    font-weight: 600 !important;
+}
+
+html:not([data-theme="dark"]) aside a:not(.bg-gradient-to-r):hover,
+html:not([data-theme="dark"]) aside button:hover,
+html:not([data-theme="dark"]) aside a:not(.bg-gradient-to-r):hover span,
+html:not([data-theme="dark"]) aside button:hover span {
+    background-color: #f1f5f9 !important;
+    color: #4f46e5 !important;
+}
+
+html:not([data-theme="dark"]) aside .text-slate-300,
+html:not([data-theme="dark"]) aside .text-slate-400,
+html:not([data-theme="dark"]) aside .text-slate-500 {
+    color: #334155 !important;
+    font-weight: 600 !important;
+}
+
+html:not([data-theme="dark"]) aside .text-white {
+    color: #0f172a !important;
+    font-weight: 600 !important;
+}
+
+html:not([data-theme="dark"]) aside .bg-slate-800\/90 {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+}
+
+/* Ensure active menu gradient & footer buttons stay vibrant with white icons in light & dark mode */
+html:not([data-theme="dark"]) aside a.bg-gradient-to-r,
+html:not([data-theme="dark"]) aside a.bg-gradient-to-r *,
+aside a.settings-btn,
+aside a.settings-btn *,
+aside a.settings-btn i,
+html:not([data-theme="dark"]) aside a.settings-btn,
+html:not([data-theme="dark"]) aside a.settings-btn *,
+html:not([data-theme="dark"]) aside a.settings-btn i {
+    background: linear-gradient(to right, #4f46e5, #2563eb) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+aside a.logout-btn,
+aside a.logout-btn *,
+aside a.logout-btn i,
+html:not([data-theme="dark"]) aside a.logout-btn,
+html:not([data-theme="dark"]) aside a.logout-btn *,
+html:not([data-theme="dark"]) aside a.logout-btn i {
+    background-color: #e11d48 !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+aside a.logout-btn:hover,
+aside a.logout-btn:hover i,
+html:not([data-theme="dark"]) aside a.logout-btn:hover,
+html:not([data-theme="dark"]) aside a.logout-btn:hover i {
+    background-color: #be123c !important;
+    color: #ffffff !important;
+}
+
+/* Dark Mode Sidebar (Current dark slate color) */
+html[data-theme="dark"] aside {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    border-right-color: #1e293b !important;
+}
+
+html[data-theme="dark"] aside .border-b,
+html[data-theme="dark"] aside .border-t,
+html[data-theme="dark"] aside .border-r {
+    border-color: #1e293b !important;
+}
+
+/* Setting Cards Active Styles for Light & Dark Themes */
+
+.setting-card {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Light Theme Active Setting Card */
+html:not([data-theme="dark"]) .setting-card.active {
+    background-color: #eef2ff !important;
+    border-color: #4f46e5 !important;
+    box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.15) !important;
+}
+
+html:not([data-theme="dark"]) .setting-card.active h3 {
+    color: #1e1b4b !important;
+}
+
+html:not([data-theme="dark"]) .setting-card.active p {
+    color: #3730a3 !important;
+}
+
+/* Dark Theme Active Setting Card */
+html[data-theme="dark"] .setting-card.active {
+    background-color: #1e1b4b !important;
+    border-color: #6366f1 !important;
+    box-shadow: 0 4px 20px 0 rgba(99, 102, 241, 0.4) !important;
+}
+
+html[data-theme="dark"] .setting-card.active h3 {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .setting-card.active p {
+    color: #e0e7ff !important;
+}
+
+/* Inactive Cards in Dark Mode */
+html[data-theme="dark"] .setting-card:not(.active) {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+html[data-theme="dark"] .setting-card:not(.active) h3 {
+    color: #f8fafc !important;
+}
+
+html[data-theme="dark"] .setting-card:not(.active) p {
+    color: #94a3b8 !important;
 }

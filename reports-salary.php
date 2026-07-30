@@ -324,11 +324,12 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                 </div>
 
                 <div class="overflow-auto max-h-[calc(100vh-250px)] custom-scrollbar">
-                    <table class="w-full text-left border-collapse text-sm md:text-base relative">
+                    <table class="w-full text-left border-separate border-spacing-0 text-sm md:text-base relative">
                         <thead class="sticky top-0 z-30 bg-slate-900 shadow-md">
                             <tr class="bg-slate-900 text-white font-bold uppercase tracking-wider">
-                                <th class="py-3 px-3 sticky top-0 left-0 z-40 bg-slate-900 w-[90px] min-w-[90px]">Code</th>
-                                <th class="py-3 px-3 sticky top-0 left-[90px] z-40 bg-slate-900 min-w-[220px] shadow-[4px_0_8px_-2px_rgba(0,0,0,0.3)]">Employee Name</th>
+                                <th class="py-3.5 px-2 col-sr text-center bg-slate-900 border-b border-r border-slate-700">Sr.</th>
+                                <th class="py-3.5 px-2 col-id text-center bg-slate-900 border-b border-r border-slate-700">Code</th>
+                                <th class="py-3.5 px-3 col-name text-left bg-slate-900 border-b border-r border-slate-700 shadow-[4px_0_8px_-2px_rgba(0,0,0,0.3)]">Employee Name</th>
                                 <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Basic</th>
                                 <th class="py-3 px-3 text-center sticky top-0 z-30 bg-slate-900">Days</th>
                                 <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Earned Basic</th>
@@ -343,15 +344,16 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-medium">
                             <?php if (count($records) > 0): ?>
-                                <?php foreach ($records as $r): ?>
+                                <?php $sr_no = 0; foreach ($records as $r): $sr_no++; ?>
                                     <?php 
                                     $code = !empty($r['sNo']) ? $r['sNo'] : (!empty($r['employee_code']) ? $r['employee_code'] : sprintf('%04d', $r['employeeID']));
                                     $fullName = trim($r['fname'] . ' ' . $r['mname'] . ' ' . $r['lname']);
                                     $ot = floatval($r['ot_1_15']) + floatval($r['ot_16_30']);
                                     ?>
                                     <tr class="hover:bg-slate-50 transition group">
-                                        <td class="py-3 px-3 font-mono font-bold text-slate-900 sticky left-0 z-20 bg-white group-hover:bg-slate-50 w-[90px] min-w-[90px] whitespace-nowrap">#<?php echo htmlspecialchars($code); ?></td>
-                                        <td class="py-3 px-3 font-bold text-slate-900 sticky left-[90px] z-20 bg-white group-hover:bg-slate-50 min-w-[220px] shadow-[4px_0_8px_-2px_rgba(0,0,0,0.08)] whitespace-nowrap"><?php echo htmlspecialchars($fullName); ?></td>
+                                        <td class="py-3 px-2 col-sr text-center font-mono font-bold text-slate-500 bg-white group-hover:bg-slate-50 border-b border-r border-slate-200 whitespace-nowrap"><?php echo $sr_no; ?></td>
+                                        <td class="py-3 px-2 col-id text-center font-mono font-bold text-slate-900 bg-white group-hover:bg-slate-50 border-b border-r border-slate-200 whitespace-nowrap">#<?php echo htmlspecialchars($code); ?></td>
+                                        <td class="py-3 px-3 col-name text-left font-bold text-slate-900 bg-white group-hover:bg-slate-50 border-b border-r border-slate-200 shadow-[4px_0_8px_-2px_rgba(0,0,0,0.08)] whitespace-nowrap"><?php echo htmlspecialchars($fullName); ?></td>
                                         <td class="py-3 px-3 text-right font-mono"><?php echo number_format($r['basic_salary']); ?></td>
                                         <td class="py-3 px-3 text-center font-bold"><?php echo $r['pay_days']; ?></td>
                                         <td class="py-3 px-3 text-right font-mono"><?php echo number_format(($r['pay_days'] / 30.0) * $r['basic_salary']); ?></td>
@@ -366,13 +368,13 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="12" class="py-8 text-center text-slate-400 font-bold">No payroll records found for <?php echo $month_name . ' ' . $year; ?>.</td>
+                                    <td colspan="13" class="py-8 text-center text-slate-400 font-bold">No payroll records found for <?php echo $month_name . ' ' . $year; ?></td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
                         <tfoot>
                             <tr class="bg-slate-900 text-white font-extrabold text-xs">
-                                <td colspan="2" class="py-3 px-3 rounded-l-xl">PAYROLL TOTALS</td>
+                                <td colspan="3" class="py-3 px-3 sticky left-0 z-20 bg-slate-900">PAYROLL TOTALS</td>
                                 <td class="py-3 px-3 text-right font-mono"><?php echo number_format($totBasic); ?></td>
                                 <td class="py-3 px-3 text-center">-</td>
                                 <td class="py-3 px-3 text-right font-mono">-</td>

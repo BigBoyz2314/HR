@@ -244,6 +244,14 @@ $reportsActive = in_array($currentPage, ['reports-salary.php', 'reports-overtime
       </div>
     </div>
 
+    <!-- Settings & Accessibility -->
+    <a href="settings.php" 
+       :title="sidebarCollapsed ? 'Settings' : ''"
+       class="flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 <?php echo $currentPage == 'settings.php' ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-md shadow-indigo-600/30 font-semibold' : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'; ?>">
+      <i class="fa-solid fa-gear w-5 text-center text-indigo-400 shrink-0"></i>
+      <span x-show="!sidebarCollapsed" class="ml-3 truncate">Settings & Accessibility</span>
+    </a>
+
   </nav>
 
   <!-- User Profile Footer -->
@@ -258,9 +266,14 @@ $reportsActive = in_array($currentPage, ['reports-salary.php', 'reports-overtime
           <div class="text-[9px] text-slate-400"><?php echo $_SESSION['role'] == '1' ? 'Admin' : 'User'; ?></div>
         </div>
       </div>
-      <a href="includes/logout.php" title="Logout" x-show="!sidebarCollapsed" class="w-6 h-6 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 flex items-center justify-center transition shrink-0">
-        <i class="fa-solid fa-power-off text-[10px]"></i>
-      </a>
+      <div class="flex items-center space-x-1.5">
+        <a href="settings.php" title="Settings & Accessibility" class="settings-btn w-8 h-8 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 text-white flex items-center justify-center transition shrink-0 shadow-sm shadow-indigo-600/30">
+          <i class="fa-solid fa-gear text-xs text-white"></i>
+        </a>
+        <a href="includes/logout.php" title="Sign Out" class="logout-btn w-8 h-8 rounded-lg bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center transition shrink-0 shadow-sm shadow-rose-600/30">
+          <i class="fa-solid fa-power-off text-xs text-white"></i>
+        </a>
+      </div>
     </div>
   </div>
 </aside>

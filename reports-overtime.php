@@ -306,7 +306,8 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
                             <tr class="bg-slate-900 text-white font-bold uppercase tracking-wider">
-                                <th class="py-3 px-4 rounded-l-xl">Code</th>
+                                <th class="py-3 px-3 rounded-l-xl text-center w-[50px]">Sr.</th>
+                                <th class="py-3 px-4">Code</th>
                                 <th class="py-3 px-4">Employee Name</th>
                                 <th class="py-3 px-4">Department / Designation</th>
                                 <th class="py-3 px-4 text-right">OT Rate (PKR/hr)</th>
@@ -316,12 +317,13 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-medium">
                             <?php if (count($records) > 0): ?>
-                                <?php foreach ($records as $r): ?>
+                                <?php $sr_no = 0; foreach ($records as $r): $sr_no++; ?>
                                     <?php 
                                     $code = !empty($r['sNo']) ? $r['sNo'] : (!empty($r['employee_code']) ? $r['employee_code'] : $r['employeeID']);
                                     $fullName = trim($r['fname'] . ' ' . $r['mname'] . ' ' . $r['lname']);
                                     ?>
                                     <tr class="hover:bg-slate-50 transition">
+                                        <td class="py-3 px-3 font-mono font-bold text-slate-500 text-center"><?php echo $sr_no; ?></td>
                                         <td class="py-3 px-4 font-mono font-bold text-amber-700">#<?php echo htmlspecialchars($code); ?></td>
                                         <td class="py-3 px-4 font-bold text-slate-900"><?php echo htmlspecialchars($fullName); ?></td>
                                         <td class="py-3 px-4 text-slate-600"><?php echo htmlspecialchars($r['department'] ?: 'General'); ?> &bull; <?php echo htmlspecialchars($r['designation'] ?: 'Staff'); ?></td>
@@ -332,13 +334,13 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="6" class="py-8 text-center text-slate-400 font-bold">No overtime records found for <?php echo $month_name . ' ' . $year; ?>.</td>
+                                    <td colspan="7" class="py-8 text-center text-slate-400 font-bold">No overtime records found for <?php echo $month_name . ' ' . $year; ?>.</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
                         <tfoot>
                             <tr class="bg-slate-900 text-white font-extrabold text-xs">
-                                <td colspan="3" class="py-3 px-4 rounded-l-xl">MONTHLY OVERTIME TOTALS</td>
+                                <td colspan="4" class="py-3 px-4 rounded-l-xl">MONTHLY OVERTIME TOTALS</td>
                                 <td class="py-3 px-4 text-right">-</td>
                                 <td class="py-3 px-4 text-center font-mono text-amber-300"><?php echo number_format($total_ot_hours, 1); ?> hrs</td>
                                 <td class="py-3 px-4 text-right font-mono text-emerald-300 rounded-r-xl">PKR <?php echo number_format(round($total_ot_amount)); ?></td>
