@@ -17,8 +17,15 @@ $next_eid = max(intval($max_row['max_sno'] ?? 0), intval($max_row['max_id'] ?? 0
 $filterEmpId = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $filterDept  = isset($_GET['dept']) ? trim($_GET['dept']) : '';
 $filterMonth = isset($_GET['month']) ? intval($_GET['month']) : 0;
-$filterStatus= isset($_GET['status']) ? trim($_GET['status']) : '';
 $filterShift = isset($_GET['shift']) ? trim($_GET['shift']) : '';
+
+// Status filter specifically checks for valid employee statuses: Active / Inactive
+$filterStatus = '';
+if (isset($_GET['emp_status']) && in_array(trim($_GET['emp_status']), ['Active', 'Inactive'])) {
+    $filterStatus = trim($_GET['emp_status']);
+} elseif (isset($_GET['status']) && in_array(trim($_GET['status']), ['Active', 'Inactive'])) {
+    $filterStatus = trim($_GET['status']);
+}
 
 // Build dynamic WHERE clause
 $whereClauses = [];
@@ -36,7 +43,7 @@ if (!empty($filterShift)) {
 if ($filterMonth > 0 && $filterMonth <= 12) {
     $whereClauses[] = "(join_month = '$filterMonth' OR MONTH(join_date) = $filterMonth)";
 }
-if (!empty($filterStatus)) {
+if (!empty($filterStatus) && in_array($filterStatus, ['Active', 'Inactive'])) {
     $statusEsc = $conn->real_escape_string($filterStatus);
     $whereClauses[] = "status = '$statusEsc'";
 }
@@ -221,13 +228,16 @@ if (count($whereClauses) > 0) {
             </div>
 
             <!-- Status Alerts -->
-            <?php if (isset($_GET['status'])): ?>
-                <div class="no-print bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl flex items-center justify-between shadow-sm">
+            <?php if (isset($_GET['msg']) || (isset($_GET['status']) && in_array($_GET['status'], ['success', 'error']))): 
+                $alertType = (isset($_GET['status']) && $_GET['status'] === 'error') ? 'error' : 'success';
+                $msgText = htmlspecialchars($_GET['msg'] ?? 'Operation completed successfully.');
+            ?>
+                <div class="no-print <?php echo $alertType === 'error' ? 'bg-rose-50 border-rose-200 text-rose-800 dark:bg-rose-950/40 dark:border-rose-800/60 dark:text-rose-300' : 'bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-800/60 dark:text-emerald-300'; ?> border p-4 rounded-xl flex items-center justify-between shadow-sm">
                     <div class="flex items-center space-x-3">
-                        <i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
-                        <span class="text-xs font-bold"><?php echo htmlspecialchars($_GET['msg'] ?? 'Operation completed successfully.'); ?></span>
+                        <i class="fa-solid <?php echo $alertType === 'error' ? 'fa-triangle-exclamation text-rose-500' : 'fa-circle-check text-emerald-500'; ?> text-lg"></i>
+                        <span class="text-xs font-bold"><?php echo $msgText; ?></span>
                     </div>
-                    <button onclick="this.parentElement.remove();" class="text-emerald-500 hover:text-emerald-700 text-sm">&times;</button>
+                    <button onclick="this.parentElement.remove();" class="<?php echo $alertType === 'error' ? 'text-rose-500 hover:text-rose-700' : 'text-emerald-500 hover:text-emerald-700'; ?> text-sm">&times;</button>
                 </div>
             <?php endif; ?>
 
@@ -294,7 +304,7 @@ if (count($whereClauses) > 0) {
 
                     <!-- Status Filter & Submit Buttons -->
                     <div class="flex items-center space-x-2">
-                        <select name="status" class="searchable-select w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 text-xs transition bg-white">
+                        <select name="emp_status" class="searchable-select w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 text-xs transition bg-white">
                             <option value="">All Statuses</option>
                             <option value="Active" <?php echo $filterStatus === 'Active' ? 'selected' : ''; ?>>Active</option>
                             <option value="Inactive" <?php echo $filterStatus === 'Inactive' ? 'selected' : ''; ?>>Inactive</option>
@@ -785,12 +795,20 @@ if (count($whereClauses) > 0) {
                     </div>
 
                     <!-- Modal Actions -->
-                    <div class="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
-                        <button type="button" @click="showEditModal = false" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition">Cancel</button>
-                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md transition flex items-center space-x-2">
-                            <i class="fa-solid fa-floppy-disk"></i>
-                            <span>Update Employee</span>
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
+                        <button type="button" 
+                                @click="if (confirm('Are you sure you want to permanently delete employee ' + editEmp.fname + ' ' + editEmp.lname + ' (#' + (editEmp.sNo || editEmp.id) + ')? This action cannot be undone.')) { window.location.href = 'includes/del-employee.php?id=' + editEmp.id; }"
+                                class="px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 dark:text-rose-400 font-bold text-xs border border-rose-200 dark:border-rose-800/60 transition flex items-center space-x-1.5 cursor-pointer">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Delete Employee</span>
                         </button>
+                        <div class="flex items-center space-x-3">
+                            <button type="button" @click="showEditModal = false" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 font-bold text-xs transition cursor-pointer">Cancel</button>
+                            <button type="submit" class="px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md transition flex items-center space-x-2 cursor-pointer">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <span>Update Employee</span>
+                            </button>
+                        </div>
                     </div>
 
                 </form>

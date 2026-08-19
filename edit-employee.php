@@ -241,9 +241,17 @@ $phone = $row["primary_number"];
                             </div>
                         </div>
 
-                        <div class="pt-3 flex items-center justify-end space-x-3 border-t border-slate-100">
-                            <a href="view-employees.php" class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs border border-slate-200">Cancel</a>
-                            <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold text-xs shadow-md transition">Save Profile Changes</button>
+                        <div class="pt-3 flex items-center justify-between border-t border-slate-100 dark:border-slate-800">
+                            <button type="button" 
+                                    onclick="if (confirm('Are you sure you want to permanently delete employee <?php echo addslashes($fname . ' ' . $lname); ?> (#<?php echo $sNo ?: $id; ?>)? This action cannot be undone.')) { window.location.href = 'includes/del-employee.php?id=<?php echo $id; ?>'; }"
+                                    class="px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 dark:text-rose-400 font-bold text-xs border border-rose-200 dark:border-rose-800/60 transition flex items-center space-x-1.5 cursor-pointer">
+                                <i class="fa-solid fa-trash-can"></i>
+                                <span>Delete Employee</span>
+                            </button>
+                            <div class="flex items-center space-x-3">
+                                <a href="view-employees.php" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 font-bold text-xs border border-slate-200 dark:border-slate-700 transition">Cancel</a>
+                                <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold text-xs shadow-md transition">Save Profile Changes</button>
+                            </div>
                         </div>
                     </form>
                 </div>
