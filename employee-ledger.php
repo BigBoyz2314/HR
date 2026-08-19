@@ -66,18 +66,7 @@ if ($empID > 0) {
     <!-- Tom Select for Searchable Dropdowns -->
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
-    <style>
-        .ts-control {
-            border-radius: 0.75rem !important;
-            padding: 0.45rem 0.75rem !important;
-            font-size: 0.75rem !important;
-            border-color: #cbd5e1 !important;
-            box-shadow: none !important;
-        }
-        .ts-wrapper.single .ts-control {
-            background-color: #ffffff !important;
-        }
-    </style>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll("select.searchable-select").forEach(function(el) {

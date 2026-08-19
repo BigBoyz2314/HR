@@ -65,4 +65,20 @@ function runAutoMigrations($conn) {
     if (!in_array('overtime_rate', $empCols)) {
         $conn->query("ALTER TABLE employees ADD COLUMN overtime_rate DECIMAL(10,2) DEFAULT 0.00");
     }
+
+    // 5. Employees Log Table Schema Columns Check
+    $logCols = [];
+    $logRes = $conn->query("SHOW COLUMNS FROM employees_log");
+    if ($logRes) {
+        while ($c = $logRes->fetch_assoc()) {
+            $logCols[] = strtolower($c['Field']);
+        }
+    }
+
+    if (!in_array('shift_id', $logCols)) {
+        $conn->query("ALTER TABLE employees_log ADD COLUMN shift_id INT DEFAULT 1");
+    }
+    if (!in_array('overtime_rate', $logCols)) {
+        $conn->query("ALTER TABLE employees_log ADD COLUMN overtime_rate DECIMAL(10,2) DEFAULT 0.00");
+    }
 }

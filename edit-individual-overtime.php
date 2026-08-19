@@ -125,17 +125,7 @@ $allEmps = $conn->query("SELECT employeeID, sNo, employee_code, fname, mname, ln
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
     <!-- Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <style>
-        .ts-control {
-            border-radius: 0.75rem !important;
-            padding: 0.55rem 0.85rem !important;
-            font-size: 0.875rem !important;
-            border-color: #cbd5e1 !important;
-        }
-        .ts-wrapper.single .ts-control {
-            background-color: #ffffff !important;
-        }
-    </style>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll("select.searchable-select").forEach(function(el) {

@@ -293,6 +293,121 @@ html[data-theme="dark"] textarea {
     border-color: #334155 !important;
 }
 
+/* ==========================================================================
+   TomSelect & Searchable Dropdowns (Universal Light & Dark Mode)
+   ========================================================================== */
+
+.ts-control {
+    border-radius: 0.75rem !important;
+    padding: 0.45rem 0.75rem !important;
+    font-size: 0.8125rem !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    min-height: 2.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    line-height: 1.25 !important;
+}
+
+.ts-wrapper.single .ts-control {
+    background-color: #ffffff !important;
+}
+
+.ts-control .item {
+    color: #1e293b !important;
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Ensure inner input inside TomSelect is completely transparent and borderless */
+.ts-control input,
+.ts-control > input,
+.ts-wrapper .ts-control input,
+html[data-theme="dark"] .ts-control input,
+html[data-theme="dark"] .ts-wrapper .ts-control input,
+html:not([data-theme="dark"]) .ts-control input {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: inherit !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-height: 1.5rem !important;
+}
+
+.ts-dropdown {
+    border-radius: 0.75rem !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    margin-top: 4px !important;
+    overflow: hidden !important;
+    z-index: 9999 !important;
+}
+
+.ts-dropdown .option {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.8125rem !important;
+    color: #1e293b !important;
+    cursor: pointer !important;
+}
+
+.ts-dropdown .option:hover,
+.ts-dropdown .active {
+    background-color: #f1f5f9 !important;
+    color: #4f46e5 !important;
+}
+
+.ts-dropdown .option.selected {
+    background-color: #e0e7ff !important;
+    color: #3730a3 !important;
+    font-weight: 600;
+}
+
+/* Dark Mode Overrides for TomSelect */
+html[data-theme="dark"] .ts-control,
+html[data-theme="dark"] .ts-wrapper.single .ts-control,
+html[data-theme="dark"] .ts-wrapper .ts-control {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+html[data-theme="dark"] .ts-control .item {
+    color: #f8fafc !important;
+    background: transparent !important;
+}
+
+html[data-theme="dark"] .ts-dropdown {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-theme="dark"] .ts-dropdown .option {
+    color: #cbd5e1 !important;
+    background-color: transparent !important;
+}
+
+html[data-theme="dark"] .ts-dropdown .option:hover,
+html[data-theme="dark"] .ts-dropdown .active {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .ts-dropdown .option.selected {
+    background-color: #312e81 !important;
+    color: #c7d2fe !important;
+}
+
 html[data-theme="dark"] table td,
 html[data-theme="dark"] table th {
     border-color: #334155 !important;

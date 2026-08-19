@@ -189,9 +189,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ];
 
     function insertEmpFormArray($conn, $data, $table = 'employees') {
+        static $schemaCache = [];
+        if (!isset($schemaCache[$table])) {
+            $colRes = $conn->query("SHOW COLUMNS FROM `$table`");
+            $validCols = [];
+            if ($colRes) {
+                while ($cRow = $colRes->fetch_assoc()) {
+                    $validCols[] = $cRow['Field'];
+                }
+            }
+            $schemaCache[$table] = $validCols;
+        }
+
         $keys = [];
         $vals = [];
         foreach ($data as $col => $val) {
+            if (!empty($schemaCache[$table]) && !in_array($col, $schemaCache[$table])) {
+                continue; // Skip fields not present in target table schema
+            }
             $keys[] = "`" . $conn->real_escape_string($col) . "`";
             if ($val === null) {
                 $vals[] = "NULL";
@@ -205,27 +220,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         return $conn->query($sql);
     }
 
-    if (insertEmpFormArray($conn, $empData, 'employees')) {
-        $last_id = intval($conn->insert_id);
-        $finalCode = $empIdVal > 0 ? $empIdVal : $last_id;
-        
-        // If sNo was NULL, update sNo to match generated employeeID
-        $conn->query("UPDATE `employees` SET `sNo` = '$finalCode' WHERE `employeeID` = '$last_id' AND (`sNo` IS NULL OR `sNo` = 0)");
-
-        $logData = $empData;
-        $logData['employeeID'] = $last_id;
-        $logData['sNo'] = $finalCode;
-        @insertEmpFormArray($conn, $logData, 'employees_log');
+    try {
+        if (insertEmpFormArray($conn, $empData, 'employees')) {
+            $last_id = intval($conn->insert_id);
+            $finalCode = $empIdVal > 0 ? $empIdVal : $last_id;
             
-        if ($department > 0) {
-            $sql2 = "UPDATE department SET current_Strength = current_Strength + 1 WHERE departmentID = $department";
-            mysqli_query($conn, $sql2);
-        }
+            // If sNo was NULL, update sNo to match generated employeeID
+            $conn->query("UPDATE `employees` SET `sNo` = '$finalCode' WHERE `employeeID` = '$last_id' AND (`sNo` IS NULL OR `sNo` = 0)");
 
-        header('Location: ../view-employees.php?status=success&msg=' . urlencode("Employee $fname added successfully with ID/Code: $finalCode."));
-        exit;
-    } else {
-        header('Location: ../view-employees.php?action=add&status=error&msg=' . urlencode("Unable to save record: " . $conn->error));
+            $logData = $empData;
+            $logData['employeeID'] = $last_id;
+            $logData['sNo'] = $finalCode;
+            insertEmpFormArray($conn, $logData, 'employees_log');
+                
+            if ($department > 0) {
+                $sql2 = "UPDATE department SET current_Strength = current_Strength + 1 WHERE departmentID = $department";
+                $conn->query($sql2);
+            }
+
+            header('Location: ../view-employees.php?status=success&msg=' . urlencode("Employee $fname added successfully with ID/Code: $finalCode."));
+            exit;
+        } else {
+            header('Location: ../view-employees.php?action=add&status=error&msg=' . urlencode("Unable to save record: " . $conn->error));
+            exit;
+        }
+    } catch (Throwable $e) {
+        header('Location: ../view-employees.php?action=add&status=error&msg=' . urlencode("Server error while saving employee: " . $e->getMessage()));
         exit;
     }
+} else {
+    header('Location: ../view-employees.php');
+    exit;
 }
