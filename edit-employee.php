@@ -123,7 +123,7 @@ $phone = $row["primary_number"];
                                 <input type="text" name="mName" value="<?php echo htmlspecialchars($mname); ?>" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 text-sm">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Last Name</label>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Last Name / Father Name</label>
                                 <input type="text" name="lName" value="<?php echo htmlspecialchars($lname); ?>" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 text-sm font-semibold">
                             </div>
                         </div>

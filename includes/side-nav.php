@@ -57,7 +57,7 @@ $reportsActive = in_array($currentPage, ['reports-salary.php', 'reports-overtime
           <a class="block px-2.5 py-1.5 rounded-lg text-xs font-medium transition <?php echo ($currentPage == 'view-employees.php' && isset($_GET['action']) && $_GET['action'] == 'add') ? 'bg-indigo-600/30 text-indigo-300 border-l-2 border-indigo-500 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>" href="view-employees.php?action=add">+ Add Employee</a>
           <a class="block px-2.5 py-1.5 rounded-lg text-xs font-medium transition <?php echo $currentPage == 'upload-employees.php' ? 'bg-indigo-600/30 text-indigo-300 border-l-2 border-indigo-500 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>" href="upload-employees.php">
             <span class="flex items-center justify-between">
-              <span>Import CSV</span>
+              <span>Import Excel / CSV</span>
               <span class="px-1 py-0.5 text-[8px] bg-emerald-500/20 text-emerald-400 rounded font-semibold">Bulk</span>
             </span>
           </a>

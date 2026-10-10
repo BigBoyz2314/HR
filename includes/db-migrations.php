@@ -82,3 +82,4 @@ function runAutoMigrations($conn) {
         $conn->query("ALTER TABLE employees_log ADD COLUMN overtime_rate DECIMAL(10,2) DEFAULT 0.00");
     }
 }
+

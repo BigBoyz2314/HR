@@ -212,8 +212,8 @@ if (count($whereClauses) > 0) {
                             <span>+ Add Employee</span>
                         </button>
                         <a href="upload-employees.php" class="px-3.5 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs border border-emerald-200 transition flex items-center space-x-2">
-                            <i class="fa-solid fa-file-csv"></i>
-                            <span>Import CSV</span>
+                            <i class="fa-solid fa-file-excel text-emerald-600"></i>
+                            <span>Import Excel / CSV</span>
                         </a>
                     <?php endif; ?>
                     <button onclick="window.print()" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition border border-slate-200 flex items-center space-x-1.5">
@@ -366,7 +366,7 @@ if (count($whereClauses) > 0) {
                                                 <div class="no-print w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs border border-indigo-200 shrink-0">
                                                     <?php echo $initials; ?>
                                                 </div>
-                                                <a href="employee-ledger.php?id=<?php echo $row['employeeID']; ?>" class="font-bold text-slate-900 hover:text-indigo-600 hover:underline transition-colors" title="Click to view Employee Ledger"><?php echo htmlspecialchars($fullName); ?></a>
+                                                <a href="employee-ledger.php?id=<?php echo $row['employeeID']; ?>" class="font-bold text-slate-900 hover:text-indigo-600 hover:underline transition-colors block" title="Click to view Employee Ledger"><?php echo htmlspecialchars($fullName); ?></a>
                                             </div>
                                         </td>
                                         <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-700 font-semibold text-[11px]"><?php echo htmlspecialchars($row['department'] ?: 'General'); ?></span></td>
