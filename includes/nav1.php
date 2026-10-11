@@ -39,6 +39,7 @@
         <div class="flex items-center space-x-3 text-xs font-medium text-slate-500">
             <a href="index.php" class="inline-flex items-center group">
                 <img src="images/zazsoft.png" alt="Zazsoft" class="h-16 max-h-16 w-auto object-contain">
+                <img src="images/panda logo.png" alt="Panda Logo" class="h-16 max-h-16 w-auto object-contain">
             </a>
             <span class="text-slate-300 hidden sm:inline">/</span>
             <span class="text-slate-600 font-bold uppercase tracking-wider text-[10px] hidden sm:inline"><?php echo date('M Y'); ?></span>
