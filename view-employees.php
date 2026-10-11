@@ -114,6 +114,20 @@ if (count($whereClauses) > 0) {
         .print-only {
             display: none;
         }
+
+        /* Ensure table badges & pills retain crisp contrast and correct text colors on row hover */
+        tbody tr:hover td span.text-blue-700, html[data-theme="dark"] tbody tr:hover td span.text-blue-700 { color: #1d4ed8 !important; }
+        tbody tr:hover td span.text-pink-700, html[data-theme="dark"] tbody tr:hover td span.text-pink-700 { color: #be185d !important; }
+        tbody tr:hover td span.text-cyan-700, html[data-theme="dark"] tbody tr:hover td span.text-cyan-700 { color: #0e7490 !important; }
+        tbody tr:hover td span.text-amber-700, html[data-theme="dark"] tbody tr:hover td span.text-amber-700 { color: #b45309 !important; }
+        tbody tr:hover td span.text-indigo-700, html[data-theme="dark"] tbody tr:hover td span.text-indigo-700 { color: #4338ca !important; }
+        tbody tr:hover td span.text-emerald-800, html[data-theme="dark"] tbody tr:hover td span.text-emerald-800 { color: #065f46 !important; }
+        tbody tr:hover td span.text-rose-800, html[data-theme="dark"] tbody tr:hover td span.text-rose-800 { color: #9f1239 !important; }
+
+        /* Badge icons */
+        tbody tr:hover td span i.text-blue-500, html[data-theme="dark"] tbody tr:hover td span i.text-blue-500 { color: #3b82f6 !important; }
+        tbody tr:hover td span i.text-pink-500, html[data-theme="dark"] tbody tr:hover td span i.text-pink-500 { color: #ec4899 !important; }
+        tbody tr:hover td span i.text-indigo-500, html[data-theme="dark"] tbody tr:hover td span i.text-indigo-500 { color: #6366f1 !important; }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -165,12 +179,43 @@ if (count($whereClauses) > 0) {
         }
 
         $(document).ready(function(){
+            // Live table sums recalculation
+            function recalculateTableSums() {
+                var totalBasic = 0;
+                var totalAdd = 0;
+                var count = 0;
+                $("#table tbody tr:visible").each(function() {
+                    var $basicCell = $(this).find(".salary-basic-col");
+                    var $addCell = $(this).find(".salary-add-col");
+                    if ($basicCell.length) {
+                        var bText = $basicCell.text().replace(/[^0-9.-]+/g,"");
+                        var bNum = parseFloat(bText);
+                        if (!isNaN(bNum)) totalBasic += bNum;
+                    }
+                    if ($addCell.length) {
+                        var aText = $addCell.text().replace(/[^0-9.-]+/g,"");
+                        var aNum = parseFloat(aText);
+                        if (!isNaN(aNum)) totalAdd += aNum;
+                    }
+                    count++;
+                });
+                var totalGross = totalBasic + totalAdd;
+                $("#totalEmployeeCountDisplay, #summaryVisibleCount").text(count);
+                $("#totalBasicSalaryDisplay").text("PKR " + Math.round(totalBasic).toLocaleString());
+                $("#summaryBasicSum").text("PKR " + Math.round(totalBasic).toLocaleString());
+                $("#totalAdditionDisplay").text(totalAdd > 0 ? "+PKR " + Math.round(totalAdd).toLocaleString() : "-");
+                $("#summaryAdditionSum").text(totalAdd > 0 ? "+PKR " + Math.round(totalAdd).toLocaleString() : "-");
+                $("#totalPayrollDisplay").text("PKR " + Math.round(totalGross).toLocaleString());
+                $("#summaryTotalPayroll").text("PKR " + Math.round(totalGross).toLocaleString());
+            }
+
             // Instant table text search
             $("#searchFilter").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
                 $("#table tbody tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
                 });
+                recalculateTableSums();
             });
         });
     </script>
@@ -331,6 +376,7 @@ if (count($whereClauses) > 0) {
                                 <th class="py-3.5 px-3 rounded-l-xl text-center w-[50px]">Sr.</th>
                                 <th class="py-3.5 px-4 sticky left-0 z-20 bg-slate-900 shadow-[2px_0_5px_rgba(0,0,0,0.15)]">ID / Code</th>
                                 <th class="py-3.5 px-4">Employee Name</th>
+                                <th class="py-3.5 px-4 text-center">Gender</th>
                                 <th class="py-3.5 px-4">Department</th>
                                 <th class="py-3.5 px-4">Designation</th>
                                 <th class="py-3.5 px-4">Shift</th>
@@ -349,14 +395,21 @@ if (count($whereClauses) > 0) {
                             <?php
                             $stmt = "SELECT * FROM employees $whereSql ORDER BY CAST(COALESCE(NULLIF(sNo, 0), NULLIF(employee_code, ''), employeeID) AS UNSIGNED) ASC, employeeID ASC";
                             $result = $conn->query($stmt);
+                            $sr_no = 0;
+                            $totalBasicSalary = 0;
+                            $totalAllowance = 0;
+
                             if ($result && $result->num_rows > 0) {
-                                $sr_no = 0;
                                 while($row = $result->fetch_assoc()) {
                                     $sr_no++;
                                     $fullName = trim($row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname']);
                                     $initials = strtoupper(substr($row['fname'], 0, 1) . substr($row['lname'] ?: $row['fname'], 0, 1));
                                     $displayCode = !empty($row['sNo']) ? $row['sNo'] : (!empty($row['employee_code']) ? $row['employee_code'] : sprintf('%04d', $row['employeeID']));
+                                    $basicVal = floatval($row['basic_salary'] ?? 0);
                                     $allowanceVal = floatval($row['allowance'] ?? 0);
+                                    $totalBasicSalary += $basicVal;
+                                    $totalAllowance += $allowanceVal;
+                                    $empGender = ucfirst(strtolower(trim($row['gender'] ?? 'Male')));
                                     ?>
                                     <tr class="group hover:bg-slate-50/80 transition">
                                         <td class="py-3 px-3 font-mono font-bold text-slate-500 text-center whitespace-nowrap"><?php echo $sr_no; ?></td>
@@ -369,11 +422,22 @@ if (count($whereClauses) > 0) {
                                                 <a href="employee-ledger.php?id=<?php echo $row['employeeID']; ?>" class="font-bold text-slate-900 hover:text-indigo-600 hover:underline transition-colors block" title="Click to view Employee Ledger"><?php echo htmlspecialchars($fullName); ?></a>
                                             </div>
                                         </td>
+                                        <td class="py-3 px-4 text-center whitespace-nowrap">
+                                            <?php if ($empGender === 'Female'): ?>
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-pink-50 text-pink-700 font-bold text-[11px] border border-pink-200">
+                                                    <i class="fa-solid fa-person-dress text-[11px] mr-1 text-pink-500"></i>Female
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 font-bold text-[11px] border border-blue-200">
+                                                    <i class="fa-solid fa-person text-[11px] mr-1 text-blue-500"></i>Male
+                                                </span>
+                                            <?php endif; ?>
+                                        </td>
                                         <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-700 font-semibold text-[11px]"><?php echo htmlspecialchars($row['department'] ?: 'General'); ?></span></td>
                                         <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 font-semibold text-[11px]"><?php echo htmlspecialchars($row['designation'] ?: 'Staff'); ?></span></td>
                                         <td class="py-3 px-4 whitespace-nowrap"><span class="px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 font-bold text-[11px] border border-indigo-100 whitespace-nowrap"><i class="fa-solid fa-clock text-[9px] mr-1 text-indigo-500"></i><?php echo htmlspecialchars($row['shift'] ?: 'General Shift'); ?></span></td>
-                                        <td class="py-3 px-4 text-right font-bold font-mono text-slate-900"><?php echo number_format($row['basic_salary']); ?></td>
-                                        <td class="py-3 px-4 text-right font-bold font-mono <?php echo $allowanceVal > 0 ? 'text-emerald-600' : 'text-slate-400'; ?>"><?php echo $allowanceVal > 0 ? '+' . number_format($allowanceVal) : '-'; ?></td>
+                                        <td class="py-3 px-4 text-right font-bold font-mono text-slate-900 salary-basic-col"><?php echo number_format($row['basic_salary']); ?></td>
+                                        <td class="py-3 px-4 text-right font-bold font-mono <?php echo $allowanceVal > 0 ? 'text-emerald-600' : 'text-slate-400'; ?> salary-add-col"><?php echo $allowanceVal > 0 ? '+' . number_format($allowanceVal) : '-'; ?></td>
                                         <td class="py-3 px-4 font-mono text-slate-600"><?php echo htmlspecialchars($row['cnic'] ?: '-'); ?></td>
                                         <td class="py-3 px-4 font-mono text-slate-600"><?php echo htmlspecialchars($row['primary_number'] ?: '-'); ?></td>
                                         <td class="py-3 px-4 text-slate-500 whitespace-nowrap"><?php echo htmlspecialchars($row['join_date'] ?: '-'); ?></td>
@@ -393,6 +457,7 @@ if (count($whereClauses) > 0) {
                                                             fname: '<?php echo htmlspecialchars($row['fname'], ENT_QUOTES); ?>', 
                                                             mname: '<?php echo htmlspecialchars($row['mname'] ?? '', ENT_QUOTES); ?>', 
                                                             lname: '<?php echo htmlspecialchars($row['lname'] ?? '', ENT_QUOTES); ?>', 
+                                                            gender: '<?php echo htmlspecialchars($empGender, ENT_QUOTES); ?>', 
                                                             deptID: '<?php echo $row['departmentID']; ?>', 
                                                             deptName: '<?php echo htmlspecialchars($row['department'] ?? '', ENT_QUOTES); ?>', 
                                                             desigID: '<?php echo $row['designationID']; ?>', 
@@ -416,11 +481,54 @@ if (count($whereClauses) > 0) {
                                     <?php
                                 }
                             } else {
-                                echo '<tr><td colspan="11" class="py-8 text-center text-slate-400 font-medium">No matching employee records found.</td></tr>';
+                                $colSpanTotal = ($_SESSION['role'] == '1') ? '14' : '13';
+                                echo '<tr><td colspan="' . $colSpanTotal . '" class="py-8 text-center text-slate-400 font-medium">No matching employee records found.</td></tr>';
                             }
                             ?>
                         </tbody>
+                        <!-- Bottom Salary Summary in Table Footer -->
+                        <tfoot class="bg-slate-900 text-white font-bold text-xs uppercase tracking-wider border-t-2 border-indigo-500">
+                            <tr>
+                                <td class="py-3.5 px-3 rounded-bl-xl text-center font-mono">Σ</td>
+                                <td colspan="6" class="py-3.5 px-4 text-left font-extrabold tracking-wide">
+                                    Total Salaries (<span id="totalEmployeeCountDisplay" class="text-indigo-400 font-mono text-sm"><?php echo $sr_no; ?></span> Staff)
+                                </td>
+                                <td class="py-3.5 px-4 text-right font-mono text-sm text-emerald-400 font-black whitespace-nowrap">
+                                    <span id="totalBasicSalaryDisplay">PKR <?php echo number_format($totalBasicSalary); ?></span>
+                                </td>
+                                <td class="py-3.5 px-4 text-right font-mono text-sm text-emerald-300 font-bold whitespace-nowrap">
+                                    <span id="totalAdditionDisplay"><?php echo $totalAllowance > 0 ? '+PKR ' . number_format($totalAllowance) : '-'; ?></span>
+                                </td>
+                                <td colspan="<?php echo ($_SESSION['role'] == '1') ? '5' : '4'; ?>" class="py-3.5 px-4 rounded-br-xl text-right font-mono text-xs text-slate-300 whitespace-nowrap">
+                                    Total Payroll: <span id="totalPayrollDisplay" class="font-black text-white text-sm ml-1 text-emerald-400">PKR <?php echo number_format($totalBasicSalary + $totalAllowance); ?></span>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
+                </div>
+
+                <!-- Live Bottom Salary Summary Card -->
+                <div class="mt-4 pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-4 text-xs">
+                    <div class="flex items-center space-x-2 text-slate-500 font-medium">
+                        <i class="fa-solid fa-calculator text-indigo-500"></i>
+                        <span>Showing <strong id="summaryVisibleCount" class="text-slate-800"><?php echo $sr_no; ?></strong> staff records</span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <div class="px-3.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200/80">
+                            <span class="text-[11px] text-slate-500 font-bold uppercase mr-1.5">Sum Basic:</span>
+                            <strong id="summaryBasicSum" class="font-mono text-slate-900 font-black">PKR <?php echo number_format($totalBasicSalary); ?></strong>
+                        </div>
+                        <?php if ($totalAllowance > 0): ?>
+                        <div class="px-3.5 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200">
+                            <span class="text-[11px] text-emerald-700 font-bold uppercase mr-1.5">Sum Addition:</span>
+                            <strong id="summaryAdditionSum" class="font-mono text-emerald-800 font-black">+PKR <?php echo number_format($totalAllowance); ?></strong>
+                        </div>
+                        <?php endif; ?>
+                        <div class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-slate-900 to-indigo-950 text-white shadow-sm flex items-center space-x-2">
+                            <span class="text-[11px] text-indigo-300 font-bold uppercase">Total Payroll Sum:</span>
+                            <strong id="summaryTotalPayroll" class="font-mono text-emerald-400 font-black text-sm">PKR <?php echo number_format($totalBasicSalary + $totalAllowance); ?></strong>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -775,7 +883,14 @@ if (count($whereClauses) > 0) {
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Gender *</label>
+                                <select name="gender" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold bg-white">
+                                    <option value="Male" :selected="editEmp.gender == 'Male'">Male</option>
+                                    <option value="Female" :selected="editEmp.gender == 'Female'">Female</option>
+                                </select>
+                            </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Account Status *</label>
                                 <select name="status" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold bg-white">

@@ -37,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ot_rate     = isset($_REQUEST["overtime_rate"]) && $_REQUEST["overtime_rate"] !== '' ? floatval($_REQUEST["overtime_rate"]) : 0.0;
 
     $status      = isset($_REQUEST["status"]) ? trim($_REQUEST["status"]) : 'Active';
+    $gender      = isset($_REQUEST["gender"]) && in_array(ucfirst(strtolower(trim($_REQUEST["gender"]))), ['Male', 'Female']) ? ucfirst(strtolower(trim($_REQUEST["gender"]))) : 'Male';
     $joinDate    = isset($_REQUEST["joinDate"]) && !empty($_REQUEST["joinDate"]) ? trim($_REQUEST["joinDate"]) : date('Y-m-d');
     $phone       = isset($_REQUEST["pNumber"]) ? trim($_REQUEST["pNumber"]) : '';
     $cnic        = isset($_REQUEST["cnic"]) ? trim($_REQUEST["cnic"]) : '';
@@ -82,15 +83,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    $fnameEsc = $conn->real_escape_string($fname);
-    $mnameEsc = $conn->real_escape_string($mname);
-    $lnameEsc = $conn->real_escape_string($lname);
-    $phoneEsc = $conn->real_escape_string($phone);
-    $cnicEsc  = $conn->real_escape_string($cnic);
-    $deptEsc  = $conn->real_escape_string($DeptName);
-    $desigEsc = $conn->real_escape_string($DesigName);
-    $shiftEsc = $conn->real_escape_string($shift_name_val);
-    $moj      = date('m', strtotime($joinDate));
+    $fnameEsc  = $conn->real_escape_string($fname);
+    $mnameEsc  = $conn->real_escape_string($mname);
+    $lnameEsc  = $conn->real_escape_string($lname);
+    $genderEsc = $conn->real_escape_string($gender);
+    $phoneEsc  = $conn->real_escape_string($phone);
+    $cnicEsc   = $conn->real_escape_string($cnic);
+    $deptEsc   = $conn->real_escape_string($DeptName);
+    $desigEsc  = $conn->real_escape_string($DesigName);
+    $shiftEsc  = $conn->real_escape_string($shift_name_val);
+    $moj       = date('m', strtotime($joinDate));
 
     $sql = "UPDATE employees SET 
                 sNo = '$empNoVal',
@@ -99,6 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 fname = '$fnameEsc',
                 mname = '$mnameEsc',
                 lname = '$lnameEsc',
+                gender = '$genderEsc',
                 basic_salary = '$newbasic', 
                 allowance = '$newallow',
                 shift_id = '$shift_id',
@@ -122,8 +125,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (mysqli_query($conn, $sql)) {
         // Log updated employee snapshot
-        $conn->query("INSERT INTO employees_log (sNo, employeeID, fname, mname, lname, basic_salary, allowance, join_date, status, department, departmentID, designation, designationID, grade, cnic, primary_number, employee_code, e_emp, updated_at) 
-                      VALUES ('$empNoVal', '$id', '$fnameEsc', '$mnameEsc', '$lnameEsc', '$newbasic', '$newallow', '$joinDate', '$status', '$deptEsc', '$DeptID', '$desigEsc', '$DesigID', '$Grade', '$cnicEsc', '$phoneEsc', '$rawEmpNo', '$rawEmpNo', current_timestamp())");
+        $conn->query("INSERT INTO employees_log (sNo, employeeID, fname, mname, lname, gender, basic_salary, allowance, join_date, status, department, departmentID, designation, designationID, grade, cnic, primary_number, employee_code, e_emp, updated_at) 
+                      VALUES ('$empNoVal', '$id', '$fnameEsc', '$mnameEsc', '$lnameEsc', '$genderEsc', '$newbasic', '$newallow', '$joinDate', '$status', '$deptEsc', '$DeptID', '$desigEsc', '$DesigID', '$Grade', '$cnicEsc', '$phoneEsc', '$rawEmpNo', '$rawEmpNo', current_timestamp())");
 
         header("Location: ../view-employees.php?status=success&msg=" . urlencode("Employee #$empNoVal ($fname) updated successfully."));
         exit;

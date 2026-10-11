@@ -31,6 +31,7 @@ $allowance = isset($row["allowance"]) ? $row["allowance"] : 0.00;
 $sNo = !empty($row["sNo"]) ? $row["sNo"] : (!empty($row["employee_code"]) ? $row["employee_code"] : $empID);
 $joinDate = !empty($row["join_date"]) ? $row["join_date"] : date('Y-m-d');
 $status = !empty($row["status"]) ? $row["status"] : 'Active';
+$gender = !empty($row["gender"]) ? $row["gender"] : 'Male';
 $cnic = $row["cnic"];
 $phone = $row["primary_number"];
 ?>
@@ -93,22 +94,29 @@ $phone = $row["primary_number"];
                         <input type="hidden" name="oldDeptID" value="<?php echo $deptID; ?>">
                         <input type="hidden" name="oldDesigID" value="<?php echo $desigID; ?>">
 
-                        <!-- Employee Code / sNo -->
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                        <!-- Employee Code, Gender, Status & Joining Date -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 items-center">
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Employee Code / sNo *</label>
                                 <input type="number" name="e_emp" value="<?php echo htmlspecialchars($sNo); ?>" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300 font-mono font-bold text-slate-900 text-sm focus:ring-2 focus:ring-indigo-500">
                             </div>
                             <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Gender *</label>
+                                <select name="gender" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold bg-white focus:ring-2 focus:ring-indigo-500">
+                                    <option value="Male" <?php echo (strcasecmp($gender, 'Male') === 0) ? 'selected' : ''; ?>>Male</option>
+                                    <option value="Female" <?php echo (strcasecmp($gender, 'Female') === 0) ? 'selected' : ''; ?>>Female</option>
+                                </select>
+                            </div>
+                            <div>
                                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Employment Status *</label>
-                                <select name="status" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold bg-white">
+                                <select name="status" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold bg-white focus:ring-2 focus:ring-indigo-500">
                                     <option value="Active" <?php echo ($status === 'Active') ? 'selected' : ''; ?>>Active</option>
                                     <option value="Inactive" <?php echo ($status === 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
                                 </select>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Joining Date *</label>
-                                <input type="date" name="joinDate" value="<?php echo htmlspecialchars($joinDate); ?>" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-medium">
+                                <input type="date" name="joinDate" value="<?php echo htmlspecialchars($joinDate); ?>" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-indigo-500">
                             </div>
                         </div>
 

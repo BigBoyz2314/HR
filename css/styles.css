@@ -441,10 +441,56 @@ html[data-theme="dark"] tbody tr:hover .col-name {
     color: #ffffff !important;
 }
 
-html[data-theme="dark"] tbody tr:hover td span,
-html[data-theme="dark"] tbody tr:hover td a,
-html[data-theme="dark"] tbody tr:hover td i {
+html[data-theme="dark"] tbody tr:hover td a {
     color: #ffffff !important;
+}
+
+/* Ensure badges, pills, and their inner icons retain rich contrast and intended text color on table row hover */
+html[data-theme="dark"] tbody tr:hover td span.text-blue-700,
+html[data-theme="dark"] tbody tr:hover td span.text-blue-800 {
+    color: #1d4ed8 !important;
+}
+html[data-theme="dark"] tbody tr:hover td span.text-pink-700,
+html[data-theme="dark"] tbody tr:hover td span.text-pink-800 {
+    color: #be185d !important;
+}
+html[data-theme="dark"] tbody tr:hover td span.text-cyan-700,
+html[data-theme="dark"] tbody tr:hover td span.text-cyan-800 {
+    color: #0e7490 !important;
+}
+html[data-theme="dark"] tbody tr:hover td span.text-amber-700,
+html[data-theme="dark"] tbody tr:hover td span.text-amber-800 {
+    color: #b45309 !important;
+}
+html[data-theme="dark"] tbody tr:hover td span.text-indigo-700,
+html[data-theme="dark"] tbody tr:hover td span.text-indigo-800 {
+    color: #4338ca !important;
+}
+html[data-theme="dark"] tbody tr:hover td span.text-emerald-700,
+html[data-theme="dark"] tbody tr:hover td span.text-emerald-800 {
+    color: #065f46 !important;
+}
+html[data-theme="dark"] tbody tr:hover td span.text-rose-700,
+html[data-theme="dark"] tbody tr:hover td span.text-rose-800 {
+    color: #9f1239 !important;
+}
+html[data-theme="dark"] tbody tr:hover td span.text-purple-700,
+html[data-theme="dark"] tbody tr:hover td span.text-purple-800 {
+    color: #6b21a8 !important;
+}
+
+/* Preserve badge icon colors on table row hover */
+html[data-theme="dark"] tbody tr:hover td span[class*="rounded-full"] i.text-blue-500 {
+    color: #3b82f6 !important;
+}
+html[data-theme="dark"] tbody tr:hover td span[class*="rounded-full"] i.text-pink-500 {
+    color: #ec4899 !important;
+}
+html[data-theme="dark"] tbody tr:hover td span[class*="rounded-full"] i.text-indigo-500 {
+    color: #6366f1 !important;
+}
+html[data-theme="dark"] tbody tr:hover td span[class*="rounded-full"] i.text-emerald-500 {
+    color: #10b981 !important;
 }
 
 html[data-theme="dark"] header {

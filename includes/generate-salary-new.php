@@ -54,7 +54,7 @@ function isOffDay($dayNum, $month, $year, $holidays) {
 
 // 2. Fetch all attendance records in one query
 $attendance_data = [];
-$attendance_sql = "SELECT `employeeID`, `day` FROM attendance1 WHERE `month` = ? AND `year` = ?";
+$attendance_sql = "SELECT `employeeID`, `day` FROM attendance1 WHERE `month` = ? AND `year` = ? AND COALESCE(updated_by, '') != 'manual_absent'";
 $attendance_stmt = $conn->prepare($attendance_sql);
 $attendance_stmt->bind_param("ii", $month, $year);
 $attendance_stmt->execute();
@@ -67,8 +67,6 @@ while ($rowA = $attendance_result->fetch_assoc()) {
     $attendance_data[$emp_id][] = (int)$rowA['day'];
 }
 $attendance_stmt->close();
-
-$hasMonthAttendance = count($attendance_data) > 0;
 
 // 3. Fetch Allowances
 $allowances_data = [];
@@ -132,42 +130,40 @@ if ($result && $result->num_rows > 0) {
 
         $absent_days = 0;
 
-        if ($hasMonthAttendance) {
-            // Iterate recorded calendar days (1 to maxDayRecorded)
-            for ($day_num = 1; $day_num <= $maxDayRecorded; $day_num++) {
-                $curDayStr = sprintf('%04d-%02d-%02d', $year, $month, $day_num);
+        // Iterate recorded calendar days (1 to maxDayRecorded)
+        for ($day_num = 1; $day_num <= $maxDayRecorded; $day_num++) {
+            $curDayStr = sprintf('%04d-%02d-%02d', $year, $month, $day_num);
 
-                // Ignore days before joining or after leaving
-                if (!empty($joinDateStr) && $curDayStr < $joinDateStr) {
-                    continue;
+            // Ignore days before joining or after leaving
+            if (!empty($joinDateStr) && $curDayStr < $joinDateStr) {
+                continue;
+            }
+            if (!empty($leaveDateStr) && $leaveDateStr != '0000-00-00' && $curDayStr > $leaveDateStr) {
+                continue;
+            }
+
+            $isOff = isOffDay($day_num, $month, $year, $holidays);
+
+            if ($isOff) {
+                $prevWorkDay = $day_num - 1;
+                while ($prevWorkDay >= 1 && isOffDay($prevWorkDay, $month, $year, $holidays)) {
+                    $prevWorkDay--;
                 }
-                if (!empty($leaveDateStr) && $leaveDateStr != '0000-00-00' && $curDayStr > $leaveDateStr) {
-                    continue;
+
+                $nextWorkDay = $day_num + 1;
+                while ($nextWorkDay <= $maxDayRecorded && isOffDay($nextWorkDay, $month, $year, $holidays)) {
+                    $nextWorkDay++;
                 }
 
-                $isOff = isOffDay($day_num, $month, $year, $holidays);
+                $prevPresent = ($prevWorkDay >= 1) ? in_array($prevWorkDay, $empAttendance) : false;
+                $nextPresent = ($nextWorkDay <= $maxDayRecorded) ? in_array($nextWorkDay, $empAttendance) : false;
 
-                if ($isOff) {
-                    $prevWorkDay = $day_num - 1;
-                    while ($prevWorkDay >= 1 && isOffDay($prevWorkDay, $month, $year, $holidays)) {
-                        $prevWorkDay--;
-                    }
-
-                    $nextWorkDay = $day_num + 1;
-                    while ($nextWorkDay <= $maxDayRecorded && isOffDay($nextWorkDay, $month, $year, $holidays)) {
-                        $nextWorkDay++;
-                    }
-
-                    $prevPresent = ($prevWorkDay >= 1) ? in_array($prevWorkDay, $empAttendance) : true;
-                    $nextPresent = ($nextWorkDay <= $maxDayRecorded) ? in_array($nextWorkDay, $empAttendance) : true;
-
-                    if (!$prevPresent && !$nextPresent) {
-                        $absent_days++;
-                    }
-                } else {
-                    if (!in_array($day_num, $empAttendance)) {
-                        $absent_days++;
-                    }
+                if (!$prevPresent && !$nextPresent) {
+                    $absent_days++;
+                }
+            } else {
+                if (!in_array($day_num, $empAttendance)) {
+                    $absent_days++;
                 }
             }
         }
@@ -176,12 +172,19 @@ if ($result && $result->num_rows > 0) {
 
         if ($maxDayRecorded >= $actualDaysInMonth) {
             $dayspayable = max(0, 30 - $absent_days);
-            $absent_amount = $absent_days * $daily_rate;
+            $absent_amount = min($basic, $absent_days * $daily_rate);
             $earned_basic = max(0, $basic - $absent_amount);
         } else {
             $dayspayable = max(0, $maxDayRecorded - $absent_days);
-            $absent_amount = $absent_days * $daily_rate;
+            $absent_amount = min($basic, $absent_days * $daily_rate);
             $earned_basic = max(0, ($dayspayable / 30.0) * $basic);
+        }
+
+        // If 0 attendance recorded or dayspayable <= 0, earned basic is 0
+        if (empty($empAttendance) || $dayspayable <= 0) {
+            $dayspayable = 0;
+            $earned_basic = 0.0;
+            $absent_amount = $basic;
         }
 
         // Check if salary record already exists to preserve custom adjustments
@@ -208,8 +211,9 @@ if ($result && $result->num_rows > 0) {
         }
 
         $totalDeductions = $deduction + $lessLoans + $lessAdv;
+        $earnedAllowance = ($dayspayable > 0) ? (($dayspayable / 30.0) * $totalAllowance) : 0.0;
         $gross = $basic + $totalAllowance;
-        $pay = max(0, $earned_basic + $totalAllowance + $arrears + $ot1 + $ot2 - $totalDeductions);
+        $pay = max(0, $earned_basic + $earnedAllowance + $arrears + $ot1 + $ot2 - $totalDeductions);
         $remaining_update = max(0, $pay - $paid_existing);
 
         $fnameEsc = $conn->real_escape_string($fname);

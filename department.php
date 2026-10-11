@@ -107,7 +107,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="bg-slate-900 text-white text-xs font-bold uppercase tracking-wider">
-                                    <th class="py-3 px-4 rounded-l-xl">ID</th>
+                                    <th class="py-3 px-3 rounded-l-xl text-center">Sr. No.</th>
+                                    <th class="py-3 px-4">ID</th>
                                     <th class="py-3 px-4">Department Name</th>
                                     <th class="py-3 px-4 text-center">Active Strength</th>
                                     <?php if ($_SESSION['role'] == '1'): ?>
@@ -119,8 +120,10 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                 <?php
                                 $stmt = "SELECT * FROM department ORDER BY name ASC";
                                 $result = $conn->query($stmt);
+                                $sr_no = 0;
                                 if ($result && $result->num_rows > 0) {
                                     while($row = $result->fetch_assoc()) {
+                                        $sr_no++;
                                         // Calculate current headcount dynamically
                                         $dName = $conn->real_escape_string($row['name']);
                                         $countRes = $conn->query("SELECT COUNT(employeeId) as total FROM employees WHERE department = '$dName'");
@@ -128,11 +131,12 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                         $strength = $countRow['total'] ?? $row['current_Strength'];
                                         ?>
                                         <tr class="hover:bg-slate-50 transition">
+                                            <td class="py-3.5 px-3 font-mono font-bold text-slate-500 text-center whitespace-nowrap"><?php echo $sr_no; ?></td>
                                             <td class="py-3.5 px-4 font-mono font-bold text-slate-900">#<?php echo $row['departmentID']; ?></td>
                                             <td class="py-3.5 px-4 font-bold text-slate-900"><?php echo htmlspecialchars($row['name']); ?></td>
                                             <td class="py-3.5 px-4 text-center">
                                                 <span class="px-3 py-1 rounded-full bg-cyan-50 text-cyan-700 font-extrabold text-xs">
-                                                    <i class="fa-solid fa-users mr-1"></i> <?php echo $strength; ?> Staff
+                                                     <i class="fa-solid fa-users mr-1"></i> <?php echo $strength; ?> Staff
                                                 </span>
                                             </td>
                                             <?php if ($_SESSION['role'] == '1'): ?>
@@ -145,7 +149,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                         <?php
                                     }
                                 } else {
-                                    echo '<tr><td colspan="4" class="py-6 text-center text-slate-400">No departments added yet.</td></tr>';
+                                    echo '<tr><td colspan="5" class="py-6 text-center text-slate-400">No departments added yet.</td></tr>';
                                 }
                                 ?>
                             </tbody>

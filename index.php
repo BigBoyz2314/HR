@@ -9,12 +9,22 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 // Metrics Queries
 $totalEmployees = 0;
+$maleCount = 0;
+$femaleCount = 0;
 $totalDepartments = 0;
 $totalDesignations = 0;
 $totalSalaryThisMonth = 0;
 
-$qEmp = $conn->query("SELECT COUNT(employeeId) AS total FROM employees");
-if ($qEmp && $rEmp = $qEmp->fetch_assoc()) $totalEmployees = $rEmp['total'];
+$qEmp = $conn->query("SELECT 
+    COUNT(employeeID) AS total,
+    SUM(CASE WHEN LOWER(TRIM(COALESCE(gender, 'Male'))) = 'female' THEN 1 ELSE 0 END) AS female_count,
+    SUM(CASE WHEN LOWER(TRIM(COALESCE(gender, 'Male'))) != 'female' THEN 1 ELSE 0 END) AS male_count
+FROM employees");
+if ($qEmp && $rEmp = $qEmp->fetch_assoc()) {
+    $totalEmployees = intval($rEmp['total'] ?? 0);
+    $femaleCount = intval($rEmp['female_count'] ?? 0);
+    $maleCount = intval($rEmp['male_count'] ?? 0);
+}
 
 $qDept = $conn->query("SELECT COUNT(departmentID) AS total FROM department");
 if ($qDept && $rDept = $qDept->fetch_assoc()) $totalDepartments = $rDept['total'];
@@ -25,6 +35,59 @@ if ($qDesig && $rDesig = $qDesig->fetch_assoc()) $totalDesignations = $rDesig['t
 $currentMonthNum = date('n');
 $qSal = $conn->query("SELECT SUM(payable) AS total FROM salary1 WHERE month = '$currentMonthNum'");
 if ($qSal && $rSal = $qSal->fetch_assoc()) $totalSalaryThisMonth = $rSal['total'] ?? 0;
+
+// Salary by Gender Metrics
+$maleSalaryTotal = 0;
+$femaleSalaryTotal = 0;
+$maleSalaryAvg = 0;
+$femaleSalaryAvg = 0;
+
+$salGenderQuery = "SELECT 
+    CASE WHEN LOWER(TRIM(COALESCE(gender, 'Male'))) = 'female' THEN 'Female' ELSE 'Male' END AS g_group,
+    SUM(basic_salary) AS tot_sal,
+    AVG(basic_salary) AS avg_sal
+FROM employees 
+WHERE status = 'Active' OR status IS NULL OR status = ''
+GROUP BY g_group";
+$salGenRes = $conn->query($salGenderQuery);
+if ($salGenRes) {
+    while ($sgRow = $salGenRes->fetch_assoc()) {
+        if ($sgRow['g_group'] === 'Female') {
+            $femaleSalaryTotal = (float)$sgRow['tot_sal'];
+            $femaleSalaryAvg = round((float)$sgRow['avg_sal']);
+        } else {
+            $maleSalaryTotal = (float)$sgRow['tot_sal'];
+            $maleSalaryAvg = round((float)$sgRow['avg_sal']);
+        }
+    }
+}
+
+// Attendance by Gender Metrics (Current Month Only)
+$maleAttTotal = 0;
+$femaleAttTotal = 0;
+$currAttMonth = date('n');
+$currAttYear = date('Y');
+$attGenQuery = "SELECT 
+    CASE WHEN LOWER(TRIM(COALESCE(e.gender, 'Male'))) = 'female' THEN 'Female' ELSE 'Male' END AS g_group,
+    COUNT(a.id) AS total_presents
+FROM attendance1 a
+JOIN employees e ON (a.employeeID = e.employeeID OR a.employeeID = e.sNo)
+WHERE COALESCE(a.updated_by, '') != 'manual_absent'
+  AND (
+      (a.month = $currAttMonth AND a.year = $currAttYear) 
+      OR (MONTH(a.date) = $currAttMonth AND YEAR(a.date) = $currAttYear)
+  )
+GROUP BY g_group";
+$attGenRes = $conn->query($attGenQuery);
+if ($attGenRes) {
+    while ($agRow = $attGenRes->fetch_assoc()) {
+        if ($agRow['g_group'] === 'Female') {
+            $femaleAttTotal = (int)$agRow['total_presents'];
+        } else {
+            $maleAttTotal = (int)$agRow['total_presents'];
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,81 +114,127 @@ if ($qSal && $rSal = $qSal->fetch_assoc()) $totalSalaryThisMonth = $rSal['total'
         <!-- Main Dashboard View -->
         <main class="flex-1 bg-slate-50 p-6 md:p-8 overflow-y-auto space-y-8">
             
-            <!-- Dashboard Welcome Banner -->
-            <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6 border border-slate-800">
-                <div class="space-y-2 z-10">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                        <i class="fa-solid fa-chart-line mr-1.5 text-xs"></i>
-                        Executive Analytics Dashboard
-                    </span>
-                    <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight">Welcome back, <?php echo htmlspecialchars($_SESSION['name'] ?? 'Admin'); ?> 👋</h1>
-                    <p class="text-slate-300 text-xs md:text-sm max-w-2xl">Real-time headcount, payroll expenses, overtime trends, and leave analytics across Footprint HR.</p>
+            <!-- Compact Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">Dashboard Overview</h1>
+                    <p class="text-xs text-slate-500 mt-0.5">Real-time headcount, payroll expenses, overtime trends, and leave analytics.</p>
                 </div>
-                
-                <div class="flex items-center space-x-3 z-10">
-                    <a href="employees.php" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition flex items-center space-x-2">
-                        <i class="fa-solid fa-user-plus"></i>
-                        <span>Add Employee</span>
+                <div class="flex items-center space-x-2.5">
+                    <a href="employees.php" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-user-plus text-[11px]"></i>
+                        <span>+ Add Employee</span>
                     </a>
-                    <a href="upload-attendance.php" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs transition border border-slate-700 flex items-center space-x-2">
-                        <i class="fa-solid fa-file-csv"></i>
+                    <a href="upload-attendance.php" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition border border-slate-200 flex items-center space-x-1.5">
+                        <i class="fa-solid fa-file-csv text-slate-500 text-[11px]"></i>
                         <span>Import CSV</span>
                     </a>
                 </div>
-
-                <!-- Ambient Glow Effect -->
-                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
             </div>
 
-            <!-- Stats Metric Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Stats Metric Grid (Compact Height) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 
                 <!-- Card 1: Total Employees -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hover:shadow-md transition">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-bold">
-                            <i class="fas fa-users"></i>
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold shrink-0">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="text-[11px] text-slate-500 font-bold leading-tight">Total Registered Headcount</div>
+                            </div>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100 flex items-center space-x-1 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span>Active Staff</span>
+                            </span>
                         </div>
-                        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700">Active Staff</span>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight mt-1"><?php echo number_format($totalEmployees); ?></div>
                     </div>
-                    <div class="text-3xl font-black text-slate-900 tracking-tight"><?php echo number_format($totalEmployees); ?></div>
-                    <div class="text-xs text-slate-500 font-medium mt-1">Total Registered Headcount</div>
+
+                    <!-- Male & Female Breakup with Person Icons -->
+                    <div class="mt-2.5 pt-2 border-t border-slate-100 grid grid-cols-2 gap-2">
+                        <div class="flex items-center space-x-1.5 bg-blue-50 rounded-lg px-2 py-1 border border-blue-100">
+                            <div class="w-5 h-5 rounded-md bg-blue-600 text-white flex items-center justify-center text-[10px] shrink-0 font-bold">
+                                <i class="fa-solid fa-person"></i>
+                            </div>
+                            <div class="flex items-baseline space-x-1 min-w-0">
+                                <span class="text-[10px] uppercase font-bold text-blue-700">Male:</span>
+                                <span class="text-xs font-black text-black font-mono"><?php echo number_format($maleCount); ?></span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-2 bg-pink-50 rounded-lg px-2 py-1 border border-pink-100">
+                            <div class="w-5 h-5 rounded-md bg-pink-500 text-white flex items-center justify-center text-[10px] shrink-0 font-bold">
+                                <i class="fa-solid fa-person-dress"></i>
+                            </div>
+                            <div class="flex items-baseline space-x-1 min-w-0">
+                                <span class="text-[10px] uppercase font-bold text-pink-700">Female:</span>
+                                <span class="text-xs font-black text-black font-mono"><?php echo number_format($femaleCount); ?></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Card 2: Departments -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hover:shadow-md transition">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl font-bold">
-                            <i class="fa-solid fa-building"></i>
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-cyan-50 text-cyan-600 flex items-center justify-center text-sm font-bold shrink-0">
+                                    <i class="fa-solid fa-building"></i>
+                                </div>
+                                <div class="text-[11px] text-slate-500 font-bold leading-tight">Active Departments</div>
+                            </div>
+                            <a href="department.php" class="text-[11px] font-bold text-cyan-600 hover:underline shrink-0">Manage &rarr;</a>
                         </div>
-                        <a href="department.php" class="text-xs font-semibold text-cyan-600 hover:underline">Manage &rarr;</a>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight mt-1"><?php echo number_format($totalDepartments); ?></div>
                     </div>
-                    <div class="text-3xl font-black text-slate-900 tracking-tight"><?php echo number_format($totalDepartments); ?></div>
-                    <div class="text-xs text-slate-500 font-medium mt-1">Active Departments</div>
+                    <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center text-[11px] text-slate-500">
+                        <i class="fa-solid fa-layer-group text-cyan-500 mr-1.5 text-xs"></i>
+                        <span>Organizational Units</span>
+                    </div>
                 </div>
 
                 <!-- Card 3: Designations -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hover:shadow-md transition">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
-                            <i class="fas fa-sitemap"></i>
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold shrink-0">
+                                    <i class="fas fa-sitemap"></i>
+                                </div>
+                                <div class="text-[11px] text-slate-500 font-bold leading-tight">Job Roles & Titles</div>
+                            </div>
+                            <a href="designation.php" class="text-[11px] font-bold text-amber-600 hover:underline shrink-0">Manage &rarr;</a>
                         </div>
-                        <a href="designation.php" class="text-xs font-semibold text-amber-600 hover:underline">Manage &rarr;</a>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight mt-1"><?php echo number_format($totalDesignations); ?></div>
                     </div>
-                    <div class="text-3xl font-black text-slate-900 tracking-tight"><?php echo number_format($totalDesignations); ?></div>
-                    <div class="text-xs text-slate-500 font-medium mt-1">Job Roles & Titles</div>
+                    <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center text-[11px] text-slate-500">
+                        <i class="fa-solid fa-id-badge text-amber-500 mr-1.5 text-xs"></i>
+                        <span>Defined Staff Roles</span>
+                    </div>
                 </div>
 
                 <!-- Card 4: Monthly Salary -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hover:shadow-md transition">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold">
-                            <i class="fa-solid fa-money-bill-wave"></i>
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold shrink-0">
+                                    <i class="fa-solid fa-money-bill-wave"></i>
+                                </div>
+                                <div class="text-[11px] text-slate-500 font-bold leading-tight">Monthly Payroll Expense</div>
+                            </div>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 shrink-0"><?php echo date('F'); ?></span>
                         </div>
-                        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700"><?php echo date('F'); ?></span>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight mt-1">PKR <?php echo number_format(round($totalSalaryThisMonth)); ?></div>
                     </div>
-                    <div class="text-3xl font-black text-slate-900 tracking-tight">PKR <?php echo number_format(round($totalSalaryThisMonth)); ?></div>
-                    <div class="text-xs text-slate-500 font-medium mt-1">Monthly Payroll Expense</div>
+                    <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center text-[11px] text-slate-500">
+                        <i class="fa-solid fa-calendar-check text-emerald-500 mr-1.5 text-xs"></i>
+                        <span><?php echo date('F Y'); ?> Payroll</span>
+                    </div>
                 </div>
 
             </div>
@@ -166,28 +275,47 @@ if ($qSal && $rSal = $qSal->fetch_assoc()) $totalSalaryThisMonth = $rSal['total'
             <!-- Analytics Charts Grid - Row 2 -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
-                <!-- Chart 3: Overtime Hours Trend -->
+                <!-- Chart 3: Salary by Gender -->
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-4">
                         <div class="flex items-center space-x-2">
-                            <i class="fa-solid fa-business-time text-amber-500"></i>
-                            <h3 class="text-base font-bold text-slate-900">Monthly Overtime Hours & Payout</h3>
+                            <i class="fa-solid fa-money-bill-transfer text-indigo-600"></i>
+                            <h3 class="text-base font-bold text-slate-900">Salary by Gender</h3>
                         </div>
-                        <span class="text-xs text-slate-400 font-medium">Extra Hours</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100 flex items-center space-x-1">
+                                <i class="fa-solid fa-person text-xs"></i>
+                                <span>Male: PKR <?php echo number_format($maleSalaryTotal); ?></span>
+                            </span>
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-pink-50 text-pink-700 border border-pink-100 flex items-center space-x-1">
+                                <i class="fa-solid fa-person-dress text-xs"></i>
+                                <span>Female: PKR <?php echo number_format($femaleSalaryTotal); ?></span>
+                            </span>
+                        </div>
                     </div>
                     <div class="h-64 relative">
                         <canvas id="chart3"></canvas>
                     </div>
                 </div>
 
-                <!-- Chart 4: Leave Type Breakdown -->
+                <!-- Chart 4: Attendance by Gender -->
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-4">
                         <div class="flex items-center space-x-2">
-                            <i class="fa-solid fa-umbrella-beach text-rose-500"></i>
-                            <h3 class="text-base font-bold text-slate-900">Approved Leave Days by Category</h3>
+                            <i class="fa-solid fa-clipboard-user text-emerald-600"></i>
+                            <h3 class="text-base font-bold text-slate-900">Attendance by Gender</h3>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700"><?php echo date('F Y'); ?></span>
                         </div>
-                        <span class="text-xs text-slate-400 font-medium">Leave Share</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100 flex items-center space-x-1">
+                                <i class="fa-solid fa-person text-xs"></i>
+                                <span>Male: <?php echo number_format($maleAttTotal); ?> Days</span>
+                            </span>
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-pink-50 text-pink-700 border border-pink-100 flex items-center space-x-1">
+                                <i class="fa-solid fa-person-dress text-xs"></i>
+                                <span>Female: <?php echo number_format($femaleAttTotal); ?> Days</span>
+                            </span>
+                        </div>
                     </div>
                     <div class="h-64 relative">
                         <canvas id="chart4"></canvas>
@@ -289,34 +417,26 @@ if ($qSal && $rSal = $qSal->fetch_assoc()) $totalSalaryThisMonth = $rSal['total'
                 }
             });
 
-            <?php
-            // Chart 3: Overtime Hours
-            $otQuery = "SELECT month, SUM(hours) AS total_hrs, SUM(amount) AS total_amt FROM overtime GROUP BY month ORDER BY month ASC";
-            $otRes = $conn->query($otQuery);
-            $otData = array();
-            if ($otRes) {
-                while ($r = $otRes->fetch_assoc()) {
-                    $mName = date("F", mktime(0, 0, 0, $r['month'], 1));
-                    $otData[] = array("label" => $mName, "hours" => (float)$r['total_hrs'], "amount" => (float)$r['total_amt']);
-                }
-            }
-            ?>
-            var otData = <?php echo json_encode($otData); ?>;
-
+            // Chart 3: Salary by Gender (Bar Chart)
             var ctx3 = document.getElementById('chart3').getContext('2d');
-            var otChart = new Chart(ctx3, {
-                type: 'line',
+            var salaryGenderChart = new Chart(ctx3, {
+                type: 'bar',
                 data: {
-                    labels: otData.length > 0 ? otData.map(item => item.label) : ['No Data'],
+                    labels: ['Male Staff', 'Female Staff'],
                     datasets: [
                         {
-                            label: 'OT Hours Recorded',
-                            data: otData.length > 0 ? otData.map(item => item.hours) : [0],
-                            borderColor: "#f59e0b",
-                            backgroundColor: "rgba(245, 158, 11, 0.15)",
-                            lineTension: 0.3,
-                            fill: true,
-                            pointRadius: 4
+                            label: 'Total Salary (PKR)',
+                            data: [<?php echo $maleSalaryTotal; ?>, <?php echo $femaleSalaryTotal; ?>],
+                            backgroundColor: ['rgba(59, 130, 246, 0.85)', 'rgba(236, 72, 153, 0.85)'],
+                            borderColor: ['#2563eb', '#db2777'],
+                            borderWidth: 1.5
+                        },
+                        {
+                            label: 'Average Salary (PKR)',
+                            data: [<?php echo $maleSalaryAvg; ?>, <?php echo $femaleSalaryAvg; ?>],
+                            backgroundColor: ['rgba(99, 102, 241, 0.45)', 'rgba(244, 114, 182, 0.45)'],
+                            borderColor: ['#4f46e5', '#f472b6'],
+                            borderWidth: 1.5
                         }
                     ]
                 },
@@ -324,48 +444,59 @@ if ($qSal && $rSal = $qSal->fetch_assoc()) $totalSalaryThisMonth = $rSal['total'
                     responsive: true,
                     maintainAspectRatio: false,
                     legend: { display: true, position: 'top' },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
+                                return datasetLabel + ': PKR ' + Number(tooltipItem.yLabel).toLocaleString();
+                            }
+                        }
+                    },
                     scales: {
                         xAxes: [{ gridLines: { display: false } }],
-                        yAxes: [{ gridLines: { color: "#f1f5f9" }, ticks: { beginAtZero: true } }]
+                        yAxes: [{
+                            gridLines: { color: "#f1f5f9" },
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function(value) {
+                                    return 'PKR ' + Number(value).toLocaleString();
+                                }
+                            }
+                        }]
                     }
                 }
             });
 
-            <?php
-            // Chart 4: Leave Types Breakdown
-            $leaveQuery = "SELECT leave_type, COUNT(*) AS count_leaves, SUM(DATEDIFF(end_date, start_date) + 1) AS days_leaves FROM leaves WHERE status = 'Approved' GROUP BY leave_type";
-            $leaveRes = $conn->query($leaveQuery);
-            $leaveData = array();
-            if ($leaveRes) {
-                while ($r = $leaveRes->fetch_assoc()) {
-                    $leaveData[] = array("label" => $r['leave_type'], "days" => (int)($r['days_leaves'] ?? 0));
-                }
-            }
-            if (empty($leaveData)) {
-                $leaveData[] = array("label" => "Casual Leave", "days" => 12);
-                $leaveData[] = array("label" => "Sick Leave", "days" => 8);
-                $leaveData[] = array("label" => "Annual Leave", "days" => 15);
-            }
-            ?>
-            var leaveData = <?php echo json_encode($leaveData); ?>;
-
+            // Chart 4: Attendance by Gender (Doughnut Chart)
             var ctx4 = document.getElementById('chart4').getContext('2d');
-            var doughnutChart = new Chart(ctx4, {
+            var attGenderChart = new Chart(ctx4, {
                 type: 'doughnut',
                 data: {
-                    labels: leaveData.map(item => item.label),
+                    labels: ['Male Attendance', 'Female Attendance'],
                     datasets: [{
-                        data: leaveData.map(item => item.days),
-                        backgroundColor: ["#6366f1", "#f59e0b", "#10b981", "#ec4899", "#8b5cf6"],
-                        borderWidth: 2,
-                        borderColor: "#ffffff"
+                        data: [<?php echo $maleAttTotal; ?>, <?php echo $femaleAttTotal; ?>],
+                        backgroundColor: ['#3b82f6', '#ec4899'],
+                        hoverBackgroundColor: ['#2563eb', '#db2777'],
+                        borderWidth: 3,
+                        borderColor: '#ffffff'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     legend: { display: true, position: 'right' },
-                    cutoutPercentage: 65
+                    cutoutPercentage: 65,
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var dataset = data.datasets[tooltipItem.datasetIndex];
+                                var total = dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                var currentValue = dataset.data[tooltipItem.index];
+                                var percentage = total > 0 ? ((currentValue / total) * 100).toFixed(1) : 0;
+                                return data.labels[tooltipItem.index] + ': ' + Number(currentValue).toLocaleString() + ' Days (' + percentage + '%)';
+                            }
+                        }
+                    }
                 }
             });
         };

@@ -25,7 +25,7 @@ function autoGenerateSalarySheet($conn, $month, $year, $updatedBy = 'System') {
     $holidays_stmt->close();
 
     $attendance_data = [];
-    $attendance_sql = "SELECT `employeeID`, `day` FROM attendance1 WHERE `month` = ? AND `year` = ?";
+    $attendance_sql = "SELECT `employeeID`, `day` FROM attendance1 WHERE `month` = ? AND `year` = ? AND COALESCE(updated_by, '') != 'manual_absent'";
     $attendance_stmt = $conn->prepare($attendance_sql);
     $attendance_stmt->bind_param("ii", $month, $year);
     $attendance_stmt->execute();
@@ -38,8 +38,6 @@ function autoGenerateSalarySheet($conn, $month, $year, $updatedBy = 'System') {
         $attendance_data[$emp_id][] = (int)$rowA['day'];
     }
     $attendance_stmt->close();
-
-    $hasMonthAttendance = count($attendance_data) > 0;
 
     $stmt = "SELECT `employeeID`, `sNo`, `fname`, `mname`, `lname`, `designation`, `department`, `gender`, `basic_salary`, `allowance` AS profile_allowance, `join_date`, `leave_date` FROM employees WHERE status = 'Active'";
     $result = $conn->query($stmt);
@@ -61,34 +59,32 @@ function autoGenerateSalarySheet($conn, $month, $year, $updatedBy = 'System') {
             $empAttendance = isset($attendance_data[$id]) ? $attendance_data[$id] : [];
 
             $absent_days = 0;
-            if ($hasMonthAttendance) {
-                for ($day_num = 1; $day_num <= $maxDayRecorded; $day_num++) {
-                    $curDayStr = sprintf('%04d-%02d-%02d', $year, $month, $day_num);
-                    if (!empty($joinDateStr) && $curDayStr < $joinDateStr) continue;
-                    if (!empty($leaveDateStr) && $leaveDateStr != '0000-00-00' && $curDayStr > $leaveDateStr) continue;
+            for ($day_num = 1; $day_num <= $maxDayRecorded; $day_num++) {
+                $curDayStr = sprintf('%04d-%02d-%02d', $year, $month, $day_num);
+                if (!empty($joinDateStr) && $curDayStr < $joinDateStr) continue;
+                if (!empty($leaveDateStr) && $leaveDateStr != '0000-00-00' && $curDayStr > $leaveDateStr) continue;
 
-                    $dateStr = sprintf('%04d-%02d-%02d', $year, $month, $day_num);
-                    $dayOfWeek = date('D', strtotime($dateStr));
-                    $isOff = ($dayOfWeek === 'Sun' || in_array($day_num, $holidays));
+                $dateStr = sprintf('%04d-%02d-%02d', $year, $month, $day_num);
+                $dayOfWeek = date('D', strtotime($dateStr));
+                $isOff = ($dayOfWeek === 'Sun' || in_array($day_num, $holidays));
 
-                    if ($isOff) {
-                        $prevWorkDay = $day_num - 1;
-                        while ($prevWorkDay >= 1 && (date('D', strtotime(sprintf('%04d-%02d-%02d', $year, $month, $prevWorkDay))) === 'Sun' || in_array($prevWorkDay, $holidays))) {
-                            $prevWorkDay--;
-                        }
-                        $nextWorkDay = $day_num + 1;
-                        while ($nextWorkDay <= $maxDayRecorded && (date('D', strtotime(sprintf('%04d-%02d-%02d', $year, $month, $nextWorkDay))) === 'Sun' || in_array($nextWorkDay, $holidays))) {
-                            $nextWorkDay++;
-                        }
-                        $prevPresent = ($prevWorkDay >= 1) ? in_array($prevWorkDay, $empAttendance) : true;
-                        $nextPresent = ($nextWorkDay <= $maxDayRecorded) ? in_array($nextWorkDay, $empAttendance) : true;
-                        if (!$prevPresent && !$nextPresent) {
-                            $absent_days++;
-                        }
-                    } else {
-                        if (!in_array($day_num, $empAttendance)) {
-                            $absent_days++;
-                        }
+                if ($isOff) {
+                    $prevWorkDay = $day_num - 1;
+                    while ($prevWorkDay >= 1 && (date('D', strtotime(sprintf('%04d-%02d-%02d', $year, $month, $prevWorkDay))) === 'Sun' || in_array($prevWorkDay, $holidays))) {
+                        $prevWorkDay--;
+                    }
+                    $nextWorkDay = $day_num + 1;
+                    while ($nextWorkDay <= $maxDayRecorded && (date('D', strtotime(sprintf('%04d-%02d-%02d', $year, $month, $nextWorkDay))) === 'Sun' || in_array($nextWorkDay, $holidays))) {
+                        $nextWorkDay++;
+                    }
+                    $prevPresent = ($prevWorkDay >= 1) ? in_array($prevWorkDay, $empAttendance) : false;
+                    $nextPresent = ($nextWorkDay <= $maxDayRecorded) ? in_array($nextWorkDay, $empAttendance) : false;
+                    if (!$prevPresent && !$nextPresent) {
+                        $absent_days++;
+                    }
+                } else {
+                    if (!in_array($day_num, $empAttendance)) {
+                        $absent_days++;
                     }
                 }
             }
@@ -96,12 +92,19 @@ function autoGenerateSalarySheet($conn, $month, $year, $updatedBy = 'System') {
             $daily_rate = $basic / 30.0;
             if ($maxDayRecorded >= $actualDaysInMonth) {
                 $dayspayable = max(0, 30 - $absent_days);
-                $absent_amount = $absent_days * $daily_rate;
+                $absent_amount = min($basic, $absent_days * $daily_rate);
                 $earned_basic = max(0, $basic - $absent_amount);
             } else {
                 $dayspayable = max(0, $maxDayRecorded - $absent_days);
-                $absent_amount = $absent_days * $daily_rate;
+                $absent_amount = min($basic, $absent_days * $daily_rate);
                 $earned_basic = max(0, ($dayspayable / 30.0) * $basic);
+            }
+
+            // If 0 attendance days, earned basic is 0
+            if (empty($empAttendance) || $dayspayable <= 0) {
+                $dayspayable = 0;
+                $earned_basic = 0.0;
+                $absent_amount = $basic;
             }
 
             // Check if existing record has adjustments or overtime
@@ -128,8 +131,9 @@ function autoGenerateSalarySheet($conn, $month, $year, $updatedBy = 'System') {
             }
 
             $totalDeductions = $lessLoans + $lessAdv;
+            $earnedAllowance = ($dayspayable > 0) ? (($dayspayable / 30.0) * $allowance) : 0.0;
             $gross = $basic + $allowance;
-            $pay = max(0, $earned_basic + $arrears + $ot1 + $ot2 + $allowance - $totalDeductions);
+            $pay = max(0, $earned_basic + $arrears + $ot1 + $ot2 + $earnedAllowance - $totalDeductions);
             $remaining = max(0, $pay - $paid);
 
             $fnameEsc = $conn->real_escape_string($fname);

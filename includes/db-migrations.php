@@ -1,5 +1,5 @@
 <?php
-// Automatic Production Database Migration Runner
+if (!function_exists('runAutoMigrations')) {
 function runAutoMigrations($conn) {
     if (!$conn) return;
 
@@ -65,6 +65,9 @@ function runAutoMigrations($conn) {
     if (!in_array('overtime_rate', $empCols)) {
         $conn->query("ALTER TABLE employees ADD COLUMN overtime_rate DECIMAL(10,2) DEFAULT 0.00");
     }
+    if (!in_array('gender', $empCols)) {
+        $conn->query("ALTER TABLE employees ADD COLUMN gender VARCHAR(20) DEFAULT 'Male'");
+    }
 
     // 5. Employees Log Table Schema Columns Check
     $logCols = [];
@@ -81,5 +84,8 @@ function runAutoMigrations($conn) {
     if (!in_array('overtime_rate', $logCols)) {
         $conn->query("ALTER TABLE employees_log ADD COLUMN overtime_rate DECIMAL(10,2) DEFAULT 0.00");
     }
+    if (!in_array('gender', $logCols)) {
+        $conn->query("ALTER TABLE employees_log ADD COLUMN gender VARCHAR(20) DEFAULT 'Male'");
+    }
 }
-
+}
