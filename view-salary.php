@@ -214,10 +214,10 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                             <span>Generate Payroll</span>
                         </button>
                     <?php endif; ?>
-                    <button onclick="window.print()" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition border border-slate-200 flex items-center space-x-1.5">
+                    <a href="print-salary.php?month=<?php echo $month; ?>&year=<?php echo $year; ?>" target="_blank" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition border border-slate-200 flex items-center space-x-1.5">
                         <i class="fa-solid fa-print text-slate-500"></i>
-                        <span>Print</span>
-                    </button>
+                        <span>Print Sheet</span>
+                    </a>
                     <button onclick="exportTableToCSV('table', 'salary_sheet_<?php echo $month . '_' . $year; ?>.csv')" class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition border border-slate-200 flex items-center space-x-1.5">
                         <i class="fa-solid fa-download text-slate-500"></i>
                         <span>Export CSV</span>
@@ -305,7 +305,6 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                 <th class="py-3.5 px-3 text-right sticky top-0 z-30 bg-slate-900">Salary Payable</th>
                                 <th class="py-3.5 px-3 text-right sticky top-0 z-30 bg-slate-900">Paid</th>
                                 <th class="py-3.5 px-3 text-right sticky top-0 z-30 bg-slate-900">Remaining</th>
-                                <th class="py-3.5 px-3 text-center sticky top-0 z-30 bg-slate-900 col-sign">Sign</th>
                                 <th class="py-3.5 px-3 text-center sticky top-0 z-30 bg-slate-900 action-col">Actions</th>
                             </tr>
                         </thead>
@@ -385,9 +384,6 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                         <td class="py-3 px-3 text-right font-mono font-bold whitespace-nowrap <?php echo $remaining > 0 ? 'text-rose-600' : ($remaining < 0 ? 'text-indigo-600' : 'text-slate-400'); ?>">
                                             <?php echo number_format($remaining); ?>
                                         </td>
-                                        <td class="py-3 px-3 text-center whitespace-nowrap col-sign">
-                                            <div class="sign-space h-5 w-16 border-b border-slate-300 mx-auto"></div>
-                                        </td>
                                         <td class="py-3 px-3 text-center whitespace-nowrap action-col">
                                             <div class="inline-flex items-center space-x-1.5">
                                                 <?php if ($_SESSION['role'] == '1'): ?>
@@ -416,7 +412,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                     <?php
                                 }
                             } else {
-                                echo '<tr><td colspan="16" class="py-8 text-center text-slate-400 font-medium">No salary records generated for ' . $month_name . ' ' . $year . '. Click "Re-Generate Salary" to process.</td></tr>';
+                                echo '<tr><td colspan="15" class="py-8 text-center text-slate-400 font-medium">No salary records generated for ' . $month_name . ' ' . $year . '. Click "Re-Generate Salary" to process.</td></tr>';
                             }
                             ?>
                         </tbody>
@@ -435,30 +431,11 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                     <td class="py-3 px-3 text-right font-mono font-extrabold text-slate-900"><?php echo number_format($totPayable); ?></td>
                                     <td class="py-3 px-3 text-right font-mono text-emerald-700"><?php echo number_format($totPaid); ?></td>
                                     <td class="py-3 px-3 text-right font-mono text-rose-600"><?php echo number_format($totRem); ?></td>
-                                    <td class="py-3 px-3 text-center col-sign"></td>
                                     <td class="py-3 px-3 action-col"></td>
                                 </tr>
                             </tfoot>
                         <?php endif; ?>
                     </table>
-                </div>
-            </div>
-
-            <!-- Print Authorization Signatures -->
-            <div class="print-only pt-8 mt-6" style="page-break-inside: avoid; break-inside: avoid;">
-                <div class="grid grid-cols-3 gap-10 text-center text-xs font-bold text-slate-800" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; text-align: center;">
-                    <div>
-                        <div style="border-bottom: 1.5px solid #000; margin-bottom: 6px; padding-bottom: 35px;"></div>
-                        <span style="font-weight: bold; font-size: 10px; text-transform: uppercase; color: #000;">Prepared By (HR / Accounts)</span>
-                    </div>
-                    <div>
-                        <div style="border-bottom: 1.5px solid #000; margin-bottom: 6px; padding-bottom: 35px;"></div>
-                        <span style="font-weight: bold; font-size: 10px; text-transform: uppercase; color: #000;">Verified / Checked By</span>
-                    </div>
-                    <div>
-                        <div style="border-bottom: 1.5px solid #000; margin-bottom: 6px; padding-bottom: 35px;"></div>
-                        <span style="font-weight: bold; font-size: 10px; text-transform: uppercase; color: #000;">Approved By (Director / Management)</span>
-                    </div>
                 </div>
             </div>
 

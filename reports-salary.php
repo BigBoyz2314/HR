@@ -284,10 +284,10 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                         <span>Export Excel</span>
                     </a>
 
-                    <button onclick="window.print()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition flex items-center space-x-1.5">
+                    <a href="print-salary.php?month=<?php echo $month; ?>&year=<?php echo $year; ?>" target="_blank" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition flex items-center space-x-1.5">
                         <i class="fa-solid fa-print"></i>
                         <span>Print Report</span>
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -352,7 +352,6 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                                 <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Payable</th>
                                 <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Paid</th>
                                 <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Remaining</th>
-                                <th class="py-3 px-3 text-center sticky top-0 z-30 bg-slate-900 col-sign">Sign</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-medium">
@@ -377,14 +376,11 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                                         <td class="py-3 px-3 text-right font-mono font-extrabold text-slate-900"><?php echo number_format($r['payable']); ?></td>
                                         <td class="py-3 px-3 text-right font-mono text-emerald-700 font-bold"><?php echo number_format($r['paid']); ?></td>
                                         <td class="py-3 px-3 text-right font-mono font-bold <?php echo $r['remaining'] > 0 ? 'text-rose-600' : 'text-slate-400'; ?>"><?php echo number_format($r['remaining']); ?></td>
-                                        <td class="py-3 px-3 text-center whitespace-nowrap col-sign">
-                                            <div class="sign-space h-5 w-16 border-b border-slate-300 mx-auto"></div>
-                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="14" class="py-8 text-center text-slate-400 font-bold">No payroll records found for <?php echo $month_name . ' ' . $year; ?></td>
+                                    <td colspan="13" class="py-8 text-center text-slate-400 font-bold">No payroll records found for <?php echo $month_name . ' ' . $year; ?></td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
@@ -400,8 +396,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                                 <td class="py-3 px-3 text-right font-mono text-rose-300"><?php echo number_format($totDeduction); ?></td>
                                 <td class="py-3 px-3 text-right font-mono text-white"><?php echo number_format($totPayable); ?></td>
                                 <td class="py-3 px-3 text-right font-mono text-emerald-300"><?php echo number_format($totPaid); ?></td>
-                                <td class="py-3 px-3 text-right font-mono text-rose-300"><?php echo number_format($totRem); ?></td>
-                                <td class="py-3 px-3 text-center col-sign rounded-r-xl"></td>
+                                <td class="py-3 px-3 text-right font-mono text-rose-300 rounded-r-xl"><?php echo number_format($totRem); ?></td>
                             </tr>
                         </tfoot>
                     </table>
