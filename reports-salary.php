@@ -174,11 +174,23 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
             th, td {
                 border: 1px solid #333333 !important;
                 border-radius: 0 !important;
-                padding: 5px 7px !important;
-                font-size: 11pt !important;
+                padding: 4px 6px !important;
+                font-size: 8.5pt !important;
                 background: transparent !important;
                 background-color: transparent !important;
                 color: #000000 !important;
+            }
+            .col-sign {
+                width: 75px !important;
+                min-width: 75px !important;
+                text-align: center !important;
+            }
+            .sign-space {
+                display: block !important;
+                height: 18px !important;
+                border-bottom: 1px dotted #475569 !important;
+                margin: 4px auto 2px auto !important;
+                width: 90% !important;
             }
             th {
                 background-color: #0f172a !important;
@@ -340,6 +352,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                                 <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Payable</th>
                                 <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Paid</th>
                                 <th class="py-3 px-3 text-right sticky top-0 z-30 bg-slate-900">Remaining</th>
+                                <th class="py-3 px-3 text-center sticky top-0 z-30 bg-slate-900 col-sign">Sign</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-medium">
@@ -364,11 +377,14 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                                         <td class="py-3 px-3 text-right font-mono font-extrabold text-slate-900"><?php echo number_format($r['payable']); ?></td>
                                         <td class="py-3 px-3 text-right font-mono text-emerald-700 font-bold"><?php echo number_format($r['paid']); ?></td>
                                         <td class="py-3 px-3 text-right font-mono font-bold <?php echo $r['remaining'] > 0 ? 'text-rose-600' : 'text-slate-400'; ?>"><?php echo number_format($r['remaining']); ?></td>
+                                        <td class="py-3 px-3 text-center whitespace-nowrap col-sign">
+                                            <div class="sign-space h-5 w-16 border-b border-slate-300 mx-auto"></div>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="13" class="py-8 text-center text-slate-400 font-bold">No payroll records found for <?php echo $month_name . ' ' . $year; ?></td>
+                                    <td colspan="14" class="py-8 text-center text-slate-400 font-bold">No payroll records found for <?php echo $month_name . ' ' . $year; ?></td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
@@ -384,7 +400,8 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
                                 <td class="py-3 px-3 text-right font-mono text-rose-300"><?php echo number_format($totDeduction); ?></td>
                                 <td class="py-3 px-3 text-right font-mono text-white"><?php echo number_format($totPayable); ?></td>
                                 <td class="py-3 px-3 text-right font-mono text-emerald-300"><?php echo number_format($totPaid); ?></td>
-                                <td class="py-3 px-3 text-right font-mono text-rose-300 rounded-r-xl"><?php echo number_format($totRem); ?></td>
+                                <td class="py-3 px-3 text-right font-mono text-rose-300"><?php echo number_format($totRem); ?></td>
+                                <td class="py-3 px-3 text-center col-sign rounded-r-xl"></td>
                             </tr>
                         </tfoot>
                     </table>

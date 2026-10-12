@@ -33,16 +33,126 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
     <!-- Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <style>
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white !important; color: black !important; font-size: 10pt; }
-            .print-only { display: block !important; }
-            table { width: 100% !important; border-collapse: collapse !important; }
-            th, td { border: 1px solid #cbd5e1 !important; padding: 4px 6px !important; }
-            .custom-scrollbar { overflow: visible !important; }
-            .action-col { display: none !important; }
-        }
         .print-only { display: none; }
+        @media print {
+            /* Hide non-printable navigation, sidebar, forms, and actions */
+            header, aside, nav, .no-print, form, button, [x-cloak], .action-col {
+                display: none !important;
+            }
+
+            /* Reset page container constraints so pagination works without truncation */
+            html, body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                height: auto !important;
+                min-height: 100% !important;
+                overflow: visible !important;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+                font-size: 7.5pt !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            div, main, section, article {
+                background: transparent !important;
+                background-color: transparent !important;
+                height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
+                position: static !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .print-only {
+                display: block !important;
+            }
+
+            /* Clean sharp printable table */
+            table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                margin-top: 8px !important;
+                margin-bottom: 12px !important;
+                font-size: 7.5pt !important;
+                border: 1px solid #000000 !important;
+                border-radius: 0 !important;
+                page-break-after: auto !important;
+            }
+
+            thead {
+                display: table-header-group !important;
+                position: static !important;
+            }
+
+            tfoot {
+                display: table-footer-group !important;
+                position: static !important;
+            }
+
+            tr {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                background: transparent !important;
+            }
+
+            th, td {
+                border: 1px solid #334155 !important;
+                border-radius: 0 !important;
+                padding: 3px 4px !important;
+                font-size: 7.5pt !important;
+                color: #000000 !important;
+                position: static !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                text-shadow: none !important;
+            }
+
+            th {
+                background-color: #0f172a !important;
+                color: #ffffff !important;
+                font-weight: 700 !important;
+                text-transform: uppercase !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            tfoot tr, tfoot td {
+                background-color: #f1f5f9 !important;
+                color: #000000 !important;
+                font-weight: 800 !important;
+                border-top: 2px solid #000000 !important;
+                border-radius: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            a {
+                text-decoration: none !important;
+                color: inherit !important;
+            }
+
+            .col-sign {
+                width: 75px !important;
+                min-width: 75px !important;
+                text-align: center !important;
+            }
+
+            .sign-space {
+                display: block !important;
+                height: 18px !important;
+                border-bottom: 1px dotted #475569 !important;
+                margin: 4px auto 2px auto !important;
+                width: 90% !important;
+            }
+
+            @page {
+                size: A4 landscape;
+                margin: 8mm 6mm 10mm 6mm;
+            }
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased h-screen flex flex-col overflow-hidden" 
@@ -73,9 +183,17 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
         <main class="flex-1 bg-slate-50 p-6 md:p-8 overflow-y-auto">
             
             <!-- Printable Only Header -->
-            <div class="print-only mb-4 text-center border-b pb-2">
-                <h1 class="text-xl font-bold">FOOTPRINT HR - SALARY STATEMENT (<?php echo strtoupper($month_name . ' ' . $year); ?>)</h1>
-                <p class="text-xs">Generated on: <?php echo date('d-M-Y h:i A'); ?></p>
+            <div class="print-only mb-3 border-b-2 border-slate-900 pb-2.5">
+                <div class="flex items-center justify-between" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h1 class="text-xl font-black uppercase text-slate-900" style="font-size: 15pt; font-weight: 900; margin: 0; line-height: 1.2;">FOOTPRINT HR PORTAL</h1>
+                        <h2 class="text-sm font-bold text-indigo-700" style="font-size: 10.5pt; font-weight: bold; margin: 2px 0;">Official Monthly Salary Statement &bull; <?php echo strtoupper($month_name . ' ' . $year); ?></h2>
+                        <p class="text-xs text-slate-600" style="font-size: 8pt; margin: 0;">Payroll Month: <strong><?php echo $month_name . ' ' . $year; ?></strong> &bull; Printed On: <strong><?php echo date('d-M-Y h:i A'); ?></strong> &bull; Printed By: <strong><?php echo htmlspecialchars($_SESSION['name'] ?? 'Admin'); ?></strong></p>
+                    </div>
+                    <div style="text-align: right;">
+                        <img src="images/Footprint+Logo.png" alt="Logo" style="height: 38px; width: auto; max-height: 38px;">
+                    </div>
+                </div>
             </div>
 
             <!-- Page Header -->
@@ -187,6 +305,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                 <th class="py-3.5 px-3 text-right sticky top-0 z-30 bg-slate-900">Salary Payable</th>
                                 <th class="py-3.5 px-3 text-right sticky top-0 z-30 bg-slate-900">Paid</th>
                                 <th class="py-3.5 px-3 text-right sticky top-0 z-30 bg-slate-900">Remaining</th>
+                                <th class="py-3.5 px-3 text-center sticky top-0 z-30 bg-slate-900 col-sign">Sign</th>
                                 <th class="py-3.5 px-3 text-center sticky top-0 z-30 bg-slate-900 action-col">Actions</th>
                             </tr>
                         </thead>
@@ -266,6 +385,9 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                         <td class="py-3 px-3 text-right font-mono font-bold whitespace-nowrap <?php echo $remaining > 0 ? 'text-rose-600' : ($remaining < 0 ? 'text-indigo-600' : 'text-slate-400'); ?>">
                                             <?php echo number_format($remaining); ?>
                                         </td>
+                                        <td class="py-3 px-3 text-center whitespace-nowrap col-sign">
+                                            <div class="sign-space h-5 w-16 border-b border-slate-300 mx-auto"></div>
+                                        </td>
                                         <td class="py-3 px-3 text-center whitespace-nowrap action-col">
                                             <div class="inline-flex items-center space-x-1.5">
                                                 <?php if ($_SESSION['role'] == '1'): ?>
@@ -294,7 +416,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                     <?php
                                 }
                             } else {
-                                echo '<tr><td colspan="14" class="py-8 text-center text-slate-400 font-medium">No salary records generated for ' . $month_name . ' ' . $year . '. Click "Re-Generate Salary" to process.</td></tr>';
+                                echo '<tr><td colspan="16" class="py-8 text-center text-slate-400 font-medium">No salary records generated for ' . $month_name . ' ' . $year . '. Click "Re-Generate Salary" to process.</td></tr>';
                             }
                             ?>
                         </tbody>
@@ -313,11 +435,30 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                                     <td class="py-3 px-3 text-right font-mono font-extrabold text-slate-900"><?php echo number_format($totPayable); ?></td>
                                     <td class="py-3 px-3 text-right font-mono text-emerald-700"><?php echo number_format($totPaid); ?></td>
                                     <td class="py-3 px-3 text-right font-mono text-rose-600"><?php echo number_format($totRem); ?></td>
+                                    <td class="py-3 px-3 text-center col-sign"></td>
                                     <td class="py-3 px-3 action-col"></td>
                                 </tr>
                             </tfoot>
                         <?php endif; ?>
                     </table>
+                </div>
+            </div>
+
+            <!-- Print Authorization Signatures -->
+            <div class="print-only pt-8 mt-6" style="page-break-inside: avoid; break-inside: avoid;">
+                <div class="grid grid-cols-3 gap-10 text-center text-xs font-bold text-slate-800" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; text-align: center;">
+                    <div>
+                        <div style="border-bottom: 1.5px solid #000; margin-bottom: 6px; padding-bottom: 35px;"></div>
+                        <span style="font-weight: bold; font-size: 10px; text-transform: uppercase; color: #000;">Prepared By (HR / Accounts)</span>
+                    </div>
+                    <div>
+                        <div style="border-bottom: 1.5px solid #000; margin-bottom: 6px; padding-bottom: 35px;"></div>
+                        <span style="font-weight: bold; font-size: 10px; text-transform: uppercase; color: #000;">Verified / Checked By</span>
+                    </div>
+                    <div>
+                        <div style="border-bottom: 1.5px solid #000; margin-bottom: 6px; padding-bottom: 35px;"></div>
+                        <span style="font-weight: bold; font-size: 10px; text-transform: uppercase; color: #000;">Approved By (Director / Management)</span>
+                    </div>
                 </div>
             </div>
 
@@ -485,7 +626,7 @@ $month_name = date('F', mktime(0, 0, 0, $month, 10));
                 
                 for (var j = 0; j < colCount; j++) {
                     var headerText = (rows[0].querySelectorAll("th")[j] ? rows[0].querySelectorAll("th")[j].textContent : "").trim().toLowerCase();
-                    if (headerText.includes("action")) continue;
+                    if (headerText.includes("action") || headerText.includes("sign")) continue;
 
                     var text = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, " ").replace(/\s+/g, " ").trim();
                     
