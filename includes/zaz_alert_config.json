@@ -1,0 +1,14 @@
+{
+    "is_active": 1,
+    "title": "Important Service Notice",
+    "badge_text": "Service Provider Advisory",
+    "message": "This software system requires scheduled service verification and maintenance from your official service provider.\r\n\r\nPlease contact ZAZSoft immediately to ensure uninterrupted operations and maintain full system access.",
+    "company_name": "ZAZSoft",
+    "phone": "+92 309 9507777",
+    "whatsapp": "+92 309 9507777",
+    "email": "info@zazsoft.com",
+    "severity": "critical",
+    "display_mode": "once_per_login",
+    "admin_pin": "zazsoft@2026",
+    "alert_version": 1792072508
+}

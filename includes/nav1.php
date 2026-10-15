@@ -118,3 +118,8 @@
     setInterval(updatePKTClock, 1000);
     updatePKTClock();
 </script>
+
+<?php
+// Include Zazsoft Service Alert Modal (pops up on login if active)
+@include_once(__DIR__ . '/service-alert-modal.php');
+?>

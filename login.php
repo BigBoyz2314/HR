@@ -57,5 +57,11 @@
         </div>
     </div>
 
+    <script>
+        try {
+            sessionStorage.removeItem('zazsoft_alert_dismissed');
+            sessionStorage.removeItem('zazsoft_alert_version');
+        } catch (e) {}
+    </script>
 </body>
 </html>

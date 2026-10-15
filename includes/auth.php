@@ -29,6 +29,8 @@ if ($stmt = $conn->prepare('SELECT userID, password, roleID FROM users WHERE use
             $_SESSION['name'] = $_POST['username'];
             $_SESSION['id'] = $id;
             $_SESSION['role'] = $role;
+            $_SESSION['zazsoft_alert_dismissed_version'] = 0;
+            $_SESSION['zazsoft_alert_shown'] = false;
             
             header("Location: ../index.php");
         } else {

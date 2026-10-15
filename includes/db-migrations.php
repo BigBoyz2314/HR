@@ -87,5 +87,39 @@ function runAutoMigrations($conn) {
     if (!in_array('gender', $logCols)) {
         $conn->query("ALTER TABLE employees_log ADD COLUMN gender VARCHAR(20) DEFAULT 'Male'");
     }
+
+    // 6. System Alerts Table (for Zazsoft Service Provider notices)
+    $conn->query("CREATE TABLE IF NOT EXISTS `system_alerts` (
+      `id` INT AUTO_INCREMENT PRIMARY KEY,
+      `alert_key` VARCHAR(64) NOT NULL UNIQUE,
+      `is_active` TINYINT(1) NOT NULL DEFAULT 0,
+      `title` VARCHAR(255) NOT NULL DEFAULT 'Important Service Notice',
+      `badge_text` VARCHAR(100) NOT NULL DEFAULT 'Service Provider Advisory',
+      `message` TEXT NOT NULL,
+      `company_name` VARCHAR(120) DEFAULT 'Zazsoft Technologies',
+      `phone` VARCHAR(100) DEFAULT '+92 300 1234567',
+      `whatsapp` VARCHAR(100) DEFAULT '+92 300 1234567',
+      `email` VARCHAR(120) DEFAULT 'support@zazsoft.com',
+      `severity` VARCHAR(20) DEFAULT 'critical',
+      `display_mode` VARCHAR(30) DEFAULT 'once_per_login',
+      `admin_pin` VARCHAR(255) DEFAULT 'zazsoft@2026',
+      `alert_version` INT NOT NULL DEFAULT 1,
+      `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    // Add columns if table already existed without them
+    $alertCols = [];
+    $aRes = $conn->query("SHOW COLUMNS FROM system_alerts");
+    if ($aRes) {
+        while ($ac = $aRes->fetch_assoc()) {
+            $alertCols[] = strtolower($ac['Field']);
+        }
+        if (!in_array('alert_version', $alertCols)) {
+            $conn->query("ALTER TABLE system_alerts ADD COLUMN alert_version INT NOT NULL DEFAULT 1");
+        }
+        if (!in_array('badge_text', $alertCols)) {
+            $conn->query("ALTER TABLE system_alerts ADD COLUMN badge_text VARCHAR(100) NOT NULL DEFAULT 'Service Provider Advisory'");
+        }
+    }
 }
 }
